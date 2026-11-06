@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -g -shared -Wl,--dependency-file=CMakeFiles/ci_lab.dir/link.d  -o ci_lab.so CMakeFiles/ci_lab.dir/fsw/src/ci_lab_app.c.o

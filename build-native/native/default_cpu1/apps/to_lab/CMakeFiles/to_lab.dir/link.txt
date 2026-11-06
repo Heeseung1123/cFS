@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -g -shared -Wl,--dependency-file=CMakeFiles/to_lab.dir/link.d  -o to_lab.so CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.o CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o

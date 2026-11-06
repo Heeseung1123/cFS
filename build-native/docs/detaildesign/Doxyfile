@@ -1,0 +1,41 @@
+#---------------------------------------------------------------------------
+# Doxygen options to generate the complete mission documentation
+#---------------------------------------------------------------------------
+
+# Start with the common definitions, some of which are extended or overridden here.
+@INCLUDE               = /home/heeseung/rtems-cfs-demo/cFS/build-native/docs/cfe-common.doxyfile
+PROJECT_NAME           = "SampleMission"
+PROJECT_BRIEF          = "Core Flight System project built using \"bbb\" configuration"
+OUTPUT_DIRECTORY       = /home/heeseung/rtems-cfs-demo/cFS/build-native/docs/detaildesign
+WARN_LOGFILE           = /home/heeseung/rtems-cfs-demo/cFS/build-native/docs/detaildesign-warnings.log
+
+INPUT                 += /home/heeseung/rtems-cfs-demo/cFS/bbb_defs
+STRIP_FROM_PATH       += /home/heeseung/rtems-cfs-demo/cFS/bbb_defs
+
+#---------------------------------------------------------------------------
+# The user content doxyfile contains paths to the mission-specific applications
+#---------------------------------------------------------------------------
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_private
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/ci_lab
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/sch_lab
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/sample_app
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/libs/sample_lib
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/blinky
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/cfe_assert
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/es
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/evs
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/fs
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/sb
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/time
+@INCLUDE = /home/heeseung/rtems-cfs-demo/cFS/build-native/docs/osal-detaildesign.doxyfile
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/psp
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/msg
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/sbr
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/resourceid
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/config
+
+@INCLUDE = /home/heeseung/rtems-cfs-demo/cFS/build-native/docs/tgtsystem-content-native_default_cpu1.doxyfile
+

@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -g -shared -Wl,--dependency-file=CMakeFiles/blinky.dir/link.d  -o blinky.so CMakeFiles/blinky.dir/fsw/src/blinky.c.o
