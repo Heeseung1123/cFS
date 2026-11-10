@@ -209,6 +209,30 @@ fsw/src/ci_lab_app.c.s:
 	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1 && $(MAKE) $(MAKESILENT) -f apps/ci_lab/CMakeFiles/ci_lab.dir/build.make apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/ci_lab_app.c.s
 .PHONY : fsw/src/ci_lab_app.c.s
 
+fsw/src/tc_sdlp_my.o: fsw/src/tc_sdlp_my.c.o
+.PHONY : fsw/src/tc_sdlp_my.o
+
+# target to build an object file
+fsw/src/tc_sdlp_my.c.o:
+	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1 && $(MAKE) $(MAKESILENT) -f apps/ci_lab/CMakeFiles/ci_lab.dir/build.make apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/tc_sdlp_my.c.o
+.PHONY : fsw/src/tc_sdlp_my.c.o
+
+fsw/src/tc_sdlp_my.i: fsw/src/tc_sdlp_my.c.i
+.PHONY : fsw/src/tc_sdlp_my.i
+
+# target to preprocess a source file
+fsw/src/tc_sdlp_my.c.i:
+	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1 && $(MAKE) $(MAKESILENT) -f apps/ci_lab/CMakeFiles/ci_lab.dir/build.make apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/tc_sdlp_my.c.i
+.PHONY : fsw/src/tc_sdlp_my.c.i
+
+fsw/src/tc_sdlp_my.s: fsw/src/tc_sdlp_my.c.s
+.PHONY : fsw/src/tc_sdlp_my.s
+
+# target to generate assembly for a file
+fsw/src/tc_sdlp_my.c.s:
+	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1 && $(MAKE) $(MAKESILENT) -f apps/ci_lab/CMakeFiles/ci_lab.dir/build.make apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/tc_sdlp_my.c.s
+.PHONY : fsw/src/tc_sdlp_my.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -226,6 +250,9 @@ help:
 	@echo "... fsw/src/ci_lab_app.o"
 	@echo "... fsw/src/ci_lab_app.i"
 	@echo "... fsw/src/ci_lab_app.s"
+	@echo "... fsw/src/tc_sdlp_my.o"
+	@echo "... fsw/src/tc_sdlp_my.i"
+	@echo "... fsw/src/tc_sdlp_my.s"
 .PHONY : help
 
 

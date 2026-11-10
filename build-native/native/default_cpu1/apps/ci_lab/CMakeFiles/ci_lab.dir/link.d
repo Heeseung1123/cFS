@@ -2,6 +2,7 @@ ci_lab.so: \
   /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/crti.o \
   /usr/lib/gcc/x86_64-linux-gnu/15/crtbeginS.o \
   CMakeFiles/ci_lab.dir/fsw/src/ci_lab_app.c.o \
+  CMakeFiles/ci_lab.dir/fsw/src/tc_sdlp_my.c.o \
   /usr/lib/gcc/x86_64-linux-gnu/15/libgcc.a \
   /usr/lib/gcc/x86_64-linux-gnu/15/libgcc_s.so \
   /usr/lib/gcc/x86_64-linux-gnu/15/libgcc_s.so \
@@ -28,6 +29,8 @@ ci_lab.so: \
 /usr/lib/gcc/x86_64-linux-gnu/15/crtbeginS.o:
 
 CMakeFiles/ci_lab.dir/fsw/src/ci_lab_app.c.o:
+
+CMakeFiles/ci_lab.dir/fsw/src/tc_sdlp_my.c.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/15/libgcc.a:
 

@@ -12,6 +12,7 @@ DURATION=10
 QUIET=""
 CI_HOST="127.0.0.1"
 CI_PORT=1234
+PROXY_PORT=1236 # CI_LAB accepts only TC frames, so commands go through tc_frame_proxy.py
 DEST_IP="127.0.0.1"
 TLM_PORT=1235
 TO_LAB_CMD_MID="0x1880"
@@ -89,8 +90,13 @@ echo "TO_LAB initialized"
 # 4. Resend the enable command until TO_LAB reports it, as CI_LAB may still be starting.
 echo "=== Enabling telemetry output to $DEST_IP ==="
 for _ in $(seq 1 10); do
-    "$CMD_UTIL" --host="$CI_HOST" --port="$CI_PORT" --pktid="$TO_LAB_CMD_MID" \
+    python3 "$CFS_ROOT/tc_test/tc_frame_proxy.py" --listen-port "$PROXY_PORT" --dest-host "$CI_HOST" \
+        --dest-port "$CI_PORT" --count 1 --timeout 5 --quiet >/dev/null &
+    PROXY_PID=$!
+    sleep 0.5
+    "$CMD_UTIL" --host=127.0.0.1 --port="$PROXY_PORT" --pktid="$TO_LAB_CMD_MID" \
         --cmdcode="$TO_OUTPUT_ENABLE_CC" --string="16:$DEST_IP" >/dev/null
+    wait "$PROXY_PID"
     sleep 1
     grep -q "telemetry output enabled" "$LOG_FILE" && break
 done

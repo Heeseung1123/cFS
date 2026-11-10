@@ -3,10 +3,10 @@
 const CFE_ConfigKeyValue_t CFE_MODULE_VERSION_TABLE[] = {
 
 
-{ "MISSION", "git:caelum-rc4-35-ge3640b8-dirty" },
+{ "MISSION", "git:caelum-rc4-37-gb9e9316-dirty" },
 { "core_api", "git:v7.0.0-rc4-38-gc161cf04" },
 { "core_private", "git:v7.0.0-rc4-38-gc161cf04" },
-{ "ci_lab", "git:v2.5.0-rc4-4-g812d20e-dirty" },
+{ "ci_lab", "git:v2.5.0-rc4-5-gc7a12b6" },
 { "to_lab", "git:v2.2.0a-124-gcaa9f50" },
 { "sch_lab", "git:v2.2.0a-108-g37ad1bb" },
 { "sample_app", "git:v1.3.0-rc4-4-gbd4a5fe" },

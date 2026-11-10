@@ -2,34 +2,34 @@ OS_Posix_GetSchedulerParams():189:Policy 1: available, min-max: 1-99
 OS_Posix_GetSchedulerParams():189:Policy 2: available, min-max: 1-99
 OS_Posix_TaskAPI_Impl_Init():375:Selected policy 2 for RT tasks, root task = 99
 OS_Posix_TaskAPI_Impl_Init():392:Could not setschedparam in main thread: Operation not permitted (1)
-CFE_PSP: EEPROM Range (2) created: Start Address = 7D627AE2A000, Size = 00080000 Status = 0
+CFE_PSP: EEPROM Range (2) created: Start Address = 7F189D437000, Size = 00080000 Status = 0
 CFE_PSP: Normal exit from previous cFE instance
 CFE_PSP: Starting the cFE with a POWER ON reset.
 CFE_PSP: Clearing out CFE CDS Shared memory segment.
 CFE_PSP: Clearing out CFE Reset Shared memory segment.
 CFE_PSP: Clearing out CFE User Reserved Shared memory segment.
-1980-005-05:48:39.08832 CFE_ES_SetupResetVariables: POWER ON RESET due to Power Cycle (Power Cycle).
-1980-005-05:48:39.08834 CFE_ES_Main: CFE_ES_Main in EARLY_INIT state
+1980-009-03:00:46.18656 CFE_ES_SetupResetVariables: POWER ON RESET due to Power Cycle (Power Cycle).
+1980-009-03:00:46.18658 CFE_ES_Main: CFE_ES_Main in EARLY_INIT state
 CFE_PSP: CFE_PSP_AttachExceptions Called
-1980-005-05:48:39.08854 CFE_ES_Main: CFE_ES_Main entering CORE_STARTUP state
-1980-005-05:48:39.08854 CFE_ES_CreateObjects: Starting Object Creation calls.
-1980-005-05:48:39.08854 CFE_ES_CreateObjects: Calling CFE_Config_Init
-1980-005-05:48:39.08855 CFE_ES_CreateObjects: Calling CFE_ES_CDSEarlyInit
-1980-005-05:48:39.08863 CFE_ES_CreateObjects: Calling CFE_EVS_EarlyInit
-1980-005-05:48:39.08865 CFE_EVS_EarlyInit: Event Log cleared following power-on reset
-1980-005-05:48:39.08865 CFE_ES_CreateObjects: Calling CFE_SB_EarlyInit
-1980-005-05:48:39.08885 CFE_ES_CreateObjects: Calling CFE_TIME_EarlyInit
+1980-009-03:00:46.18678 CFE_ES_Main: CFE_ES_Main entering CORE_STARTUP state
+1980-009-03:00:46.18678 CFE_ES_CreateObjects: Starting Object Creation calls.
+1980-009-03:00:46.18678 CFE_ES_CreateObjects: Calling CFE_Config_Init
+1980-009-03:00:46.18679 CFE_ES_CreateObjects: Calling CFE_ES_CDSEarlyInit
+1980-009-03:00:46.18687 CFE_ES_CreateObjects: Calling CFE_EVS_EarlyInit
+1980-009-03:00:46.18689 CFE_EVS_EarlyInit: Event Log cleared following power-on reset
+1980-009-03:00:46.18690 CFE_ES_CreateObjects: Calling CFE_SB_EarlyInit
+1980-009-03:00:46.18711 CFE_ES_CreateObjects: Calling CFE_TIME_EarlyInit
 1980-012-14:03:20.00000 CFE_ES_CreateObjects: Calling CFE_TBL_EarlyInit
-1980-012-14:03:20.00028 CFE_ES_CreateObjects: Calling CFE_FS_EarlyInit
+1980-012-14:03:20.00027 CFE_ES_CreateObjects: Calling CFE_FS_EarlyInit
 EVS Port1 66/1/CFE_EVS 1: cFE EVS Initialized:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-1980-012-14:03:20.15125 CFE_SB_AppInit: Registered 4 events for filtering
+1980-012-14:03:20.15131 CFE_SB_AppInit: Registered 4 events for filtering
 EVS Port1 66/1/CFE_SB 1: cFE SB Initialized:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
 EVS Port1 66/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_SB
 EVS Port1 66/1/CFE_ES 1: cFE ES Initialized:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
 EVS Port1 66/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_ES
-EVS Port1 66/1/CFE_ES 2: cFS Versions: cfe v7.0.0-rc4+dev39, osal v6.0.0-rc4+dev15, psp v1.6.0-rc1+dev4. cFE chksm 22742
+EVS Port1 66/1/CFE_ES 2: cFS Versions: cfe v7.0.0-rc4+dev39, osal v6.0.0-rc4+dev15, psp v1.6.0-rc1+dev4. cFE chksm 440
 EVS Port1 66/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_ES
-EVS Port1 66/1/CFE_ES 91: Version Info: Mission SampleMission, version git:caelum-rc4-35-ge3640b8-dirty
+EVS Port1 66/1/CFE_ES 91: Version Info: Mission SampleMission, version git:caelum-rc4-37-gb9e9316-dirty
 EVS Port1 66/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_ES
 EVS Port1 66/1/CFE_ES 91: Version Info: Module CORE_API, version git:v7.0.0-rc4-38-gc161cf04
 EVS Port1 66/1/CFE_ES 91: Version Info: Module ES, version git:v7.0.0-rc4-38-gc161cf04
@@ -44,34 +44,34 @@ EVS Port1 66/1/CFE_ES 91: Version Info: Module MSG, version git:v7.0.0-rc4-38-gc
 EVS Port1 66/1/CFE_ES 91: Version Info: Module SBR, version git:v7.0.0-rc4-38-gc161cf04
 EVS Port1 66/1/CFE_ES 91: Version Info: Module RESOURCEID, version git:v7.0.0-rc4-38-gc161cf04
 EVS Port1 66/1/CFE_ES 91: Version Info: Module CONFIG, version git:v7.0.0-rc4-38-gc161cf04
-EVS Port1 66/1/CFE_ES 92: Build 202611061507 by heeseung@DESKTOP-CHPJ4N7, config bbb
+EVS Port1 66/1/CFE_ES 92: Build 202611101226 by heeseung@DESKTOP-CHPJ4N7, config bbb
 EVS Port1 66/1/CFE_TIME 1: cFE TIME Initialized:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
 EVS Port1 66/1/CFE_TBL 1: cFE TBL Initialized:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-1980-012-14:03:20.50279 CFE_ES_CreateObjects: Finished ES CreateObject table entries.
-1980-012-14:03:20.50282 CFE_ES_Main: CFE_ES_Main entering CORE_READY state
-1980-012-14:03:20.50284 CFE_ES_StartApplications: Opened ES App Startup file: /cf/cfe_es_startup.scr
-1980-012-14:03:20.50295 CFE_ES_ParseFileEntry: Loading shared library: /cf/sample_lib.so
+1980-012-14:03:20.50289 CFE_ES_CreateObjects: Finished ES CreateObject table entries.
+1980-012-14:03:20.50291 CFE_ES_Main: CFE_ES_Main entering CORE_READY state
+1980-012-14:03:20.50293 CFE_ES_StartApplications: Opened ES App Startup file: /cf/cfe_es_startup.scr
+1980-012-14:03:20.50303 CFE_ES_ParseFileEntry: Loading shared library: /cf/sample_lib.so
 SAMPLE Lib Initialized. Sample Lib DEVELOPMENT BUILD v1.3.0-rc4+dev3, Last Official Release: v1.1.0
-1980-012-14:03:20.50321 CFE_ES_ParseFileEntry: Loading file: /cf/sample_app.so, APP: SAMPLE_APP
-1980-012-14:03:20.50347 CFE_ES_ParseFileEntry: Loading file: /cf/ci_lab.so, APP: CI_LAB_APP
-1980-012-14:03:20.50372 CFE_ES_ParseFileEntry: Loading file: /cf/to_lab.so, APP: TO_LAB_APP
-1980-012-14:03:20.50396 CFE_ES_ParseFileEntry: Loading file: /cf/sch_lab.so, APP: SCH_LAB_APP
+1980-012-14:03:20.50325 CFE_ES_ParseFileEntry: Loading file: /cf/sample_app.so, APP: SAMPLE_APP
+1980-012-14:03:20.50351 CFE_ES_ParseFileEntry: Loading file: /cf/ci_lab.so, APP: CI_LAB_APP
+1980-012-14:03:20.50380 CFE_ES_ParseFileEntry: Loading file: /cf/to_lab.so, APP: TO_LAB_APP
+1980-012-14:03:20.50405 CFE_ES_ParseFileEntry: Loading file: /cf/sch_lab.so, APP: SCH_LAB_APP
 OS_ModuleLoad_Impl():111:Error loading shared library: ./cf/blinky.so: cannot open shared object file: No such file or directory
-1980-012-14:03:20.50421 CFE_ES_ParseFileEntry: Loading file: /cf/blinky.so, APP: BLINKY_APP
-1980-012-14:03:20.50425 CFE_ES_LoadModule: Could not load file:/cf/blinky.so. EC = -1
+1980-012-14:03:20.50434 CFE_ES_ParseFileEntry: Loading file: /cf/blinky.so, APP: BLINKY_APP
+1980-012-14:03:20.50437 CFE_ES_LoadModule: Could not load file:/cf/blinky.so. EC = -1
 EVS Port1 66/1/SAMPLE_APP 1: SAMPLE App Initialized. Sample App DEVELOPMENT BUILD v1.3.0-rc4+dev4, Last Official Release: v1.1.0
-1980-012-14:03:20.55376 CFE_EVS_Register: Filter limit truncated to 8
-1980-012-14:03:20.55383 CI_LAB listening on UDP port: 1234
+1980-012-14:03:20.55383 CFE_EVS_Register: Filter limit truncated to 8
+1980-012-14:03:20.55390 CI_LAB listening on UDP port: 1234
 EVS Port1 66/1/CI_LAB_APP 3: CI Lab Initialized. CI Lab App DEVELOPMENT BUILD v2.5.0-rc4+dev4, Last Official Release: v2.3.0
-1980-012-14:03:20.55409 CFE_EVS_Register: Filter limit truncated to 8
+1980-012-14:03:20.55410 CFE_EVS_Register: Filter limit truncated to 8
 EVS Port1 66/1/TO_LAB_APP 1: TO Lab Initialized. TO Lab DEVELOPMENT BUILD v2.5.0-rc4+dev4, Last Official Release: v2.3.0, Awaiting enable command.
 SCH Lab Initialized. SCH Lab DEVELOPMENT BUILD v2.5.0-rc4+dev6, Last Official Release: v2.3.0
-1980-012-14:03:20.55436 CFE_ES_Main: CFE_ES_Main entering APPS_INIT state
-1980-012-14:03:20.55436 CFE_ES_Main: CFE_ES_Main entering OPERATIONAL state
+1980-012-14:03:20.60464 CFE_ES_Main: CFE_ES_Main entering APPS_INIT state
+1980-012-14:03:20.60466 CFE_ES_Main: CFE_ES_Main entering OPERATIONAL state
 EVS Port1 66/1/TO_LAB_APP 3: TO telemetry output enabled for IP 127.0.0.1
 EVS Port1 66/1/CFE_TIME 21: Stop FLYWHEEL
-1980-012-14:03:29.00714 CFE_ES_RunExceptionScan: ExceptionID 0x1110000 in TaskID 0: Caught SIGINT
-1980-012-14:03:29.00716 CFE_ES_RunExceptionScan: Processor Reset count not reached (0/2)
+1980-012-14:03:31.21702 CFE_ES_RunExceptionScan: ExceptionID 0x1110000 in TaskID 0: Caught Signal 15
+1980-012-14:03:31.21704 CFE_ES_RunExceptionScan: Processor Reset count not reached (0/2)
 CFE_PSP: Exiting cFE with PROCESSOR Reset status.
 
 CFE_PSP: Shutdown initiated - Exiting cFE
