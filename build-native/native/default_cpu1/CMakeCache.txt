@@ -159,6 +159,15 @@ CFE_TIME_IS_TOP_LEVEL:STATIC=OFF
 CFE_TIME_SOURCE_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/time
 
 //Value Computed by CMake
+CFS_CF_BINARY_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/cf
+
+//Value Computed by CMake
+CFS_CF_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CFS_CF_SOURCE_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/apps/cf
+
+//Value Computed by CMake
 CFS_CI_LAB_BINARY_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/ci_lab
 
 //Value Computed by CMake
@@ -166,6 +175,15 @@ CFS_CI_LAB_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 CFS_CI_LAB_SOURCE_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/apps/ci_lab
+
+//Value Computed by CMake
+CFS_FILE_DL_BINARY_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/file_dl
+
+//Value Computed by CMake
+CFS_FILE_DL_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CFS_FILE_DL_SOURCE_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/apps/file_dl
 
 //Value Computed by CMake
 CFS_SCH_LAB_BINARY_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/sch_lab
@@ -607,7 +625,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=33
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=34
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

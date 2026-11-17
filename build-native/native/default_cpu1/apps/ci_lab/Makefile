@@ -209,6 +209,30 @@ fsw/src/ci_lab_app.c.s:
 	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1 && $(MAKE) $(MAKESILENT) -f apps/ci_lab/CMakeFiles/ci_lab.dir/build.make apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/ci_lab_app.c.s
 .PHONY : fsw/src/ci_lab_app.c.s
 
+fsw/src/pqc_sdls_my.o: fsw/src/pqc_sdls_my.c.o
+.PHONY : fsw/src/pqc_sdls_my.o
+
+# target to build an object file
+fsw/src/pqc_sdls_my.c.o:
+	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1 && $(MAKE) $(MAKESILENT) -f apps/ci_lab/CMakeFiles/ci_lab.dir/build.make apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/pqc_sdls_my.c.o
+.PHONY : fsw/src/pqc_sdls_my.c.o
+
+fsw/src/pqc_sdls_my.i: fsw/src/pqc_sdls_my.c.i
+.PHONY : fsw/src/pqc_sdls_my.i
+
+# target to preprocess a source file
+fsw/src/pqc_sdls_my.c.i:
+	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1 && $(MAKE) $(MAKESILENT) -f apps/ci_lab/CMakeFiles/ci_lab.dir/build.make apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/pqc_sdls_my.c.i
+.PHONY : fsw/src/pqc_sdls_my.c.i
+
+fsw/src/pqc_sdls_my.s: fsw/src/pqc_sdls_my.c.s
+.PHONY : fsw/src/pqc_sdls_my.s
+
+# target to generate assembly for a file
+fsw/src/pqc_sdls_my.c.s:
+	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1 && $(MAKE) $(MAKESILENT) -f apps/ci_lab/CMakeFiles/ci_lab.dir/build.make apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/pqc_sdls_my.c.s
+.PHONY : fsw/src/pqc_sdls_my.c.s
+
 fsw/src/tc_sdlp_my.o: fsw/src/tc_sdlp_my.c.o
 .PHONY : fsw/src/tc_sdlp_my.o
 
@@ -250,6 +274,9 @@ help:
 	@echo "... fsw/src/ci_lab_app.o"
 	@echo "... fsw/src/ci_lab_app.i"
 	@echo "... fsw/src/ci_lab_app.s"
+	@echo "... fsw/src/pqc_sdls_my.o"
+	@echo "... fsw/src/pqc_sdls_my.i"
+	@echo "... fsw/src/pqc_sdls_my.s"
 	@echo "... fsw/src/tc_sdlp_my.o"
 	@echo "... fsw/src/tc_sdlp_my.i"
 	@echo "... fsw/src/tc_sdlp_my.s"

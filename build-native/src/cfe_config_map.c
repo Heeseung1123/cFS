@@ -24,6 +24,7 @@ const CFE_Config_IdNameEntry_t CFE_CONFIG_IDNAME_MAP[CFE_ConfigIdOffset_MAX] =
   [CFE_ConfigIdOffset_MOD_SRCVER_SAMPLE_APP] = { "MOD_SRCVER_SAMPLE_APP" },
   [CFE_ConfigIdOffset_MOD_SRCVER_SAMPLE_LIB] = { "MOD_SRCVER_SAMPLE_LIB" },
   [CFE_ConfigIdOffset_MOD_SRCVER_BLINKY] = { "MOD_SRCVER_BLINKY" },
+  [CFE_ConfigIdOffset_MOD_SRCVER_FILE_DL] = { "MOD_SRCVER_FILE_DL" },
   [CFE_ConfigIdOffset_MOD_SRCVER_CFE_ASSERT] = { "MOD_SRCVER_CFE_ASSERT" },
   [CFE_ConfigIdOffset_MOD_SRCVER_ES] = { "MOD_SRCVER_ES" },
   [CFE_ConfigIdOffset_MOD_SRCVER_EVS] = { "MOD_SRCVER_EVS" },

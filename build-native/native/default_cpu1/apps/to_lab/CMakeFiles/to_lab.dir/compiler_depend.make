@@ -3,8 +3,127 @@
 
 apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.o: /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_my.c \
   /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_my.h \
+  /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_of.h \
   /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tmtf_my.h \
   /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/to_lab_events.h \
+  /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/bbb_mission_cfg.h \
+  /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/cpu1_platform_cfg.h \
+  /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_mission_cfg.h \
+  /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_msg_hdr.h \
+  /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_msg_sechdr.h \
+  /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_resourceid_typedef.h \
+  inc/cfe_platform_cfg.h \
+  inc/osconfig.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_error.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_es.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_es_api_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_es_extern_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_evs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_evs_api_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_evs_extern_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_fs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_fs_api_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_fs_extern_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_msg.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_msg_api_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_resourceid.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_resourceid_api_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_sb.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_sb_api_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_sb_extern_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_tbl.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_tbl_api_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_tbl_extern_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_time.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_time_api_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_time_extern_typedefs.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/msg/fsw/inc/ccsds_hdr.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/msg/option_inc/default_cfe_msg_hdr_pri.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/msg/option_inc/default_cfe_msg_sechdr.h \
+  /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/resourceid/option_inc/cfe_resourceid_simple.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-binsem.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-bsp.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-clock.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-common.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-constants.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-countsem.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-dir.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-error.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-file.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-filesys.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-heap.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-idmap.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-macros.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-module.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-mutex.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-network.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-printf.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-queue.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-select.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-shell.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-sockets.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-task.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-timebase.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-timer.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-version.h \
+  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi.h \
+  /home/heeseung/rtems-cfs-demo/cFS/psp/fsw/inc/cfe_psp.h \
+  /usr/include/features-time64.h \
+  /usr/include/features.h \
+  /usr/include/stdc-predef.h \
+  /usr/include/stdint.h \
+  /usr/include/stdio.h \
+  /usr/include/stdlib.h \
+  /usr/include/string.h \
+  /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
+  /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
+  /usr/include/x86_64-linux-gnu/bits/floatn.h \
+  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+  /usr/include/x86_64-linux-gnu/bits/long-double.h \
+  /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
+  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
+  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
+  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
+  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h \
+  /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
+  /usr/include/x86_64-linux-gnu/bits/time64.h \
+  /usr/include/x86_64-linux-gnu/bits/timesize.h \
+  /usr/include/x86_64-linux-gnu/bits/types.h \
+  /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/clock_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/once_flag.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/timer_t.h \
+  /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+  /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
+  /usr/include/x86_64-linux-gnu/bits/wchar.h \
+  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+  /usr/include/x86_64-linux-gnu/sys/types.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/stdarg.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/stdbool.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/stddef.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/stdint.h
+
+apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o: /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_of.c \
+  /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_my.h \
+  /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_of.h \
+  /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tmtf_my.h \
   /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/bbb_mission_cfg.h \
   /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/cpu1_platform_cfg.h \
   /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_mission_cfg.h \
@@ -270,6 +389,7 @@ apps/to_lab/to_lab.so: /lib64/ld-linux-x86-64.so.2 \
   /usr/lib/x86_64-linux-gnu/libc.so.6 \
   /usr/lib/x86_64-linux-gnu/libc_nonshared.a \
   apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.o \
+  apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o \
   apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o
 
 
@@ -307,7 +427,9 @@ apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.o:
 
 /usr/include/asm-generic/errno.h:
 
-/home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-queue.h:
+/usr/include/asm-generic/errno-base.h:
+
+inc/cfe_msgids.h:
 
 /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-mutex.h:
 
@@ -373,6 +495,12 @@ apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.o:
 
 /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/bbb_mission_cfg.h:
 
+/usr/include/unistd.h:
+
+/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_sb_api_typedefs.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
+
 /usr/include/x86_64-linux-gnu/bits/time64.h:
 
 /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_mission_cfg.h:
@@ -386,12 +514,6 @@ apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.o:
 /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_evs_api_typedefs.h:
 
 /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
-
-/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_error.h:
-
-/usr/include/stdlib.h:
-
-/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/15/libgcc_s.so:
 
@@ -409,13 +531,9 @@ inc/osconfig.h:
 
 /usr/include/x86_64-linux-gnu/sys/cdefs.h:
 
-/usr/include/unistd.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
-
-/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_sb_api_typedefs.h:
-
 /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_time.h:
+
+/home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_of.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
 
@@ -443,11 +561,15 @@ inc/osconfig.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/15/include/stdint.h:
 
-/home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h:
-
 /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_es_extern_typedefs.h:
 
-/usr/include/asm-generic/errno-base.h:
+/home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h:
+
+/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_error.h:
+
+/usr/include/stdlib.h:
+
+/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe.h:
 
 /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_evs.h:
 
@@ -461,8 +583,6 @@ inc/osconfig.h:
 
 /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_fs_extern_typedefs.h:
 
-inc/cfe_msgids.h:
-
 /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/msg/option_inc/default_cfe_msg_hdr_pri.h:
 
 /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/cpu1_msgids.h:
@@ -474,6 +594,8 @@ inc/cfe_msgids.h:
 /usr/include/x86_64-linux-gnu/bits/floatn.h:
 
 /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_sb.h:
+
+/home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-queue.h:
 
 /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-timebase.h:
 
@@ -504,6 +626,8 @@ inc/cfe_msgids.h:
 /usr/include/x86_64-linux-gnu/bits/types.h:
 
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
+
+apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o:
 
 /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
 
@@ -574,5 +698,7 @@ inc/cfe_platform_cfg.h:
 /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/platform_inc/to_lab_sub_table.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/15/include/stddef.h:
+
+/home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_of.c:
 
 /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/platform_inc/to_lab_msgids.h:

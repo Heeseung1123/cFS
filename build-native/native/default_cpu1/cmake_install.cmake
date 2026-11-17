@@ -68,6 +68,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/sample_app/cmake_install.cmake")
   include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/sample_lib/cmake_install.cmake")
   include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/blinky/cmake_install.cmake")
+  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/file_dl/cmake_install.cmake")
   include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/cfe_assert/cmake_install.cmake")
   include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/cpu1/cmake_install.cmake")
 

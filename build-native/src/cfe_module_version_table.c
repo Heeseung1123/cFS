@@ -3,15 +3,16 @@
 const CFE_ConfigKeyValue_t CFE_MODULE_VERSION_TABLE[] = {
 
 
-{ "MISSION", "git:caelum-rc4-37-gb9e9316-dirty" },
+{ "MISSION", "git:caelum-rc4-38-g1aa0054-dirty" },
 { "core_api", "git:v7.0.0-rc4-38-gc161cf04" },
 { "core_private", "git:v7.0.0-rc4-38-gc161cf04" },
-{ "ci_lab", "git:v2.5.0-rc4-5-gc7a12b6" },
-{ "to_lab", "git:v2.2.0a-124-gcaa9f50" },
-{ "sch_lab", "git:v2.2.0a-108-g37ad1bb" },
+{ "ci_lab", "git:v2.5.0-rc4-5-gc7a12b6-dirty" },
+{ "to_lab", "git:v2.2.0a-124-gcaa9f50-dirty" },
+{ "sch_lab", "git:v2.2.0a-108-g37ad1bb-dirty" },
 { "sample_app", "git:v1.3.0-rc4-4-gbd4a5fe" },
 { "sample_lib", "git:v1.3.0-rc3-2-ge249aa2" },
 { "blinky", "git:70d21bd-dirty" },
+{ "file_dl", "git:caelum-rc4-38-g1aa0054-dirty" },
 { "cfe_assert", "git:v7.0.0-rc4-38-gc161cf04" },
 { "es", "git:v7.0.0-rc4-38-gc161cf04" },
 { "evs", "git:v7.0.0-rc4-38-gc161cf04" },

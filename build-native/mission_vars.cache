@@ -11,9 +11,9 @@ MISSION_BINARY_DIR
 MISSIONCONFIG
 bbb
 MISSION_APPS
-ci_lab;to_lab;sch_lab;sample_app;sample_lib;blinky;cfe_assert
+ci_lab;to_lab;sch_lab;sample_app;sample_lib;blinky;file_dl;cfe_assert
 MISSION_DEPS
-core_api;core_private;ci_lab;to_lab;sch_lab;sample_app;sample_lib;blinky;cfe_assert;es;evs;fs;sb;tbl;time;osal;psp;msg;sbr;resourceid;config
+core_api;core_private;ci_lab;to_lab;sch_lab;sample_app;sample_lib;blinky;file_dl;cfe_assert;es;evs;fs;sb;tbl;time;osal;psp;msg;sbr;resourceid;config
 core_api_MISSION_DIR
 /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api
 core_private_MISSION_DIR
@@ -30,6 +30,8 @@ sample_lib_MISSION_DIR
 /home/heeseung/rtems-cfs-demo/cFS/libs/sample_lib
 blinky_MISSION_DIR
 /home/heeseung/rtems-cfs-demo/cFS/apps/blinky
+file_dl_MISSION_DIR
+/home/heeseung/rtems-cfs-demo/cFS/apps/file_dl
 cfe_assert_MISSION_DIR
 /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/cfe_assert
 es_MISSION_DIR

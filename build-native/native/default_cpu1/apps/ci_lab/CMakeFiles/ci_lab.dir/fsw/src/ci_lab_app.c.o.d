@@ -127,4 +127,5 @@ apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/ci_lab_app.c.o: \
  /home/heeseung/rtems-cfs-demo/cFS/apps/ci_lab/fsw/src/ci_lab_events.h \
  /home/heeseung/rtems-cfs-demo/cFS/apps/ci_lab/fsw/src/ci_lab_version.h \
  /home/heeseung/rtems-cfs-demo/cFS/apps/ci_lab/fsw/src/tc_sdlp_my.h \
- /home/heeseung/rtems-cfs-demo/cFS/apps/ci_lab/fsw/src/tctf_my.h
+ /home/heeseung/rtems-cfs-demo/cFS/apps/ci_lab/fsw/src/tctf_my.h \
+ /home/heeseung/rtems-cfs-demo/cFS/apps/ci_lab/fsw/src/pqc_sdls_my.h

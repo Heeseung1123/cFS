@@ -744,6 +744,19 @@ sample_lib/fast:
 .PHONY : sample_lib/fast
 
 #=============================================================================
+# Target rules for targets named file_dl
+
+# Build rule for target.
+file_dl: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 file_dl
+.PHONY : file_dl
+
+# fast build rule for target.
+file_dl/fast:
+	$(MAKE) $(MAKESILENT) -f apps/file_dl/CMakeFiles/file_dl.dir/build.make apps/file_dl/CMakeFiles/file_dl.dir/build
+.PHONY : file_dl/fast
+
+#=============================================================================
 # Target rules for targets named cfe_assert
 
 # Build rule for target.
@@ -800,6 +813,7 @@ help:
 	@echo "... es_headercheck"
 	@echo "... evs"
 	@echo "... evs_headercheck"
+	@echo "... file_dl"
 	@echo "... fs"
 	@echo "... msg"
 	@echo "... msg_headercheck"

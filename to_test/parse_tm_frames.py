@@ -6,6 +6,8 @@ import socket
 import sys
 import time
 
+from tm_deframer import Deframer
+
 FRAME_SIZE = 1786
 DATA_OFFSET = 20
 IDLE_MID = 0x07FF
@@ -21,21 +23,23 @@ def parse_args():
     parser.add_argument("--scid", type=int, default=3, help="expected SCID")
     parser.add_argument("--vcid", type=int, default=1, help="expected VCID")
     parser.add_argument("--quiet", action="store_true", help="print only errors and the summary")
+    parser.add_argument("--expect-segmented", action="store_true", help="fail if no packet was split over frames")
     return parser.parse_args()
 
 
-def parse_packets(frame):
-    """Walk the data field. Returns (mid, size) pairs and the end offset."""
-    packets = []
-    offset = DATA_OFFSET
-    while offset < FRAME_SIZE:
-        if offset + 6 > FRAME_SIZE:
-            return packets, offset
-        mid = (frame[offset] << 8) | frame[offset + 1]
-        size = ((frame[offset + 4] << 8) | frame[offset + 5]) + SPP_MIN_SIZE
-        packets.append((mid, size))
-        offset += size
-    return packets, offset
+# Replaced by tm_deframer.Deframer, since packets may now continue in the next frame.
+# def parse_packets(frame):
+#     """Walk the data field. Returns (mid, size) pairs and the end offset."""
+#     packets = []
+#     offset = DATA_OFFSET
+#     while offset < FRAME_SIZE:
+#         if offset + 6 > FRAME_SIZE:
+#             return packets, offset
+#         mid = (frame[offset] << 8) | frame[offset + 1]
+#         size = ((frame[offset + 4] << 8) | frame[offset + 5]) + SPP_MIN_SIZE
+#         packets.append((mid, size))
+#         offset += size
+#     return packets, offset
 
 
 class Checker:
@@ -46,6 +50,7 @@ class Checker:
         self.idle_octets = 0
         self.last_mc = None
         self.mids = {}
+        self.deframer = Deframer()
 
     def error(self, text):
         self.errors += 1
@@ -80,16 +85,20 @@ class Checker:
             self.error(f"OCF flag {ocf} or VC count {vc_count} is not 0")
         if status & 0xF8 != 0x18:
             self.error(f"data field status flags are 0x{status & 0xF8:02X}, expected 0x18")
-        if fhp != 0:
-            self.error(f"FHP is {fhp}, expected 0")
+        # if fhp != 0:
+        #     self.error(f"FHP is {fhp}, expected 0")
         if any(frame[6:DATA_OFFSET]):
             self.error("reserved SDLS area is not zero")
         if self.last_mc is not None and mc_count != (self.last_mc + 1) & 0xFF:
             self.error(f"MC count jumped from {self.last_mc} to {mc_count}")
         self.last_mc = mc_count
 
-        packets, end = parse_packets(frame)
-        for mid, size in packets:
+        # packets, end = parse_packets(frame)
+        packets, errors = self.deframer.feed(frame)
+        for text in errors:
+            self.error(text)
+        for pkt in packets:
+            mid, size = (pkt[0] << 8) | pkt[1], len(pkt)
             if mid == IDLE_MID:
                 self.idle_octets += size
             else:
@@ -97,15 +106,19 @@ class Checker:
             if not args.quiet:
                 kind = "idle" if mid == IDLE_MID else "SPP "
                 print(f"  {kind} MID=0x{mid:04X} size={size}")
-        if end != FRAME_SIZE:
-            self.error(f"packets end at offset {end}, expected {FRAME_SIZE}")
+        # if end != FRAME_SIZE:
+        #     self.error(f"packets end at offset {end}, expected {FRAME_SIZE}")
 
     def summary(self):
         print("\n=== Summary ===")
-        print(f"frames: {self.frames}, errors: {self.errors}, idle octets: {self.idle_octets}")
+        print(f"frames: {self.frames}, errors: {self.errors}, idle octets: {self.idle_octets}, "
+              f"packets split over frames: {self.deframer.segmented}")
         for mid in sorted(self.mids):
             print(f"  MID 0x{mid:04X}: {self.mids[mid]} packets")
         passed = self.frames > 0 and self.errors == 0 and bool(self.mids)
+        if self.args.expect_segmented and self.deframer.segmented == 0:
+            print("no packet was split over frames")
+            passed = False
         print("RESULT: PASS" if passed else "RESULT: FAIL")
         return passed
 

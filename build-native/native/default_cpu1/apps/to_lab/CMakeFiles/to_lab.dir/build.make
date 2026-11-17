@@ -86,10 +86,24 @@ apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.s"
 	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/to_lab && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_my.c -o CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.s
 
+apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o: apps/to_lab/CMakeFiles/to_lab.dir/flags.make
+apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o: /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_of.c
+apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o: apps/to_lab/CMakeFiles/to_lab.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o"
+	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/to_lab && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o -MF CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o.d -o CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o -c /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_of.c
+
+apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.i"
+	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/to_lab && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_of.c > CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.i
+
+apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.s"
+	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/to_lab && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/tm_sdlp_of.c -o CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.s
+
 apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o: apps/to_lab/CMakeFiles/to_lab.dir/flags.make
 apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o: /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/to_lab_app.c
 apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o: apps/to_lab/CMakeFiles/to_lab.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o"
 	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/to_lab && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o -MF CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o.d -o CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o -c /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/src/to_lab_app.c
 
 apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.i: cmake_force
@@ -103,17 +117,19 @@ apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.s: cmake_force
 # Object files for target to_lab
 to_lab_OBJECTS = \
 "CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.o" \
+"CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o" \
 "CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o"
 
 # External object files for target to_lab
 to_lab_EXTERNAL_OBJECTS =
 
 apps/to_lab/to_lab.so: apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.o
+apps/to_lab/to_lab.so: apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o
 apps/to_lab/to_lab.so: apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o
 apps/to_lab/to_lab.so: apps/to_lab/CMakeFiles/to_lab.dir/build.make
 apps/to_lab/to_lab.so: apps/to_lab/CMakeFiles/to_lab.dir/compiler_depend.ts
 apps/to_lab/to_lab.so: apps/to_lab/CMakeFiles/to_lab.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C shared module to_lab.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C shared module to_lab.so"
 	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/to_lab && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/to_lab.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -23,6 +23,7 @@ INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/sch_lab
 INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/sample_app
 INPUT += /home/heeseung/rtems-cfs-demo/cFS/libs/sample_lib
 INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/blinky
+INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/file_dl
 INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/cfe_assert
 INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/es
 INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/evs

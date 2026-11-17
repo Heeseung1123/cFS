@@ -12,6 +12,7 @@ const CFE_ConfigKeyValue_t @CFE_KEYVALUE_TABLE_NAME@[] = {
 { "sample_app", @sample_app_VERSION@ },
 { "sample_lib", @sample_lib_VERSION@ },
 { "blinky", @blinky_VERSION@ },
+{ "file_dl", @file_dl_VERSION@ },
 { "cfe_assert", @cfe_assert_VERSION@ },
 { "es", @es_VERSION@ },
 { "evs", @evs_VERSION@ },

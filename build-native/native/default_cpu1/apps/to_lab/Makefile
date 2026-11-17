@@ -237,6 +237,30 @@ fsw/src/tm_sdlp_my.c.s:
 	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1 && $(MAKE) $(MAKESILENT) -f apps/to_lab/CMakeFiles/to_lab.dir/build.make apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.s
 .PHONY : fsw/src/tm_sdlp_my.c.s
 
+fsw/src/tm_sdlp_of.o: fsw/src/tm_sdlp_of.c.o
+.PHONY : fsw/src/tm_sdlp_of.o
+
+# target to build an object file
+fsw/src/tm_sdlp_of.c.o:
+	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1 && $(MAKE) $(MAKESILENT) -f apps/to_lab/CMakeFiles/to_lab.dir/build.make apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o
+.PHONY : fsw/src/tm_sdlp_of.c.o
+
+fsw/src/tm_sdlp_of.i: fsw/src/tm_sdlp_of.c.i
+.PHONY : fsw/src/tm_sdlp_of.i
+
+# target to preprocess a source file
+fsw/src/tm_sdlp_of.c.i:
+	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1 && $(MAKE) $(MAKESILENT) -f apps/to_lab/CMakeFiles/to_lab.dir/build.make apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.i
+.PHONY : fsw/src/tm_sdlp_of.c.i
+
+fsw/src/tm_sdlp_of.s: fsw/src/tm_sdlp_of.c.s
+.PHONY : fsw/src/tm_sdlp_of.s
+
+# target to generate assembly for a file
+fsw/src/tm_sdlp_of.c.s:
+	cd /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1 && $(MAKE) $(MAKESILENT) -f apps/to_lab/CMakeFiles/to_lab.dir/build.make apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.s
+.PHONY : fsw/src/tm_sdlp_of.c.s
+
 fsw/src/to_lab_app.o: fsw/src/to_lab_app.c.o
 .PHONY : fsw/src/to_lab_app.o
 
@@ -304,6 +328,9 @@ help:
 	@echo "... fsw/src/tm_sdlp_my.o"
 	@echo "... fsw/src/tm_sdlp_my.i"
 	@echo "... fsw/src/tm_sdlp_my.s"
+	@echo "... fsw/src/tm_sdlp_of.o"
+	@echo "... fsw/src/tm_sdlp_of.i"
+	@echo "... fsw/src/tm_sdlp_of.s"
 	@echo "... fsw/src/to_lab_app.o"
 	@echo "... fsw/src/to_lab_app.i"
 	@echo "... fsw/src/to_lab_app.s"
