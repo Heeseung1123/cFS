@@ -25,7 +25,8 @@
 #define FILE_DL_START_CC  1
 #define FILE_DL_RESEND_CC 2
 #define FILE_DL_DONE_CC   3 /* ground has the whole file: compare CRC32 and close it */
-/* Upload command codes 4..8 are in file_ul_my.h. */
+// /* Upload command codes 4..8 are in file_ul_my.h. */
+/* Upload and relay have their own MIDs and command codes (file_ul_my.h). */
 
 /* Segment types */
 #define FILE_DL_TYPE_START 0 /* FileSize, Data = file name */
@@ -41,7 +42,7 @@
 #define FILE_DL_NOOP_INF_EID  6
 #define FILE_DL_DONE_INF_EID  7
 #define FILE_DL_DONE_ERR_EID  8
-/* Upload event IDs 9..15 are in file_ul_my.h. */
+/* Upload and relay event IDs 9..15 are in file_ul_my.h. */
 
 /* START command: the file to send, e.g. "/cf/data.bin". */
 typedef struct
@@ -86,7 +87,9 @@ uint16 FILE_DL_GetU16(const uint8 *p);
 uint32 FILE_DL_GetU32(const uint8 *p);
 void   FILE_DL_PutU32(uint8 *p, uint32 v);
 uint32 FILE_DL_Crc32(uint32 crc, const uint8 *p, uint32 len);
-bool   FILE_DL_StartFile(const char *filename, uint8 destTag); /* false if busy or no file */
-bool   FILE_DL_IsBusy(void);                                    /* a file is open for sending */
+// bool   FILE_DL_StartFile(const char *filename, uint8 destTag); /* false if busy or no file */
+/* Sends a file with segments on segMid; false if busy or no file. */
+bool FILE_DL_StartFile(const char *filename, uint8 destTag, uint16 segMid);
+bool FILE_DL_IsBusy(void); /* a file is open for sending */
 
 #endif /* _file_dl_my_h_ */
