@@ -10,7 +10,7 @@ import time
 import zlib
 
 RELAY_CMD_MID = 0x18E0
-FILE_DL_WAKEUP_MID = 0x18C1  # sent here at 10 Hz in place of sch_lab, see receive_file()
+FILE_DL_WAKEUP_MID = 0x18C1  # sent at 10 Hz in place of sch_lab, see receive_file()
 NOOP, FORWARD, STOP = 0, 2, 3
 FILE_DL_SEG_MID = 0x08C0
 TYPE_START, TYPE_DATA, TYPE_END = 0, 1, 2
@@ -45,8 +45,8 @@ def forward_payload(name, station):
 
 def receive_file(rx, tx, cmd_port, timeout):
     """Collect segments until END; returns (start name, file bytes, END crc, segment count) or None.
-    FILE_DL sends one segment per WAKEUP here, because its 100 ms receive timeout does not fire
-    on the native build; on the target the 1 Hz WAKEUP comes from sch_lab."""
+    WAKEUP is sent here so the test does not depend on sch_lab's 1 Hz FILE_DL wakeup, which
+    is the only send trigger of the committed FILE_DL (later versions also send on a timer)."""
     name, data, size, end_crc, count = None, {}, None, None, 0
     end = time.time() + timeout
     while time.time() < end:
