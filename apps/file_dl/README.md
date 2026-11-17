@@ -326,7 +326,84 @@ sequenceDiagram
 
 ## 5. Tick and loops: how timing links uplink and downlink
 
-### 5.1 Three loops and two queues
+### 5.1 What a tick is, and what waiting in ReceiveBuffer means
+
+**A tick is the name for "the fixed work done once every 100 ms".** It is not an OS feature, just one variable and one comparison:
+
+```c
+if (now - lastTick >= 100 ms)   /* 100 ms since the fixed work was last done? */
+{
+    FILE_DL_Wakeup();           /* send one segment */
+    FILE_UL_Tick();             /* a bit of CRC checking, start a relay */
+    lastTick = now;             /* remember that it was just done */
+}
+```
+
+FILE_DL has two kinds of work:
+
+| Kind | When it comes | Example |
+|---|---|---|
+| **Periodic work** | Must go on although nobody asks | Send a file down, 1 KiB per 100 ms |
+| **Commands** | Whenever the ground sends one, at any time | START, DATA, RESEND, DONE |
+
+The tick is when the periodic work runs.
+
+**The problem:** FILE_DL is one task, so it does one thing at a time. When it has nothing to do, it must **sleep**, so that CI, TO and the other apps get the CPU. So the task needs this:
+
+> "Wake me as soon as a command arrives. If none arrives, wake me when the next periodic work is due."
+
+**`CFE_SB_ReceiveBuffer(pipe, wait)` is a sleep with two wake-up conditions:**
+
+```
+CFE_SB_ReceiveBuffer(&pBuf, pipe, 70)
+   ├─ a command enters the pipe within 70 ms → wakes at that moment (CFE_SUCCESS, command returned)
+   └─ nothing arrives for 70 ms              → wakes after 70 ms   (CFE_SB_TIME_OUT, nothing returned)
+```
+
+Passing **the time left until the next tick** as `wait` makes the task wake at whichever comes first: a command, or the next tick. It wakes only when needed and sleeps the rest of the time.
+
+**Example:** commands arrive at 30 ms and 60 ms.
+
+```
+time   what happens                                         next wait
+  0    tick (one segment sent), lastTick = 0                100 - 0  = 100 ms
+       → sleep (up to 100 ms)
+ 30    command arrives → wakes at once, handles it
+       clock: 30 ms since the tick                          100 - 30 = 70 ms
+       → sleep (up to 70 ms)
+ 60    command arrives → wakes at once, handles it
+       clock: 60 ms since the tick                          100 - 60 = 40 ms
+       → sleep (up to 40 ms)
+100    40 ms pass with no command → wakes on the timeout
+       clock: 100 ms → tick, lastTick = 100                 100 ms
+```
+
+- Commands are handled **the moment they arrive** (30, 60).
+- The tick runs **every 100 ms exactly** (0, 100, 200 …), however many commands come.
+- In between, the task sleeps and uses no CPU.
+
+**Why other ways do not work**
+
+| Way | Result |
+|---|---|
+| `ReceiveBuffer(pipe, PEND_FOREVER)` | With no command the task sleeps forever, so **the file is never sent**. |
+| `OS_TaskDelay(100)`, then poll the pipe (as TO_LAB does) | A command waits up to 100 ms, and commands pile up in the pipe and may overflow it. |
+| `ReceiveBuffer(pipe, 100)` always, with the tick only on a timeout (**earlier version**) | Each command restarts the 100 ms. With a command every 20 ms the wait never times out, so **the tick never runs and the downlink stops**. |
+| Never sleep, keep reading the clock (busy loop) | Uses 100% CPU, so lower-priority apps never run. |
+| **`ReceiveBuffer(pipe, time left)` (now)** | Commands at once, the tick every 100 ms, sleep the rest of the time. |
+
+The earlier and current versions differ only in the wait they pass:
+
+```
+earlier: always 100 ms          → each command sets the alarm 100 ms later again
+now:     100 ms - time passed   → the alarm stays fixed at the next tick
+```
+
+**Analogy:** someone must post a letter at fixed times (the tick) and open the door when the bell rings (a command).
+- **Now:** they set the alarm for the next posting time and sleep. When the bell wakes them, they answer the door, leave the alarm as it is, and go back to sleep.
+- **Earlier:** each time the bell woke them, they set the alarm to "100 ms from now". With visitors coming all the time, the alarm never went off and no letter was posted.
+
+### 5.2 Three loops and two queues
 
 Between the ground and FILE_DL there are **three loops**, each a separate task with its own clock. **SB pipes** (queues) connect them.
 
@@ -345,7 +422,7 @@ Ground ─UDP─▶ [CI_LAB loop] ─SB─▶ FILE_DL_PIPE ─▶ [FILE_DL loop]
 - What one loop hands to the next waits in an SB pipe.
 - The OS scheduler decides which task runs when. On native Linux, task priorities are ignored unless the app runs as root.
 
-### 5.2 One pass of the FILE_DL loop
+### 5.3 One pass of the FILE_DL loop
 
 ```c
 while (CFE_ES_RunLoop(&runStatus))
@@ -388,7 +465,7 @@ tick        ●                                  ●               (every 100 ms
 - An earlier version ran the tick only when `ReceiveBuffer` timed out, that is, after 100 ms with *no* command at all. A stream of upload DATA then never let the wait time out, and the downlink stopped.
 - Now a tick can be late only by the time one command takes to handle, which is a few milliseconds.
 
-### 5.3 What runs in a tick
+### 5.4 What runs in a tick
 
 **`FILE_DL_Wakeup` (downlink)** sends `FILE_DL_SEGMENTS_PER_TICK` (1) segment per tick. It picks the segment in this order:
 
@@ -407,7 +484,7 @@ So **the tick sets the downlink rate**: 1024 B per 100 ms, about 10 KiB/s.
 - Chunks are **written when DATA arrives** (command work), not in the tick. The tick only handles the check after reception ends.
 - The CRC check is split across ticks. Reading 4 MiB at once would block the loop: the pipe could overflow and the downlink tick would slip.
 
-### 5.4 Link to the downlink
+### 5.5 Link to the downlink
 
 ```
 FILE_DL tick ──1 segment──▶ TO_LAB_TLM_PIPE ──(TO empties it every 100 ms)──▶ TM frame 1786 B ──UDP──▶ Ground
@@ -435,7 +512,7 @@ TO_LAB wake:       ◆               ◆               ◆
                    (not full yet)   → frame 1 sent, the rest starts frame 2
 ```
 
-### 5.5 Link to the uplink
+### 5.6 Link to the uplink
 
 ```
 Ground ─TC every 20 ms─▶ UDP socket ─(CI: up to 11 frames every 100 ms)─▶ FILE_DL_PIPE ─(at once)─▶ FILE_DL command work
@@ -459,7 +536,7 @@ END (command) → VERIFYING → 16 chunks of CRC per tick → … → last tick:
 
 For 1 MiB (1,093 chunks), that is about 69 ticks, or about 7 s.
 
-### 5.6 Upload and downlink at the same time
+### 5.7 Upload and downlink at the same time
 
 ```
 time (ms)   0     20    40    60    80    100   120   140   160   180   200
@@ -475,7 +552,7 @@ TO wake        ◆                             ◆                             �
 - Downlink segments leave once per tick, by the clock.
 - Measured (`--mode both`, 256 KiB, 5% loss each way): 65 downlink segments came down during an 8.0 s upload. The ideal number is 80.
 
-### 5.7 Summary and settings
+### 5.8 Summary and settings
 
 | Question | Answer |
 |---|---|
