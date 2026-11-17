@@ -7,7 +7,9 @@
 #include "cfe.h"
 #include "file_dl_msgids.h"
 
-#define FILE_DL_PIPE_DEPTH          16
+// #define FILE_DL_PIPE_DEPTH          16
+/* Also the SB message limit of the command MID; uploads add DATA commands to the pipe. */
+#define FILE_DL_PIPE_DEPTH          32
 #define FILE_DL_SEGMENT_SIZE        1024 /* 16 + 16 + 1024 fits one TM data field (1766) */
 /* One segment every 100 ms (about 10 KiB/s) instead of a burst per 1 Hz wakeup, so at
  * most one segment waits in TO_LAB's pipe per 100 ms TO cycle, even next to HK. */
@@ -23,6 +25,7 @@
 #define FILE_DL_START_CC  1
 #define FILE_DL_RESEND_CC 2
 #define FILE_DL_DONE_CC   3 /* ground has the whole file: compare CRC32 and close it */
+/* Upload command codes 4..8 are in file_ul_my.h. */
 
 /* Segment types */
 #define FILE_DL_TYPE_START 0 /* FileSize, Data = file name */
@@ -38,6 +41,7 @@
 #define FILE_DL_NOOP_INF_EID  6
 #define FILE_DL_DONE_INF_EID  7
 #define FILE_DL_DONE_ERR_EID  8
+/* Upload event IDs 9..15 are in file_ul_my.h. */
 
 /* START command: the file to send, e.g. "/cf/data.bin". */
 typedef struct
@@ -66,7 +70,8 @@ typedef struct
 typedef struct
 {
     uint8 Type;
-    uint8 Spare;
+    // uint8 Spare;
+    uint8 DestTag; /* was Spare (0): ground station the file is for, 0 = any */
     uint8 DataLength[2];
     uint8 Offset[4];
     uint8 FileSize[4];
@@ -74,5 +79,14 @@ typedef struct
 } FILE_DL_SegHdr_t;
 
 void FILE_DL_AppMain(void);
+
+/* Shared with file_ul_my.c (upload and relay). */
+void   FILE_DL_PutU16(uint8 *p, uint16 v);
+uint16 FILE_DL_GetU16(const uint8 *p);
+uint32 FILE_DL_GetU32(const uint8 *p);
+void   FILE_DL_PutU32(uint8 *p, uint32 v);
+uint32 FILE_DL_Crc32(uint32 crc, const uint8 *p, uint32 len);
+bool   FILE_DL_StartFile(const char *filename, uint8 destTag); /* false if busy or no file */
+bool   FILE_DL_IsBusy(void);                                    /* a file is open for sending */
 
 #endif /* _file_dl_my_h_ */

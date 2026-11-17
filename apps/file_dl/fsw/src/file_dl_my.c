@@ -3,6 +3,7 @@
  * then the next bytes in order); after the last byte -> END segment with CRC32. */
 #include <string.h>
 #include "file_dl_my.h"
+#include "file_ul_my.h"
 
 typedef struct
 {
@@ -13,6 +14,7 @@ typedef struct
     uint32          FileSize;
     uint32          Offset; /* next byte to send */
     uint32          Crc32;  /* running CRC32 of the bytes sent so far */
+    uint8           DestTag; /* copied into every segment; 0 = any ground station */
     char            Filename[FILE_DL_MAX_NAME];
     uint32          ResendOffset[FILE_DL_MAX_RESENDS];
     uint32          ResendLength[FILE_DL_MAX_RESENDS];
@@ -21,18 +23,26 @@ typedef struct
 
 static FILE_DL_Data_t FILE_DL_Data;
 
-static void FILE_DL_PutU16(uint8 *p, uint16 v)
+// static void FILE_DL_PutU16(uint8 *p, uint16 v)
+void FILE_DL_PutU16(uint8 *p, uint16 v)
 {
     p[0] = (uint8)(v >> 8);
     p[1] = (uint8)v;
 }
 
-static uint32 FILE_DL_GetU32(const uint8 *p)
+uint16 FILE_DL_GetU16(const uint8 *p)
+{
+    return (uint16)(((uint16)p[0] << 8) | p[1]);
+}
+
+// static uint32 FILE_DL_GetU32(const uint8 *p)
+uint32 FILE_DL_GetU32(const uint8 *p)
 {
     return ((uint32)p[0] << 24) | ((uint32)p[1] << 16) | ((uint32)p[2] << 8) | p[3];
 }
 
-static void FILE_DL_PutU32(uint8 *p, uint32 v)
+// static void FILE_DL_PutU32(uint8 *p, uint32 v)
+void FILE_DL_PutU32(uint8 *p, uint32 v)
 {
     p[0] = (uint8)(v >> 24);
     p[1] = (uint8)(v >> 16);
@@ -41,7 +51,8 @@ static void FILE_DL_PutU32(uint8 *p, uint32 v)
 }
 
 /* Standard CRC-32 (zlib, reflected 0xEDB88320), updated per segment. */
-static uint32 FILE_DL_Crc32(uint32 crc, const uint8 *p, uint32 len)
+// static uint32 FILE_DL_Crc32(uint32 crc, const uint8 *p, uint32 len)
+uint32 FILE_DL_Crc32(uint32 crc, const uint8 *p, uint32 len)
 {
     uint32 i;
     int    k;
@@ -74,7 +85,8 @@ static CFE_SB_Buffer_t *FILE_DL_NewSegment(uint8 type, uint32 offset, uint16 dat
 
     pHdr       = (FILE_DL_SegHdr_t *)((uint8 *)pBuf + sizeof(CFE_MSG_TelemetryHeader_t));
     pHdr->Type = type;
-    pHdr->Spare = 0;
+    // pHdr->Spare = 0;
+    pHdr->DestTag = FILE_DL_Data.DestTag;
     FILE_DL_PutU16(pHdr->DataLength, dataLength);
     FILE_DL_PutU32(pHdr->Offset, offset);
     FILE_DL_PutU32(pHdr->FileSize, FILE_DL_Data.FileSize);
@@ -139,8 +151,10 @@ static int32 FILE_DL_SendData(uint32 offset, uint32 length, bool firstPass)
     return (int32)length;
 }
 
-/* Opens the file and sends the START segment (file size and name). */
-static void FILE_DL_Start(const FILE_DL_StartCmd_t *pCmd)
+/* Opens the file and sends the START segment (file size and name).
+ * Called by the START command (destTag 0) and by a finished relay upload. */
+// static void FILE_DL_Start(const FILE_DL_StartCmd_t *pCmd)
+bool FILE_DL_StartFile(const char *filename, uint8 destTag)
 {
     os_fstat_t       st;
     CFE_SB_Buffer_t *pBuf;
@@ -151,11 +165,12 @@ static void FILE_DL_Start(const FILE_DL_StartCmd_t *pCmd)
     {
         CFE_EVS_SendEvent(FILE_DL_CMD_ERR_EID, CFE_EVS_EventType_ERROR, "FILE_DL: %s is still being sent",
                           FILE_DL_Data.Filename);
-        return;
+        return false;
     }
 
     FILE_DL_Close(); /* a finished file is no longer kept for RESEND */
-    CFE_PSP_MemCpy(FILE_DL_Data.Filename, pCmd->Filename, FILE_DL_MAX_NAME);
+    // CFE_PSP_MemCpy(FILE_DL_Data.Filename, pCmd->Filename, FILE_DL_MAX_NAME);
+    strncpy(FILE_DL_Data.Filename, filename, FILE_DL_MAX_NAME - 1);
     FILE_DL_Data.Filename[FILE_DL_MAX_NAME - 1] = '\0';
 
     if ((OS_stat(FILE_DL_Data.Filename, &st) != OS_SUCCESS) ||
@@ -163,7 +178,7 @@ static void FILE_DL_Start(const FILE_DL_StartCmd_t *pCmd)
     {
         CFE_EVS_SendEvent(FILE_DL_FILE_ERR_EID, CFE_EVS_EventType_ERROR, "FILE_DL: cannot open %s",
                           FILE_DL_Data.Filename);
-        return;
+        return false;
     }
 
     FILE_DL_Data.FileSize = (uint32)OS_FILESTAT_SIZE(st);
@@ -171,6 +186,7 @@ static void FILE_DL_Start(const FILE_DL_StartCmd_t *pCmd)
     FILE_DL_Data.Crc32    = 0;
     FILE_DL_Data.Active   = true;
     FILE_DL_Data.Open     = true;
+    FILE_DL_Data.DestTag  = destTag;
 
     nameLength = (uint16)strlen(FILE_DL_Data.Filename);
     pBuf       = FILE_DL_NewSegment(FILE_DL_TYPE_START, 0, nameLength, &pData);
@@ -182,6 +198,23 @@ static void FILE_DL_Start(const FILE_DL_StartCmd_t *pCmd)
 
     CFE_EVS_SendEvent(FILE_DL_START_INF_EID, CFE_EVS_EventType_INFORMATION, "FILE_DL: sending %s, %lu bytes",
                       FILE_DL_Data.Filename, (unsigned long)FILE_DL_Data.FileSize);
+    return true;
+}
+
+/* START command from the ground: segments are for any ground station. */
+static void FILE_DL_Start(const FILE_DL_StartCmd_t *pCmd)
+{
+    char filename[FILE_DL_MAX_NAME];
+
+    CFE_PSP_MemCpy(filename, pCmd->Filename, FILE_DL_MAX_NAME);
+    filename[FILE_DL_MAX_NAME - 1] = '\0';
+    FILE_DL_StartFile(filename, 0);
+}
+
+/* A file stays open from START until DONE (or the next START); a relay waits for it. */
+bool FILE_DL_IsBusy(void)
+{
+    return FILE_DL_Data.Open;
 }
 
 /* Queues a byte range of the open file; FILE_DL_Wakeup sends it before new data. */
@@ -322,6 +355,10 @@ static void FILE_DL_ProcessCommand(const CFE_SB_Buffer_t *pBuf)
     {
         FILE_DL_Done((const FILE_DL_DoneCmd_t *)pBuf);
     }
+    else if ((cc >= FILE_UL_START_CC) && (cc <= FILE_UL_CANCEL_CC))
+    {
+        FILE_UL_ProcessCommand(pBuf, cc, size); /* upload commands share the CMD MID */
+    }
     else
     {
         CFE_EVS_SendEvent(FILE_DL_CMD_ERR_EID, CFE_EVS_EventType_ERROR, "FILE_DL: bad command cc %u, size %lu",
@@ -335,6 +372,9 @@ void FILE_DL_AppMain(void)
     CFE_SB_Buffer_t *pBuf;
     CFE_SB_MsgId_t   msgId;
     int32            status;
+    OS_time_t        now;
+    OS_time_t        lastTick;
+    int64            waitMsec;
 
     CFE_EVS_Register(NULL, 0, CFE_EVS_EventFilter_BINARY);
     CFE_SB_CreatePipe(&FILE_DL_Data.Pipe, FILE_DL_PIPE_DEPTH, "FILE_DL_PIPE");
@@ -345,19 +385,32 @@ void FILE_DL_AppMain(void)
     CFE_SB_Subscribe(CFE_SB_ValueToMsgId(FILE_DL_WAKEUP_MID), FILE_DL_Data.Pipe);
     FILE_DL_Data.Active = false;
     FILE_DL_Data.Open   = false;
+    FILE_UL_Init();
+    CFE_PSP_GetTime(&lastTick);
 
     CFE_EVS_SendEvent(FILE_DL_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "FILE_DL Initialized");
 
     while (CFE_ES_RunLoop(&runStatus))
     {
-        /* The receive timeout is the send clock; a command only delays the next tick. */
-        // if (CFE_SB_ReceiveBuffer(&pBuf, FILE_DL_Data.Pipe, CFE_SB_PEND_FOREVER) != CFE_SUCCESS)
-        status = CFE_SB_ReceiveBuffer(&pBuf, FILE_DL_Data.Pipe, FILE_DL_SEND_PERIOD_MSEC);
-        if (status == CFE_SB_TIME_OUT)
+        /* The tick runs on the clock, not on a receive timeout: upload DATA every 20 ms
+         * would otherwise never let the wait time out and the downlink would stop. */
+        CFE_PSP_GetTime(&now);
+        waitMsec = FILE_DL_SEND_PERIOD_MSEC - OS_TimeGetTotalMilliseconds(OS_TimeSubtract(now, lastTick));
+        if (waitMsec <= 0)
         {
-            FILE_DL_Wakeup();
-            continue;
+            FILE_DL_Wakeup(); /* downlink: one segment */
+            FILE_UL_Tick();   /* upload: CRC check, then relay */
+            lastTick = now;
+            waitMsec = FILE_DL_SEND_PERIOD_MSEC;
         }
+
+        // status = CFE_SB_ReceiveBuffer(&pBuf, FILE_DL_Data.Pipe, FILE_DL_SEND_PERIOD_MSEC);
+        // if (status == CFE_SB_TIME_OUT)
+        // {
+        //     FILE_DL_Wakeup();
+        //     continue;
+        // }
+        status = CFE_SB_ReceiveBuffer(&pBuf, FILE_DL_Data.Pipe, (int32)waitMsec);
         if (status != CFE_SUCCESS)
         {
             continue;
