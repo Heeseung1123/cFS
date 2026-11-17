@@ -229,6 +229,74 @@ Ground: deframe (First Header Pointer) → packets by MID
 
 Nothing is sent down for an upload. To get the file back, send a downlink START.
 
+**Sequence diagram of the upload**
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant G as Ground
+    participant CI as CI_LAB
+    participant UL as FILE_DL upload engine<br/>(file_ul_my.c)
+    participant FS as /cf/inbox
+    participant TO as TO_LAB
+
+    Note over G,TO: Start (MID 0x18C2)
+    G->>CI: TC 0x18C2 CC1 START(/cf/inbox/x.bin, size, crc)
+    CI->>UL: SB 0x18C2
+    UL->>UL: FILE_UL_Start: check name (under /cf/inbox/) and size (1 B to 4 MiB)
+    UL->>FS: OS_OpenCreate x.bin.part (CREATE, TRUNCATE)
+    UL->>UL: clear bitmap, ChunkCount = ceil(size / 960), RECEIVING
+
+    Note over G,TO: Data (one chunk per command)
+    loop every 20 ms, offset = 0, 960, 1920, ...
+        G->>CI: TC 0x18C2 CC2 DATA(offset, 960 B)
+        CI->>UL: SB 0x18C2 (about 5 per 100 ms CI poll)
+        alt bit already set
+            UL->>UL: ignore the repeat
+        else new chunk
+            UL->>FS: OS_lseek(offset) + OS_write
+            UL->>UL: set bit offset/960, ReceivedChunks++
+        end
+    end
+
+    Note over G,TO: End and gap rounds
+    G->>CI: TC 0x18C2 CC3 END
+    CI->>UL: SB 0x18C2
+    loop while chunks are missing
+        UL->>TO: status 0x08C1 RECEIVING + Gaps[] (up to 32 ranges)
+        TO->>G: TM frame
+        G->>CI: TC 0x18C2 DATA for each gap
+        CI->>UL: SB 0x18C2
+        UL->>FS: write the missing chunks
+        G->>CI: TC 0x18C2 CC3 END
+        CI->>UL: SB 0x18C2
+    end
+    UL->>UL: ReceivedChunks == ChunkCount, VERIFYING
+    UL->>TO: status 0x08C1 VERIFYING
+    TO->>G: TM frame
+
+    Note over G,TO: Check (paced by the 100 ms tick)
+    loop every 100 ms tick (FILE_UL_Tick, FILE_UL_Verify)
+        UL->>FS: read back 16 chunks
+        UL->>UL: update CRC-32
+    end
+    alt CRC matches START crc
+        UL->>FS: OS_remove(x.bin), OS_rename(x.bin.part to x.bin)
+        UL->>TO: status 0x08C1 COMPLETE
+    else CRC differs or file error
+        UL->>TO: status 0x08C1 FAILED (.part kept)
+    end
+    TO->>G: TM frame
+
+    opt status lost
+        G->>CI: TC 0x18C2 CC4 STATUS
+        CI->>UL: SB 0x18C2
+        UL->>TO: status 0x08C1 (current state)
+        TO->>G: TM frame
+    end
+    Note over G,UL: Nothing is sent down for an upload. CC5 CANCEL drops it at any time.
+```
+
 ### 4.6 Relay (`0x18C3`): uplink, then downlink
 
 The relay START puts the relay instance in RECEIVING, so every following `0x18C3` DATA is treated as uplink. When the file is complete and checked, the satellite sends it down without another command.
