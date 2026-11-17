@@ -46,6 +46,10 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/cpu1/cf" TYPE FILE RENAME "cfe_es_startup.scr" FILES "/home/heeseung/rtems-cfs-demo/cFS/bbb_defs/cpu1_cfe_es_startup.scr")
 endif()
 
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/cpu1/cf" TYPE FILE RENAME "msn_sensor.csv" FILES "/home/heeseung/rtems-cfs-demo/cFS/bbb_defs/cpu1_msn_sensor.csv")
+endif()
+
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/osal/cmake_install.cmake")
@@ -69,6 +73,8 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/sample_lib/cmake_install.cmake")
   include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/blinky/cmake_install.cmake")
   include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/file_dl/cmake_install.cmake")
+  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/msn_app/cmake_install.cmake")
+  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/relay_app/cmake_install.cmake")
   include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/cfe_assert/cmake_install.cmake")
   include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/cpu1/cmake_install.cmake")
 

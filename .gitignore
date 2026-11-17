@@ -1,6 +1,6 @@
 build
-build-native
-/sample_defs
+./build-native/
+./sample_defs
 .DS_Store
 *.o
 *.obj

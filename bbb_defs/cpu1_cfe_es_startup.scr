@@ -4,7 +4,7 @@ CFE_APP, ci_lab,      CI_Lab_AppMain,  CI_LAB_APP,   60,   16384, 0x0, 0;
 CFE_APP, to_lab,      TO_Lab_AppMain,  TO_LAB_APP,   70,   16384, 0x0, 0;
 CFE_APP, sch_lab,     SCH_Lab_AppMain, SCH_LAB_APP,  80,   16384, 0x0, 0;
 CFE_APP, blinky,      BLINKY_Main,     BLINKY_APP,   90,   16384, 0x0, 0;
-CFE_APP, file_dl,     FILE_DL_AppMain, FILE_DL,      50,   16384, 0x0, 0;
+CFE_APP, file_dl,     FILE_DL_AppMain, FILE_DL,      85,   16384, 0x0, 0;
 CFE_APP, msn_app,     MSN_APP_Main,    MSN_APP,      95,   16384, 0x0, 0;
 CFE_APP, relay_app,   RELAY_APP_Main,  RELAY_APP,    96,   16384, 0x0, 0;
 !

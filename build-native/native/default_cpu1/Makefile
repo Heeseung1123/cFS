@@ -757,6 +757,32 @@ file_dl/fast:
 .PHONY : file_dl/fast
 
 #=============================================================================
+# Target rules for targets named msn_app
+
+# Build rule for target.
+msn_app: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 msn_app
+.PHONY : msn_app
+
+# fast build rule for target.
+msn_app/fast:
+	$(MAKE) $(MAKESILENT) -f apps/msn_app/CMakeFiles/msn_app.dir/build.make apps/msn_app/CMakeFiles/msn_app.dir/build
+.PHONY : msn_app/fast
+
+#=============================================================================
+# Target rules for targets named relay_app
+
+# Build rule for target.
+relay_app: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 relay_app
+.PHONY : relay_app
+
+# fast build rule for target.
+relay_app/fast:
+	$(MAKE) $(MAKESILENT) -f apps/relay_app/CMakeFiles/relay_app.dir/build.make apps/relay_app/CMakeFiles/relay_app.dir/build
+.PHONY : relay_app/fast
+
+#=============================================================================
 # Target rules for targets named cfe_assert
 
 # Build rule for target.
@@ -817,6 +843,7 @@ help:
 	@echo "... fs"
 	@echo "... msg"
 	@echo "... msg_headercheck"
+	@echo "... msn_app"
 	@echo "... osal"
 	@echo "... osal_bsp"
 	@echo "... osal_generic-linux_impl"
@@ -826,6 +853,7 @@ help:
 	@echo "... psp-pc-linux-impl"
 	@echo "... psp-pc-linux-shared"
 	@echo "... ram_notimpl"
+	@echo "... relay_app"
 	@echo "... resourceid"
 	@echo "... sample_app"
 	@echo "... sample_lib"

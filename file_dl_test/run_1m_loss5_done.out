@@ -1,2 +1,42 @@
 === START /cf/file_dl_test.bin (1048576 bytes), TM frame loss 5% ===
   START: /cf/file_dl_test.bin, 1048576 bytes
+  END  : 1048576 bytes, crc32 0x93b724d2, after 778 DATA segments
+  RESEND round 1: 63 ranges, 251904 bytes
+  RESEND round 2: 50 ranges, 195584 bytes
+  RESEND round 3: 43 ranges, 154624 bytes
+  RESEND round 4: 30 ranges, 115712 bytes
+  RESEND round 5: 21 ranges, 69632 bytes
+  RESEND round 6: 9 ranges, 25600 bytes
+  RESEND round 7: 2 ranges, 5120 bytes
+  DONE : crc32 0x93b724d2
+
+=== Result ===
+  PASS: START and END received (196.5 s)
+  PASS: file rebuilt from byte offsets equals the sent file (1048576 bytes)
+  PASS: CRC32 matches the END segment
+  throughput 5.2 KiB/s
+  PASS: FILE_DL got DONE, CRC32 matched and the file was closed
+  PASS: no RESEND/DONE command dropped by the SB message limit
+  TM frames 811, dropped on purpose 48, DATA segments 1024 (246 after END), RESEND rounds 7
+  1980-012-14:03:20.50403 CFE_ES_ParseFileEntry: Loading file: /cf/file_dl.so, APP: FILE_DL
+  EVS Port1 66/1/FILE_DL 1: FILE_DL Initialized
+  EVS Port1 66/1/FILE_DL 3: FILE_DL: sending /cf/file_dl_test.bin, 1048576 bytes
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/CFE_SB 25: Pipe Overflow,MsgId 0x8c0,pipe TO_LAB_TLM_PIPE,sender FILE_DL
+  EVS Port1 66/1/FILE_DL 5: FILE_DL: /cf/file_dl_test.bin sent, crc32 0x93b724d2
+  EVS Port1 66/1/FILE_DL 7: FILE_DL: /cf/file_dl_test.bin confirmed by ground, crc32 0x93b724d2
+RESULT: PASS

@@ -5,6 +5,7 @@ apps/to_lab/CMakeFiles/cpu1_TO_LAB_Subs_to_lab_sub.dir/fsw/tables/to_lab_sub.c.o
   /home/heeseung/rtems-cfs-demo/cFS/apps/blinky/fsw/platform_inc/blinky_msgids.h \
   /home/heeseung/rtems-cfs-demo/cFS/apps/ci_lab/fsw/platform_inc/ci_lab_msgids.h \
   /home/heeseung/rtems-cfs-demo/cFS/apps/file_dl/fsw/platform_inc/file_dl_msgids.h \
+  /home/heeseung/rtems-cfs-demo/cFS/apps/msn_app/fsw/platform_inc/msn_app_msgids.h \
   /home/heeseung/rtems-cfs-demo/cFS/apps/sample_app/fsw/platform_inc/sample_app_msgids.h \
   /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/platform_inc/to_lab_msgids.h \
   /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/platform_inc/to_lab_sub_table.h \
@@ -154,7 +155,7 @@ apps/to_lab/CMakeFiles/cpu1_TO_LAB_Subs_to_lab_sub.dir/fsw/tables/to_lab_sub.c.o
 
 /usr/include/x86_64-linux-gnu/bits/wchar.h:
 
-/home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-timer.h:
+/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
 
 /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-select.h:
 
@@ -189,12 +190,6 @@ apps/to_lab/CMakeFiles/cpu1_TO_LAB_Subs_to_lab_sub.dir/fsw/tables/to_lab_sub.c.o
 /usr/include/x86_64-linux-gnu/bits/floatn.h:
 
 /usr/include/x86_64-linux-gnu/bits/time64.h:
-
-/home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-heap.h:
-
-/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_fs_api_typedefs.h:
-
-/home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_msg_hdr.h:
 
 /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_time_extern_typedefs.h:
 
@@ -262,6 +257,10 @@ apps/to_lab/CMakeFiles/cpu1_TO_LAB_Subs_to_lab_sub.dir/fsw/tables/to_lab_sub.c.o
 
 /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/platform_inc/to_lab_msgids.h:
 
+/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
+
+/home/heeseung/rtems-cfs-demo/cFS/apps/sample_app/fsw/platform_inc/sample_app_msgids.h:
+
 /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-file.h:
 
 /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-constants.h:
@@ -272,9 +271,7 @@ apps/to_lab/CMakeFiles/cpu1_TO_LAB_Subs_to_lab_sub.dir/fsw/tables/to_lab_sub.c.o
 
 inc/cfe_msgids.h:
 
-/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
-
-/home/heeseung/rtems-cfs-demo/cFS/apps/sample_app/fsw/platform_inc/sample_app_msgids.h:
+/home/heeseung/rtems-cfs-demo/cFS/apps/msn_app/fsw/platform_inc/msn_app_msgids.h:
 
 /usr/include/x86_64-linux-gnu/sys/cdefs.h:
 
@@ -295,6 +292,14 @@ inc/osconfig.h:
 /usr/include/asm-generic/errno-base.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
+
+/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_fs_api_typedefs.h:
+
+/home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_msg_hdr.h:
+
+/home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-heap.h:
+
+/home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-timer.h:
 
 /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-module.h:
 
@@ -411,5 +416,3 @@ inc/osconfig.h:
 inc/cfe_platform_cfg.h:
 
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
-
-/usr/include/x86_64-linux-gnu/bits/waitstatus.h:

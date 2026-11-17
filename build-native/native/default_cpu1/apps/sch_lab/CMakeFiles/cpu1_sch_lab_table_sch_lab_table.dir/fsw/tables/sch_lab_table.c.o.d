@@ -103,4 +103,6 @@ apps/sch_lab/CMakeFiles/cpu1_sch_lab_table_sch_lab_table.dir/fsw/tables/sch_lab_
  /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab/fsw/platform_inc/to_lab_msgids.h \
  /home/heeseung/rtems-cfs-demo/cFS/apps/sample_app/fsw/platform_inc/sample_app_msgids.h \
  /home/heeseung/rtems-cfs-demo/cFS/apps/blinky/fsw/platform_inc/blinky_msgids.h \
- /home/heeseung/rtems-cfs-demo/cFS/apps/file_dl/fsw/platform_inc/file_dl_msgids.h
+ /home/heeseung/rtems-cfs-demo/cFS/apps/file_dl/fsw/platform_inc/file_dl_msgids.h \
+ /home/heeseung/rtems-cfs-demo/cFS/apps/msn_app/fsw/platform_inc/msn_app_msgids.h \
+ /home/heeseung/rtems-cfs-demo/cFS/apps/relay_app/fsw/platform_inc/relay_app_msgids.h

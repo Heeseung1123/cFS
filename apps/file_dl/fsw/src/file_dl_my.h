@@ -9,10 +9,13 @@
 
 #define FILE_DL_PIPE_DEPTH          16
 #define FILE_DL_SEGMENT_SIZE        1024 /* 16 + 16 + 1024 fits one TM data field (1766) */
-/* Segments per 1 Hz wakeup. On native Linux every SB pipe holds only 10 messages
- * (/proc/sys/fs/mqueue/msg_max), so some segments can be lost; RESEND covers them. */
-#define FILE_DL_SEGMENTS_PER_WAKEUP 8
-#define FILE_DL_MAX_RESENDS         16 /* pending RESEND ranges */
+/* One segment every 100 ms (about 10 KiB/s) instead of a burst per 1 Hz wakeup, so at
+ * most one segment waits in TO_LAB's pipe per 100 ms TO cycle, even next to HK. */
+// #define FILE_DL_SEGMENTS_PER_WAKEUP 8
+#define FILE_DL_SEND_PERIOD_MSEC  100
+#define FILE_DL_SEGMENTS_PER_TICK 1
+// #define FILE_DL_MAX_RESENDS         16 /* pending RESEND ranges */
+#define FILE_DL_MAX_RESENDS 64 /* pending RESEND ranges, 8 bytes each */
 #define FILE_DL_MAX_NAME            64
 
 /* Command codes */

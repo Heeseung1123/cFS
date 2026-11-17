@@ -1,5 +1,5 @@
 /* Byte-offset file downlink prototype.
- * START -> START segment; each 1 Hz wakeup -> DATA segments (RESEND ranges first,
+ * START -> START segment; every 100 ms -> one DATA segment (RESEND ranges first,
  * then the next bytes in order); after the last byte -> END segment with CRC32. */
 #include <string.h>
 #include "file_dl_my.h"
@@ -206,8 +206,8 @@ static void FILE_DL_Resend(const FILE_DL_ResendCmd_t *pCmd)
     FILE_DL_Data.ResendCount++;
 }
 
-/* Each wakeup sends up to FILE_DL_SEGMENTS_PER_WAKEUP segments: queued RESEND ranges
- * first, then the next bytes of the first pass, then END once the file is done. */
+/* Each tick (every FILE_DL_SEND_PERIOD_MSEC) sends up to FILE_DL_SEGMENTS_PER_TICK segments:
+ * queued RESEND ranges first, then the next bytes of the first pass, then END. */
 static void FILE_DL_Wakeup(void)
 {
     CFE_SB_Buffer_t *pBuf;
@@ -216,7 +216,7 @@ static void FILE_DL_Wakeup(void)
     uint32           i;
     int              budget;
 
-    for (budget = FILE_DL_SEGMENTS_PER_WAKEUP; FILE_DL_Data.Open && (budget > 0); budget--)
+    for (budget = FILE_DL_SEGMENTS_PER_TICK; FILE_DL_Data.Open && (budget > 0); budget--)
     {
         if (FILE_DL_Data.ResendCount > 0)
         {
@@ -334,6 +334,7 @@ void FILE_DL_AppMain(void)
     uint32           runStatus = CFE_ES_RunStatus_APP_RUN;
     CFE_SB_Buffer_t *pBuf;
     CFE_SB_MsgId_t   msgId;
+    int32            status;
 
     CFE_EVS_Register(NULL, 0, CFE_EVS_EventFilter_BINARY);
     CFE_SB_CreatePipe(&FILE_DL_Data.Pipe, FILE_DL_PIPE_DEPTH, "FILE_DL_PIPE");
@@ -349,7 +350,15 @@ void FILE_DL_AppMain(void)
 
     while (CFE_ES_RunLoop(&runStatus))
     {
-        if (CFE_SB_ReceiveBuffer(&pBuf, FILE_DL_Data.Pipe, CFE_SB_PEND_FOREVER) != CFE_SUCCESS)
+        /* The receive timeout is the send clock; a command only delays the next tick. */
+        // if (CFE_SB_ReceiveBuffer(&pBuf, FILE_DL_Data.Pipe, CFE_SB_PEND_FOREVER) != CFE_SUCCESS)
+        status = CFE_SB_ReceiveBuffer(&pBuf, FILE_DL_Data.Pipe, FILE_DL_SEND_PERIOD_MSEC);
+        if (status == CFE_SB_TIME_OUT)
+        {
+            FILE_DL_Wakeup();
+            continue;
+        }
+        if (status != CFE_SUCCESS)
         {
             continue;
         }
@@ -357,7 +366,7 @@ void FILE_DL_AppMain(void)
         CFE_MSG_GetMsgId(&pBuf->Msg, &msgId);
         if (CFE_SB_MsgIdToValue(msgId) == FILE_DL_WAKEUP_MID)
         {
-            FILE_DL_Wakeup();
+            FILE_DL_Wakeup(); /* still accepted if sch_lab sends it again */
         }
         else
         {

@@ -93,6 +93,24 @@ CFE_FS_SOURCE_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/fs
 CFE_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
+CFE_MSN_APP_BINARY_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/msn_app
+
+//Value Computed by CMake
+CFE_MSN_APP_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CFE_MSN_APP_SOURCE_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/apps/msn_app
+
+//Value Computed by CMake
+CFE_RELAY_APP_BINARY_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/relay_app
+
+//Value Computed by CMake
+CFE_RELAY_APP_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CFE_RELAY_APP_SOURCE_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/apps/relay_app
+
+//Value Computed by CMake
 CFE_RESOURCEID_BINARY_DIR:STATIC=/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/resourceid
 
 //Value Computed by CMake
@@ -625,7 +643,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=34
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=36
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
