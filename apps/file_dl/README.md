@@ -245,6 +245,75 @@ The relay START puts the relay instance in RECEIVING, so every following `0x18C3
 
 If a downlink is still open (no DONE yet), the relay waits in the queue and starts on the first tick after it closes.
 
+**Sequence diagram of the relay**
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant A as Ground A (uplink)
+    participant CI as CI_LAB
+    participant RL as FILE_DL relay engine<br/>(file_ul_my.c)
+    participant DL as FILE_DL downlink engine<br/>(file_dl_my.c)
+    participant TO as TO_LAB
+    participant B as Ground B (DestTag 2)
+
+    Note over A,B: Phase 1 - relay uplink (MID 0x18C3)
+    A->>CI: TC 0x18C3 CC1 START(/cf/relay/x.bin, size, crc, DestTag=2)
+    CI->>RL: SB 0x18C3
+    RL->>RL: FILE_UL_Start: check name/size, create x.bin.part, clear bitmap, RECEIVING
+
+    loop every 20 ms, one chunk
+        A->>CI: TC 0x18C3 CC2 DATA(offset, 960 B)
+        CI->>RL: SB 0x18C3 (about 5 per 100 ms CI poll)
+        RL->>RL: FILE_UL_WriteChunk: lseek+write, set bit
+    end
+
+    A->>CI: TC 0x18C3 CC3 END
+    CI->>RL: SB 0x18C3
+    alt chunks missing
+        RL->>TO: status 0x08C2 RECEIVING + Gaps[]
+        TO->>A: TM frame
+        A->>CI: DATA for the gaps, then END again
+        CI->>RL: SB 0x18C3
+    end
+    RL->>TO: status 0x08C2 VERIFYING
+    TO->>A: TM frame
+
+    loop every 100 ms tick (FILE_UL_Tick)
+        RL->>RL: FILE_UL_Verify: read back 16 chunks, update CRC
+    end
+    RL->>RL: FILE_UL_Finish: CRC ok, rename .part to x.bin, queue (x.bin, tag 2)
+    RL->>TO: status 0x08C2 COMPLETE
+    TO->>A: TM frame
+
+    Note over A,B: Phase 2 - relay downlink (segments on 0x08C3)
+    RL->>DL: FILE_UL_RelayNext (same tick, if FILE_DL_IsBusy() is false)<br/>FILE_DL_StartFile(x.bin, tag 2, 0x08C3)
+    DL->>TO: segment 0x08C3 START (name, size, tag 2)
+    TO->>B: TM frame
+
+    loop every 100 ms tick (FILE_DL_Wakeup)
+        DL->>TO: segment 0x08C3 DATA (offset, 1024 B, tag 2)
+        TO->>B: TM frame (B keeps 0x08C3 with tag 2)
+    end
+    DL->>TO: segment 0x08C3 END (CRC of the whole file)
+    TO->>B: TM frame
+    Note over DL: file stays open for RESEND
+
+    Note over A,B: Phase 3 - repair and close (downlink MID 0x18C0)
+    B-->>A: missing ranges (ground network)
+    opt ranges missing at B
+        A->>CI: TC 0x18C0 CC2 RESEND(offset, length)
+        CI->>DL: SB 0x18C0
+        DL->>TO: segment 0x08C3 DATA (sent before anything else)
+        TO->>B: TM frame
+    end
+    B-->>A: file complete, CRC
+    A->>CI: TC 0x18C0 CC3 DONE(crc)
+    CI->>DL: SB 0x18C0
+    DL->>DL: FILE_DL_Done: compare CRC, close file (Open=false)
+    Note over RL,DL: next tick: FILE_UL_RelayNext may start the next queued relay
+```
+
 ### 4.7 What can run at the same time
 
 | Combination | Possible? |
