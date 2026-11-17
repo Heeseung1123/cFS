@@ -106,7 +106,7 @@ SET(cpu1_PROCESSORID 1)
 # SET(cpu1_APPLIST ci_lab to_lab sch_lab sample_app sample_lib blinky)
 # SET(cpu1_APPLIST ci_lab to_lab sch_lab sample_app sample_lib blinky cf)
 SET(cpu1_APPLIST ci_lab to_lab sch_lab sample_app sample_lib blinky file_dl msn_app relay_app)
-SET(cpu1_FILELIST cfe_es_startup.scr msn_sensor.csv)
+SET(cpu1_FILELIST cfe_es_startup.scr msn_temp.txt)
 
 # CPU2 example.  This is not built by default anymore but
 # serves as an example of how one would configure multiple cpus.

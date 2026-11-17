@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 """Send MSN_APP commands (through tc_frame_proxy.py) and check the MSN telemetry in the TO_LAB TM frames.
-Scenario A: sensor read, device switch, ARM/FIRE thruster. Scenario C: analysis and log download.
+--phase 1: parameters, temperature, diagnostics, app status, disable SAMPLE_APP in the startup script.
+--phase 2 (after a cFS restart): SAMPLE_APP was not started, parameters were kept, enable it again.
 """
 import argparse
+import difflib
+import os
 import socket
 import struct
 import sys
 import time
 
 MSN_CMD_MID = 0x18D0
-HK_MID, SENSOR_MID, ANALYSIS_MID, LOG_MID = 0x08D0, 0x08D1, 0x08D2, 0x08D3
-NOOP, READ_SENSOR, SET_DEVICE, ARM, FIRE, GET_ANALYSIS, GET_LOG, RESET_ANALYSIS = 0, 2, 3, 4, 5, 6, 7, 8
+HK_MID, TEMP_MID, DIAG_MID, APP_STATUS_MID = 0x08D0, 0x08D1, 0x08D2, 0x08D3
+NOOP, RESET, SET_PARAM, SET_STARTUP, RUN_DIAG, GET_APP_STATUS, READ_TEMP = range(7)
+TEMP_HIGH, TEMP_LOW, TEMP_PERIOD = 0, 1, 2
+NORMAL, HIGH, LOW, NO_DATA = 0, 1, 2, 3
+NOT_FOUND, ENABLED, DISABLED = 0, 1, 2
 
 FRAME_SIZE = 1786
 DATA_OFFSET = 20  # TM Primary Header 6 + reserved SDLS Security Header 14
@@ -20,10 +26,12 @@ TLM_HDR_LEN = 16  # CCSDS 6 + time 6 + spare 4
 
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--phase", type=int, choices=(1, 2), required=True)
     parser.add_argument("--cmd-port", type=int, default=1236, help="tc_frame_proxy.py UDP port")
     parser.add_argument("--tlm-port", type=int, default=1235, help="TO_LAB telemetry UDP port")
-    parser.add_argument("--sensor-file", required=True, help="msn_sensor.csv used by the target")
-    parser.add_argument("--state-file", required=True, help="msn_state.txt written by the target")
+    parser.add_argument("--cf-dir", required=True, help="the target's /cf directory on this host")
+    parser.add_argument("--startup-backup", required=True, help="copy of the original startup script")
+    parser.add_argument("--log", required=True, help="core-cpu1 log, to check events")
     return parser.parse_args()
 
 
@@ -38,8 +46,7 @@ class Ground:
 
     def send(self, cc, payload=b""):
         """cFS v1 command: CCSDS header, function code, checksum (XOR of all bytes is 0xFF)."""
-        length = 2 + len(payload) - 1
-        pkt = bytearray(struct.pack(">HHHBB", MSN_CMD_MID, 0xC000 | self.seq, length, cc, 0) + payload)
+        pkt = bytearray(struct.pack(">HHHBB", MSN_CMD_MID, 0xC000 | self.seq, 1 + len(payload), cc, 0) + payload)
         self.seq = (self.seq + 1) & 0x3FFF
         checksum = 0xFF
         for b in pkt:
@@ -50,7 +57,7 @@ class Ground:
 
     def receive(self, timeout):
         """Read one TM frame and store its Space Packets by MID."""
-        self.rx.settimeout(timeout)
+        self.rx.settimeout(max(timeout, 0.01))
         try:
             frame, _ = self.rx.recvfrom(4096)
         except socket.timeout:
@@ -71,8 +78,19 @@ class Ground:
             self.receive(end - time.time())
         return self.packets[mid].pop(0) if self.packets.get(mid) else None
 
-    def drop(self, mid):
+    def request(self, cc, payload, mid):
+        """Send a command and return the telemetry it produces."""
         self.packets.pop(mid, None)
+        self.send(cc, payload)
+        return self.wait(mid)
+
+    def hk(self):
+        self.packets.pop(HK_MID, None)
+        p = self.wait(HK_MID, 10)
+        if p is None:
+            return None
+        v = struct.unpack("<BBBxf3i", p[:20])
+        return {"cmd": v[0], "err": v[1], "status": v[2], "temp": round(v[3], 2), "param": list(v[4:7])}
 
 
 class Result:
@@ -88,115 +106,139 @@ class Result:
             self.failed += 1
 
 
-def near(a, b):
-    return abs(a - b) < 0.01
+def param(pid, value):
+    return struct.pack("<B3xi", pid, value)
 
 
-def decode_hk(p):
-    v = struct.unpack("<BBBB4Bff", p[:16])
-    return {"cmd": v[0], "err": v[1], "armed": v[2], "dev": list(v[4:8]), "alt": v[8], "fuel": v[9]}
+def name20(name):
+    return name.encode().ljust(20, b"\0")
 
 
-def decode_analysis(p):
-    v = struct.unpack("<I3f3f3fIfII", p[:56])
-    return {"n": v[0], "min": v[1:4], "max": v[4:7], "avg": v[7:10], "burns": v[10], "dv": v[11],
-            "switches": v[12], "uptime": v[13]}
+def temp(p):
+    if p is None:
+        return None
+    t, status, n = struct.unpack("<fB3xI", p[:12])
+    return {"temp": round(t, 2), "status": status, "n": n}
 
 
-def download_log(g):
-    """Ask for the log chunk by chunk until the target returns Length 0."""
-    text, offset = b"", 0
-    while True:
-        g.send(GET_LOG, struct.pack("<I", offset))
-        p = g.wait(LOG_MID)
-        if p is None:
-            return None
-        size, _, length = struct.unpack("<IIH", p[:10])
-        if length == 0:
-            return text.decode(errors="replace")
-        text += p[12:12 + length]
-        offset += length
+def diag(p):
+    return None if p is None else list(struct.unpack("<5B", p[:5]))
 
+
+def app_status(p):
+    if p is None:
+        return None
+    name, running, startup, prio, stack, runs, children = struct.unpack("<20sBB2x4I", p[:40])
+    return {"name": name.rstrip(b"\0").decode(), "running": running, "startup": startup, "prio": prio}
+
+
+def until(cond, timeout=3.0):
+    """Commands reach the app a little later through the proxy and CI_LAB: poll the result."""
+    end = time.time() + timeout
+    while not cond() and time.time() < end:
+        time.sleep(0.1)
+    return cond()
+
+
+def log_has(path, text):
+    return text in open(path, errors="replace").read()
+
+
+def startup_section(path, name):
+    """'enabled' if the app line is above the first '!' line, 'disabled' if below, else None."""
+    active = True
+    for line in open(path):
+        if line.startswith("!"):
+            active = False
+        elif len(line.split(",")) > 3 and line.split(",")[3].strip() == name:
+            return "enabled" if active else "disabled"
+    return None
+
+
+def phase1(g, r, args):
+    temp_file = os.path.join(args.cf_dir, "msn_temp.txt")
+    script = os.path.join(args.cf_dir, "cfe_es_startup.scr")
+
+    print("=== Parameters ===")
+    hk = g.hk()
+    r.check("default parameters 60 / -20 C, period 1", hk is not None and hk["param"] == [60, -20, 1], str(hk))
+    g.send(SET_PARAM, param(TEMP_HIGH, 50))
+    g.send(SET_PARAM, param(9, 1))           # rejected: no parameter 9
+    g.send(SET_PARAM, param(TEMP_LOW, 50))   # rejected: low must stay below high
+    hk = g.hk()
+    r.check("SET_PARAM high=50 applied, 2 bad SET_PARAM rejected",
+            hk is not None and hk["param"] == [50, -20, 1] and hk["err"] == 2, str(hk))
+    saved = open(os.path.join(args.cf_dir, "msn_param.txt")).read().split()
+    r.check("parameter file is '50 -20 1'", saved == ["50", "-20", "1"], str(saved))
+
+    print("=== Temperature ===")
+    g.packets.pop(TEMP_MID, None)
+    t = temp(g.wait(TEMP_MID, 10))
+    r.check("periodic TEMP tlm shows 21.5 C NORMAL", t is not None and t["temp"] == 21.5 and t["status"] == NORMAL,
+            str(t))
+    open(temp_file, "w").write("75.0\n")
+    t = temp(g.request(READ_TEMP, b"", TEMP_MID))
+    r.check("file edited to 75.0: READ_TEMP shows HIGH", t is not None and t["temp"] == 75.0 and t["status"] == HIGH,
+            str(t))
+    r.check("HIGH event sent", until(lambda: log_has(args.log, "Temperature 75.00 C is HIGH")))
+
+    print("=== Diagnostics ===")
+    d = diag(g.request(RUN_DIAG, b"", DIAG_MID))
+    r.check("RUN_DIAG fails only the temperature limit check", d == [0, 1, 0, 0, 0], str(d))
+    open(temp_file, "w").write("-30\n")
+    t = temp(g.request(READ_TEMP, b"", TEMP_MID))
+    r.check("file edited to -30: LOW", t is not None and t["status"] == LOW, str(t))
+    os.remove(temp_file)
+    d = diag(g.request(RUN_DIAG, b"", DIAG_MID))
+    r.check("file removed: RUN_DIAG fails the file and limit checks", d == [1, 1, 0, 0, 0], str(d))
+    open(temp_file, "w").write("21.5\n")
+    d = diag(g.request(RUN_DIAG, b"", DIAG_MID))
+    r.check("file restored: RUN_DIAG passes", d == [0, 0, 0, 0, 0], str(d))
+
+    print("=== App status ===")
+    s = app_status(g.request(GET_APP_STATUS, name20("SAMPLE_APP"), APP_STATUS_MID))
+    r.check("SAMPLE_APP running, enabled, priority 50",
+            s is not None and s["running"] == 1 and s["startup"] == ENABLED and s["prio"] == 50, str(s))
+    s = app_status(g.request(GET_APP_STATUS, name20("NO_SUCH_APP"), APP_STATUS_MID))
+    r.check("NO_SUCH_APP not running, not in the script",
+            s is not None and s["running"] == 0 and s["startup"] == NOT_FOUND, str(s))
+
+    print("=== Startup script ===")
+    g.send(SET_STARTUP, name20("CI_LAB_APP") + struct.pack("<B3x", 0))
+    r.check("disabling CI_LAB_APP is rejected", until(lambda: log_has(args.log, "CI_LAB_APP is needed for commanding"))
+            and startup_section(script, "CI_LAB_APP") == "enabled")
+    g.send(SET_STARTUP, name20("SAMPLE_APP") + struct.pack("<B3x", 0))
+    r.check("SAMPLE_APP line moved below '!'", until(lambda: startup_section(script, "SAMPLE_APP") == "disabled"))
+    s = app_status(g.request(GET_APP_STATUS, name20("SAMPLE_APP"), APP_STATUS_MID))
+    r.check("SAMPLE_APP still running now, startup disabled",
+            s is not None and s["running"] == 1 and s["startup"] == DISABLED, str(s))
+
+
+def phase2(g, r, args):
+    script = os.path.join(args.cf_dir, "cfe_es_startup.scr")
+
+    print("=== After restart ===")
+    r.check("SAMPLE_APP was not started", not log_has(args.log, "SAMPLE App Initialized"))
+    s = app_status(g.request(GET_APP_STATUS, name20("SAMPLE_APP"), APP_STATUS_MID))
+    r.check("SAMPLE_APP not running, startup disabled",
+            s is not None and s["running"] == 0 and s["startup"] == DISABLED, str(s))
+    hk = g.hk()
+    r.check("parameters kept across the restart", hk is not None and hk["param"] == [50, -20, 1], str(hk))
+    g.send(SET_STARTUP, name20("SAMPLE_APP") + struct.pack("<B3x", 1))
+    r.check("SAMPLE_APP enabled again: above '!', same lines as the original (now last in start order)",
+            until(lambda: startup_section(script, "SAMPLE_APP") == "enabled")
+            and sorted(open(script).readlines()) == sorted(open(args.startup_backup).readlines()),
+            "".join(difflib.unified_diff(open(args.startup_backup).readlines(), open(script).readlines(), n=0)))
 
 def main():
     args = parse_args()
     g = Ground(args)
     r = Result()
-    rows = [[float(x) for x in line.split(",")] for line in open(args.sensor_file) if line.strip()]
-
-    print("=== Waiting for MSN HK telemetry ===")
-    hk = g.wait(HK_MID, 15)
-    if hk is None:
+    if g.wait(HK_MID, 15) is None:
         print("FAIL: no MSN HK packet")
         return 1
-    hk = decode_hk(hk)
-    r.check("initial state is 400 km, 5 kg, all devices off",
-            near(hk["alt"], 400) and near(hk["fuel"], 5) and hk["dev"] == [0, 0, 0, 0], str(hk))
-
-    print("=== Scenario A: sensor read ===")
-    for i in range(3):
-        g.send(READ_SENSOR)
-        p = g.wait(SENSOR_MID)
-        if p is None:
-            r.check(f"READ_SENSOR {i + 1}", False, "no SENSOR packet")
-            continue
-        n, *values = struct.unpack("<I3f", p[:16])
-        r.check(f"READ_SENSOR {i + 1} matches line {i + 1}",
-                n == i + 1 and all(near(a, b) for a, b in zip(values, rows[i])), f"n={n} values={values}")
-
-    print("=== Scenario A: device and thruster control ===")
-    g.send(SET_DEVICE, struct.pack("<BBxx", 1, 1))
-    g.send(SET_DEVICE, struct.pack("<BBxx", 7, 1))  # rejected: no device 7
-    g.send(FIRE, struct.pack("<hxx", 200))          # rejected: not armed
-    g.send(ARM)
-    g.send(FIRE, struct.pack("<hxx", 200))          # +2 m/s
-    g.send(ARM)
-    g.send(NOOP)
-    g.send(FIRE, struct.pack("<hxx", 100))          # rejected: NOOP disarmed the thruster
-    g.send(ARM)
-    g.send(FIRE, struct.pack("<hxx", 5000))         # rejected: out of range
-
-    state = open(args.state_file).read().split()
-    r.check("state file is '0 1 0 0 403.520 4.900'", state == ["0", "1", "0", "0", "403.520", "4.900"], str(state))
-
-    print("=== Scenario C: analysis ===")
-    g.send(GET_ANALYSIS)
-    p = g.wait(ANALYSIS_MID)
-    if p is None:
-        r.check("GET_ANALYSIS", False, "no ANALYSIS packet")
-    else:
-        a = decode_analysis(p)
-        first = rows[:3]
-        ok = (a["n"] == 3 and a["burns"] == 1 and near(a["dv"], 2.0) and a["switches"] == 1
-              and all(near(a["min"][k], min(x[k] for x in first)) for k in range(3))
-              and all(near(a["max"][k], max(x[k] for x in first)) for k in range(3))
-              and all(near(a["avg"][k], sum(x[k] for x in first) / 3) for k in range(3)))
-        r.check("analysis has 3 samples, 1 burn of 2 m/s, 1 device switch, correct min/max/avg", ok, str(a))
-
-    print("=== Scenario C: log download ===")
-    log = download_log(g)
-    print("--- log ---\n" + (log or "") + "-----------")
-    expected = ["MSN App started", "SET_DEVICE 1 ON", "FIRE rejected: thruster not armed",
-                "FIRE dV 2.00 m/s, altitude 403.52 km, fuel 4.900 kg", "FIRE rejected: dV 5000 cm/s out of range"]
-    r.check("log has the expected lines", log is not None and all(e in log for e in expected))
-
-    print("=== HK counters ===")
-    g.drop(HK_MID)
-    hk = g.wait(HK_MID, 10)
-    hk = decode_hk(hk) if hk else None
-    r.check("HK shows 4 rejected commands, thruster disarmed, device 1 on, 403.52 km",
-            hk is not None and hk["err"] == 4 and hk["armed"] == 0 and hk["dev"] == [0, 1, 0, 0]
-            and near(hk["alt"], 403.52), str(hk))
-
-    print("=== Scenario C: reset ===")
-    g.send(RESET_ANALYSIS)
-    g.send(GET_ANALYSIS)
-    p = g.wait(ANALYSIS_MID)
-    r.check("analysis is cleared", p is not None and decode_analysis(p)["n"] == 0)
-    log = download_log(g)
-    r.check("log holds only the reset line", log is not None and log.count("\n") == 1 and "reset" in log, repr(log))
-
-    print(f"\n=== {r.passed} passed, {r.failed} failed ===")
+    (phase1 if args.phase == 1 else phase2)(g, r, args)
+    print(f"\n=== phase {args.phase}: {r.passed} passed, {r.failed} failed ===")
     return 0 if r.failed == 0 else 1
 
 
