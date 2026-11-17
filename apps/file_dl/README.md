@@ -189,6 +189,7 @@ loop:
 
 - The tick follows the clock, not a receive timeout. So a stream of upload DATA, one command every 20 ms, does **not** stop the downlink.
 - Commands are handled at once, between ticks. Work that takes time runs a little per tick: sending, and reading the file back for the CRC.
+- Section 5 explains how this loop works together with the CI_LAB and TO_LAB loops.
 
 ### 4.3 Path of a command and of a segment
 
@@ -254,7 +255,178 @@ If a downlink is still open (no DONE yet), the relay waits in the queue and star
 
 ---
 
-## 5. Timing and limits
+## 5. Tick and loops: how timing links uplink and downlink
+
+### 5.1 Three loops and two queues
+
+Between the ground and FILE_DL there are **three loops**, each a separate task with its own clock. **SB pipes** (queues) connect them.
+
+```
+Ground ─UDP─▶ [CI_LAB loop] ─SB─▶ FILE_DL_PIPE ─▶ [FILE_DL loop] ─SB─▶ TO_LAB_TLM_PIPE ─▶ [TO_LAB loop] ─UDP─▶ Ground
+              socket every 100 ms     (queue)     100 ms tick + commands     (queue)       empty pipe every 100 ms
+```
+
+| Loop | Wakes up when | Does | Setting |
+|---|---|---|---|
+| CI_LAB | A command arrives for CI, or 100 ms pass | Reads up to 11 TC frames from the UDP socket and sends each packet to the SB | `CI_LAB_UPLINK_POLL_MSEC` 100 |
+| **FILE_DL** | A command arrives, or the **next tick is due** | Every tick: one downlink segment, CRC check steps, start of a relay. Commands are handled as they arrive. | `FILE_DL_SEND_PERIOD_MSEC` 100 |
+| TO_LAB | Every 100 ms (`OS_TaskDelay`) | Empties its telemetry pipe into TM frames and sends them | `TO_TASK_MSEC` 100 |
+
+- The loops never wait for each other.
+- What one loop hands to the next waits in an SB pipe.
+- The OS scheduler decides which task runs when. On native Linux, task priorities are ignored unless the app runs as root.
+
+### 5.2 One pass of the FILE_DL loop
+
+```c
+while (CFE_ES_RunLoop(&runStatus))
+{
+    (1) now = CFE_PSP_GetTime();
+        waitMsec = 100 - (now - lastTick);          /* time left until the next tick */
+
+    (2) if (waitMsec <= 0)                          /* 100 ms have passed: tick */
+        {
+            FILE_DL_Wakeup();   /* downlink: one segment */
+            FILE_UL_Tick();     /* upload + relay: CRC check steps, start a queued relay */
+            lastTick = now;
+            waitMsec = 100;
+        }
+
+    (3) CFE_SB_ReceiveBuffer(&pBuf, pipe, waitMsec); /* wakes at once on a command, else after waitMsec */
+
+    (4) dispatch by MID: 0x18C0 downlink, 0x18C2 upload, 0x18C3 relay, 0x18C1 one extra tick
+}
+```
+
+The loop does two kinds of work:
+
+| Kind | When it runs | Examples |
+|---|---|---|
+| **Tick work** (2) | Once per 100 ms, by the clock | Send a segment; read a stored file back for its CRC; start a relay |
+| **Command work** (4) | As soon as a command arrives | Open a file, write a chunk, queue a RESEND, send a status |
+
+**Why commands never push the tick back**
+- After each command, the loop returns to (1) and reads the clock again. If 100 ms have passed, the tick runs before the next command.
+- The wait in (3) is always the time *left*, not a fresh 100 ms.
+
+```
+time (ms)   0      20     40     60     80     100    120
+command     ▼      ▼      ▼      ▼      ▼      ▼      ▼        (upload DATA every 20 ms)
+wait        100    80     60     40     20     –      80
+tick        ●                                  ●               (every 100 ms exactly)
+```
+
+- An earlier version ran the tick only when `ReceiveBuffer` timed out, that is, after 100 ms with *no* command at all. A stream of upload DATA then never let the wait time out, and the downlink stopped.
+- Now a tick can be late only by the time one command takes to handle, which is a few milliseconds.
+
+### 5.3 What runs in a tick
+
+**`FILE_DL_Wakeup` (downlink)** sends `FILE_DL_SEGMENTS_PER_TICK` (1) segment per tick. It picks the segment in this order:
+
+1. A queued RESEND range: the next 1024 bytes of it.
+2. Otherwise, if the first pass is already done: nothing.
+3. Otherwise, the next 1024 bytes of the file, and the CRC is updated.
+4. When every byte has been sent: the END segment, and the first pass ends.
+
+So **the tick sets the downlink rate**: 1024 B per 100 ms, about 10 KiB/s.
+
+**`FILE_UL_Tick` (upload and relay)**
+1. `FILE_UL_Verify(upload)`: if the upload is VERIFYING, it reads 16 chunks (about 15 KB) back from storage and adds them to the CRC.
+2. `FILE_UL_Verify(relay)`: the same for the relay file.
+3. `FILE_UL_RelayNext`: if a verified relay file is waiting and no downlink file is open, the relay downlink starts.
+
+- Chunks are **written when DATA arrives** (command work), not in the tick. The tick only handles the check after reception ends.
+- The CRC check is split across ticks. Reading 4 MiB at once would block the loop: the pipe could overflow and the downlink tick would slip.
+
+### 5.4 Link to the downlink
+
+```
+FILE_DL tick ──1 segment──▶ TO_LAB_TLM_PIPE ──(TO empties it every 100 ms)──▶ TM frame 1786 B ──UDP──▶ Ground
+```
+
+1. Each tick, `FILE_DL_Send` puts one segment (up to 1056 B) into TO_LAB's telemetry pipe.
+2. Every 100 ms TO_LAB takes packets until the pipe is empty and calls `TM_SDLP_myAddPacketToFrame` for each one.
+   - A frame whose data field (1766 B) is full is sent **at once**.
+   - The rest of the packet goes to the overflow queue and starts the next frame. This is packet segmentation, marked by the First Header Pointer.
+3. A partly filled frame is padded with an idle packet and sent every `TO_LAB_FLUSH_CYCLES` (5) cycles, which is every 500 ms.
+
+**Why both loops use 100 ms**
+- FILE_DL adds one segment per 100 ms, and TO_LAB empties its pipe once per 100 ms. So usually at most one file segment waits in TO's pipe.
+- Native Linux trims an SB pipe to 10 messages. An earlier version sent 8 segments at once on a 1 Hz wakeup; together with HK packets, that made `Pipe Overflow`.
+
+**Delay**
+- The two loops have the same period but are not in phase.
+- A segment waits up to 100 ms for TO_LAB to wake up. In a partly filled frame it may wait up to 500 ms more.
+- Two segments (2112 B) are more than one frame, so most frames go out within one or two ticks:
+
+```
+FILE_DL tick:  ●seg0           ●seg1           ●seg2 ...
+TO_LAB wake:       ◆               ◆               ◆
+                   seg0 into frame  seg1 added → over 1766 B
+                   (not full yet)   → frame 1 sent, the rest starts frame 2
+```
+
+### 5.5 Link to the uplink
+
+```
+Ground ─TC every 20 ms─▶ UDP socket ─(CI: up to 11 frames every 100 ms)─▶ FILE_DL_PIPE ─(at once)─▶ FILE_DL command work
+```
+
+1. The ground sends a DATA command every 20 ms. The frames wait in the OS socket buffer.
+2. CI_LAB wakes every 100 ms, reads up to 11 frames, and sends them to the SB. So about **5 commands arrive at FILE_DL together** every 100 ms.
+3. FILE_DL wakes as soon as they are in its pipe and handles them one after another. If the tick becomes due in between, the tick runs first.
+
+**What sets the upload rate**
+- The **ground's spacing** sets it, not the tick, because writing chunks is command work.
+- With 960 B every 20 ms, the limit is about 47 KiB/s. About 31 KiB/s was measured, because of per-command overhead and the waits for status after END.
+- Sending faster than every 20 ms puts more commands into each CI batch. That can overflow FILE_DL's pipe (10 messages on native) or the limit of 32 messages per MID, which shows up as `Msg Limit Err`.
+- A command reaches FILE_DL within about 100 ms (the CI poll) plus its handling time.
+
+**The check after reception is paced by the tick**
+
+```
+END (command) → VERIFYING → 16 chunks of CRC per tick → … → last tick: COMPLETE, status sent
+```
+
+For 1 MiB (1,093 chunks), that is about 69 ticks, or about 7 s.
+
+### 5.6 Upload and downlink at the same time
+
+```
+time (ms)   0     20    40    60    80    100   120   140   160   180   200
+CI wake     ◇                             ◇                             ◇
+pipe gets   ▮▮▮▮▮                         ▮▮▮▮▮                         ▮▮▮▮▮
+FILE_DL     [5 commands]                  [5 commands]                  [5 commands]
+tick        ●                             ●                             ●
+              └ 1 DL segment ─▶ TO pipe     └ 1 segment                   └ 1 segment
+TO wake        ◆                             ◆                             ◆
+```
+
+- Upload commands arrive in batches at CI's pace and are handled at once.
+- Downlink segments leave once per tick, by the clock.
+- Measured (`--mode both`, 256 KiB, 5% loss each way): 65 downlink segments came down during an 8.0 s upload. The ideal number is 80.
+
+### 5.7 Summary and settings
+
+| Question | Answer |
+|---|---|
+| What is a tick? | A fixed batch of work the FILE_DL loop runs every 100 ms by the clock: one downlink segment, CRC check steps, starting a relay. |
+| What sets the downlink rate? | The tick: 1024 B per 100 ms. |
+| What sets the upload rate? | The ground's command spacing and CI's poll period. The tick does not. |
+| What sets the upload check time? | The tick: 16 chunks per 100 ms. |
+| Is sch_lab involved? | No. FILE_DL keeps its own clock. `0x18C1` WAKEUP still works, but nothing sends it. |
+| Are FILE_DL and TO_LAB in step? | Same period (100 ms), independent phase. The pipe absorbs the difference. |
+
+| Setting | Where | Raising it |
+|---|---|---|
+| `FILE_DL_SEGMENTS_PER_TICK` (1) | `file_dl_my.h` | Faster downlink, but TO's pipe may overflow |
+| `FILE_DL_SEND_PERIOD_MSEC` (100) | `file_dl_my.h` | Slower ticks, so slower downlink and slower checks |
+| `FILE_UL_VERIFY_CHUNKS` (16) | `file_ul_my.h` | Faster check, but each tick takes longer |
+| Ground command spacing (20 ms) | `CMD_GAP` in `file_xfer_test.py` | Lowering it makes uploads faster, but risks pipe overflow and the MID message limit |
+
+---
+
+## 6. Timing and limits
 
 | Item | Value |
 |---|---|
@@ -272,7 +444,7 @@ If a downlink is still open (no DONE yet), the relay waits in the queue and star
 - Nothing is authenticated: SDLS is off, so anyone with uplink access can write files.
 - On RTEMS, it has not been checked whether `/cf` (`/nonvol`) allows writing and renaming.
 
-## 6. Files
+## 7. Files
 
 | File | Content |
 |---|---|
@@ -281,7 +453,7 @@ If a downlink is still open (no DONE yet), the relay waits in the queue and star
 | `fsw/src/file_ul_my.c/.h` | Upload engine with two instances (upload, relay): commands, chunk bitmap, `.part`, CRC read-back, rename, relay queue |
 | `*.bak` | Earlier versions |
 
-## 7. Tests (native)
+## 8. Tests (native)
 
 All tests live in `file_dl_test/`.
 
