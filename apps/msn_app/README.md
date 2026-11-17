@@ -117,7 +117,62 @@ The offsets below count from the start of the payload, after those 16 bytes.
 | 15 | info | GET_APP_STATUS result |
 | 16 / 17 | info / error | temperature status changed to NORMAL / to HIGH, LOW or NO_DATA |
 
-## 6. How each command works
+## 6. Housekeeping, READ_TEMP and RUN_DIAG: what is the difference
+
+All three send telemetry about the satellite, but they answer different questions and are started
+by different senders.
+
+| | Housekeeping (HK) | READ_TEMP | RUN_DIAG |
+|---|---|---|---|
+| Started by | **SCH_LAB, every 4 s, automatically** (MID 0x18D1) | ground command (FC 6) | ground command (FC 4) |
+| Question it answers | "what state is the app in?" | "what is the temperature now?" | "can the satellite keep operating, also after a reboot?" |
+| Reads the sensor file | no, reports the last value read | **yes** | yes |
+| Telemetry | HK (0x08D0) | TEMP (0x08D1) | DIAG (0x08D2) |
+| Content | command/error counters, last temperature and status, 3 parameters | temperature, status, sample count | pass/fail of 5 checks, fail count |
+| Function | `ReportHousekeeping()` | `SendTemperature()` -> `ReadTemperature()` | `RunDiag()` |
+
+**Housekeeping: regular status report.** The ground does not ask for it: SCH_LAB sends a request
+every 4 s and MSN_APP answers with one HK packet. HK only copies values already in memory; it does
+not measure or check anything. The ground uses it to see that the app is alive (HK keeps coming),
+that its commands were executed (command counter) or failed (error counter), and which parameters
+are in use. The `Temperature` in HK is the **last value read**: with TEMP_PERIOD 0 and no READ_TEMP,
+HK keeps the old temperature even after the file changes.
+
+**READ_TEMP: a measurement.** It reads `/cf/msn_temp.txt` (the stand-in for a sensor) now, compares
+the value with the limits (NORMAL/HIGH/LOW, or NO_DATA if there is no number) and sends TEMP. The
+automatic temperature report uses the same code: every TEMP_PERIOD HK requests,
+`ReportHousekeeping()` calls `SendTemperature()`. Only the timing comes from HK.
+
+```
+SEND_HK every 4 s --> ReportHousekeeping()
+                        |-- every N requests: SendTemperature() --> TEMP   (measurement)
+                        '-- HK                                              (status summary)
+ground READ_TEMP  --> SendTemperature() --> TEMP                            (measurement)
+```
+
+**RUN_DIAG: a self-check.** It checks 5 conditions at once and reports each as pass (0) or fail (1):
+
+| Index | Checks | A failure means |
+|---|---|---|
+| 0 | the temperature file can be read | the "sensor" is broken |
+| 1 | the temperature is within the limits | overheating or overcooling |
+| 2 | the saved parameter file equals the parameters in use | after a reboot the app would start with other settings |
+| 3 | the 4 essential apps are enabled in the startup script | after a reboot the ground could lose contact |
+| 4 | the 4 essential apps are running | a needed function is stopped now |
+
+Checks 0 and 1 read the temperature but do not send TEMP; the result is only `Result[0..1]`.
+Checks 2 to 4 cannot be seen in HK or TEMP. Check 3 in particular tells in advance whether a
+reboot would be safe.
+
+**Example:** the file is changed to 75.0 with a high limit of 50.
+
+| When | What runs | What the ground receives |
+|---|---|---|
+| next HK request (TEMP_PERIOD 1) | ReportHousekeeping -> SendTemperature | TEMP 75.0 HIGH and event "is HIGH"; HK Temperature 75.0, TempStatus 1 |
+| ground sends READ_TEMP | SendTemperature | TEMP 75.0 HIGH (no event: status already HIGH) |
+| ground sends RUN_DIAG | RunDiag | DIAG `0 1 0 0 0`, FailCount 1, event "1 of 5 failed (01000)" |
+
+## 7. How each command works
 
 ### NOOP (FC 0) and RESET_COUNTERS (FC 1)
 
@@ -326,7 +381,7 @@ and calls `SendTemperature()` when `Param[2] > 0` and `HkCount % Param[2] == 0`,
 | 3 | 3, 6, 9, ... | 12 s |
 | 0 | none | only READ_TEMP |
 
-## 7. Files
+## 8. Files
 
 | File | Written by | Read by | Content |
 |---|---|---|---|
@@ -335,7 +390,7 @@ and calls `SendTemperature()` when `Param[2] > 0` and `HkCount % Param[2] == 0`,
 | `/cf/cfe_es_startup.scr` | SET_STARTUP | ES at start, SET_STARTUP, GET_APP_STATUS, RUN_DIAG | ES startup script |
 | `/cf/cfe_es_startup.tmp` | SET_STARTUP | - | new script before the rename; removed on failure |
 
-## 8. Test
+## 9. Test
 
 `msn_test/run_msn_test.sh -b <build_dir>` runs the native build, checks every command with the
 telemetry and events, restarts cFS to confirm the startup script change and that the parameters
