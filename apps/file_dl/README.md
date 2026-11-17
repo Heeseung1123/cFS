@@ -216,6 +216,63 @@ Ground: deframe (First Header Pointer) → packets by MID
 | 4 | Ground rebuilds by `Offset` and finds the gaps.<br>`0x18C0` CC 2 RESEND(off, len) for each gap | `FILE_DL_Resend` queues the range (up to 64). Each tick, `FILE_DL_Wakeup` sends the queued ranges first. | DATA segments again |
 | 5 | When nothing is missing: `0x18C0` CC 3 DONE(crc) | `FILE_DL_Done` compares the CRC, sends an event, then `FILE_DL_Close` (Open = false) | – |
 
+**Sequence diagram of the downlink**
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant G as Ground
+    participant CI as CI_LAB
+    participant DL as FILE_DL downlink engine<br/>(file_dl_my.c)
+    participant FS as /cf
+    participant TO as TO_LAB
+
+    Note over G,TO: Start (MID 0x18C0)
+    G->>CI: TC 0x18C0 CC1 START(/cf/x.bin)
+    CI->>DL: SB 0x18C0
+    DL->>DL: FILE_DL_Prepare: refuse while a first pass runs, close the previous finished file
+    DL->>FS: OS_stat + OS_OpenCreate(read only)
+    DL->>DL: Offset = 0, CRC = 0, Active = Open = true
+    DL->>TO: segment 0x08C0 START (name, size, DestTag 0)
+    TO->>G: TM frame
+
+    Note over G,TO: First pass (paced by the 100 ms tick)
+    loop every 100 ms tick (FILE_DL_Wakeup), until every byte is sent
+        DL->>FS: OS_lseek(Offset) + OS_read up to 1024 B
+        DL->>DL: update CRC-32, Offset += bytes
+        DL->>TO: segment 0x08C0 DATA (offset, bytes)
+        TO->>G: TM frame (full frames at once, partly filled every 500 ms)
+        G->>G: store DATA at its offset
+    end
+    DL->>TO: segment 0x08C0 END (size, CRC of the whole file)
+    TO->>G: TM frame
+    DL->>DL: Active = false (the file stays open for RESEND)
+
+    Note over G,TO: Repair (after END and a few quiet seconds)
+    loop while the ground finds missing ranges
+        G->>CI: TC 0x18C0 CC2 RESEND(offset, length), 20 ms apart, up to 64
+        CI->>DL: SB 0x18C0
+        DL->>DL: FILE_DL_Resend: queue the range
+        loop every 100 ms tick, queued ranges first
+            DL->>FS: read 1024 B of the range
+            DL->>TO: segment 0x08C0 DATA
+            TO->>G: TM frame
+        end
+    end
+
+    Note over G,TO: Close
+    G->>G: whole file rebuilt, CRC equals END CRC
+    G->>CI: TC 0x18C0 CC3 DONE(crc)
+    CI->>DL: SB 0x18C0
+    alt CRC matches
+        DL->>DL: event "confirmed by ground"
+    else CRC differs
+        DL->>DL: event "crc32 mismatch"
+    end
+    DL->>FS: OS_close (Open = false)
+    Note over DL: the next START (or a queued relay) can now begin
+```
+
 ### 4.5 Upload (`0x18C2`)
 
 | Step | Ground sends | Satellite (function) | Comes down |
