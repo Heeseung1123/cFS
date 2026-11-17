@@ -13,7 +13,7 @@ Mission app for two demo scenarios. Files on `/cf` stand in for real hardware.
 | `/cf/msn_state.txt` | `dev0 dev1 dev2 dev3 altitude_km fuel_kg`. Read at startup, rewritten on every change. Defaults: all off, 400 km, 5 kg. |
 | `/cf/msn_log.txt` | `<MET seconds> <text>` lines for startup, device switches and thruster burns. |
 
-## Commands (MID 0x18C0)
+## Commands (MID 0x18D0)
 
 | CC | Name | Payload (little endian on BBB/x86) | Result |
 |---|---|---|---|
@@ -34,19 +34,19 @@ if dV is out of range, or if there is not enough fuel.
 
 | MID | Packet | Payload |
 |---|---|---|
-| 0x08C0 | HK (every 4 s from SCH_LAB) | counters, armed flag, 4 device states, altitude, fuel |
-| 0x08C1 | SENSOR | sample count, 3 values |
-| 0x08C2 | ANALYSIS | sample count, min/max/avg of the 3 values, burn count, total dV, device switch count, uptime |
-| 0x08C3 | LOG | file size, offset, length, 200 text bytes |
+| 0x08D0 | HK (every 4 s from SCH_LAB) | counters, armed flag, 4 device states, altitude, fuel |
+| 0x08D1 | SENSOR | sample count, 3 values |
+| 0x08D2 | ANALYSIS | sample count, min/max/avg of the 3 values, burn count, total dV, device switch count, uptime |
+| 0x08D3 | LOG | file size, offset, length, 200 text bytes |
 
 ## Example (native, commands through `tc_test/tc_frame_proxy.py` on port 1236)
 
 ```
-cmdUtil --port=1236 --endian=LE --pktid=0x18C0 --cmdcode=2
-cmdUtil --port=1236 --endian=LE --pktid=0x18C0 --cmdcode=3 --uint8=1 --uint8=1 --uint16=0
-cmdUtil --port=1236 --endian=LE --pktid=0x18C0 --cmdcode=4
-cmdUtil --port=1236 --endian=LE --pktid=0x18C0 --cmdcode=5 --int16=200 --uint16=0
-cmdUtil --port=1236 --endian=LE --pktid=0x18C0 --cmdcode=7 --uint32=0
+cmdUtil --port=1236 --endian=LE --pktid=0x18D0 --cmdcode=2
+cmdUtil --port=1236 --endian=LE --pktid=0x18D0 --cmdcode=3 --uint8=1 --uint8=1 --uint16=0
+cmdUtil --port=1236 --endian=LE --pktid=0x18D0 --cmdcode=4
+cmdUtil --port=1236 --endian=LE --pktid=0x18D0 --cmdcode=5 --int16=200 --uint16=0
+cmdUtil --port=1236 --endian=LE --pktid=0x18D0 --cmdcode=7 --uint32=0
 ```
 
 `msn_test/run_msn_test.sh -b <build_dir>` runs both scenarios and checks the telemetry.
