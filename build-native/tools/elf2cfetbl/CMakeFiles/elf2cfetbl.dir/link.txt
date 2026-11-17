@@ -1,0 +1,1 @@
+/usr/bin/cc -g -Wl,--dependency-file=CMakeFiles/elf2cfetbl.dir/link.d CMakeFiles/elf2cfetbl.dir/elf2cfetbl.c.o -o elf2cfetbl

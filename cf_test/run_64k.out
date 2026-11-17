@@ -1,0 +1,6 @@
+=== Starting core-cpu1 ===
+=== Enabling TO_LAB output ===
+=== CF TX_FILE /cf/cfdp_test.bin (65536 bytes), class 2, TM frame loss 0% ===
+  MD : seq 1, /cf/cfdp_test.bin -> /ground/cfdp_test.bin, 65536 bytes, closure 0
+  EOF: cc 0, checksum 0xede991f6, size 65536, 33 FD so far
+  NAK: 5 gaps, 49696 bytes missing

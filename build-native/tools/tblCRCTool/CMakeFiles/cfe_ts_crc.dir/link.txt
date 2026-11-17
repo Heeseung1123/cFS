@@ -1,0 +1,1 @@
+/usr/bin/cc -g -Wl,--dependency-file=CMakeFiles/cfe_ts_crc.dir/link.d CMakeFiles/cfe_ts_crc.dir/cfe_ts_crc.c.o -o cfe_ts_crc

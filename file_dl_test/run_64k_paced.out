@@ -1,0 +1,19 @@
+=== START /cf/file_dl_test.bin (65536 bytes), TM frame loss 0% ===
+  START: /cf/file_dl_test.bin, 65536 bytes
+  END  : 65536 bytes, crc32 0x490f3ea2, after 64 DATA segments
+  DONE : crc32 0x490f3ea2
+
+=== Result ===
+  PASS: START and END received (12.0 s)
+  PASS: file rebuilt from byte offsets equals the sent file (65536 bytes)
+  PASS: CRC32 matches the END segment
+  throughput 5.3 KiB/s
+  PASS: FILE_DL got DONE, CRC32 matched and the file was closed
+  PASS: no RESEND/DONE command dropped by the SB message limit
+  TM frames 42, dropped on purpose 0, DATA segments 64 (0 after END), RESEND rounds 0
+  1980-012-14:03:20.50366 CFE_ES_ParseFileEntry: Loading file: /cf/file_dl.so, APP: FILE_DL
+  EVS Port1 66/1/FILE_DL 1: FILE_DL Initialized
+  EVS Port1 66/1/FILE_DL 3: FILE_DL: sending /cf/file_dl_test.bin, 65536 bytes
+  EVS Port1 66/1/FILE_DL 5: FILE_DL: /cf/file_dl_test.bin sent, crc32 0x490f3ea2
+  EVS Port1 66/1/FILE_DL 7: FILE_DL: /cf/file_dl_test.bin confirmed by ground, crc32 0x490f3ea2
+RESULT: PASS

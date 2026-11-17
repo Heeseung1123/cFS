@@ -1,0 +1,12 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/heeseung/rtems-cfs-demo/cFS/build-native/cmake_install.cmake",
+		"/home/heeseung/rtems-cfs-demo/cFS/build-native/docs/osalguide/cmake_install.cmake",
+		"/home/heeseung/rtems-cfs-demo/cFS/build-native/tools/cmake_install.cmake",
+		"/home/heeseung/rtems-cfs-demo/cFS/build-native/tools/cFS-GroundSystem/Subsystems/cmdUtil/cmake_install.cmake",
+		"/home/heeseung/rtems-cfs-demo/cFS/build-native/tools/elf2cfetbl/cmake_install.cmake",
+		"/home/heeseung/rtems-cfs-demo/cFS/build-native/tools/tblCRCTool/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

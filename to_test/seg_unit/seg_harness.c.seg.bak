@@ -1,0 +1,83 @@
+/* Host harness for tm_sdlp_my.c and tm_sdlp_of.c with stubbed cFE/OSAL calls.
+ * Reads "P <size>" (forward one packet) and "F" (end of TO cycle) from stdin;
+ * writes every sent TM frame to stdout and every event to stderr. */
+#include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
+#include "tm_sdlp_my.h"
+
+int32 CFE_PSP_MemCpy(void *dest, const void *src, uint32 n)
+{
+    memcpy(dest, src, n);
+    return 0;
+}
+
+int32 CFE_PSP_MemSet(void *dest, uint8 value, uint32 n)
+{
+    memset(dest, value, n);
+    return 0;
+}
+
+CFE_Status_t CFE_EVS_SendEvent(uint16 EventID, uint16 EventType, const char *Spec, ...)
+{
+    va_list ap;
+    va_start(ap, Spec);
+    fprintf(stderr, "EVENT %u: ", (unsigned int)EventID);
+    vfprintf(stderr, Spec, ap);
+    fprintf(stderr, "\n");
+    va_end(ap);
+    return 0;
+}
+
+int32 OS_SocketSendTo(osal_id_t sock_id, const void *buffer, size_t buflen, const OS_SockAddr_t *RemoteAddr)
+{
+    (void)sock_id;
+    (void)RemoteAddr;
+    fwrite(buffer, 1, buflen, stdout);
+    return (int32)buflen;
+}
+
+static uint8 overflowBuffer[TM_SDLP_MY_FRAME_SIZE];
+static uint8 packet[65536];
+
+int main(void)
+{
+    char          cmd;
+    unsigned int  size;
+    unsigned int  index = 0;
+    unsigned int  k;
+    OS_SockAddr_t addr;
+    osal_id_t     sock = OS_OBJECT_ID_UNDEFINED;
+
+    memset(&addr, 0, sizeof(addr));
+    if (TM_SDLP_myInit(overflowBuffer, sizeof(overflowBuffer)) != TM_SDLP_MY_SUCCESS)
+    {
+        return 1;
+    }
+
+    while (scanf(" %c", &cmd) == 1)
+    {
+        if (cmd == 'P' && scanf("%u", &size) == 1 && size >= 7 && size <= sizeof(packet))
+        {
+            /* MID 0x08xx from the index, length field, then a pattern from the index. */
+            packet[0] = 0x08;
+            packet[1] = (uint8)index;
+            packet[2] = 0xC0;
+            packet[3] = 0x00;
+            packet[4] = (uint8)((size - 7) >> 8);
+            packet[5] = (uint8)((size - 7) & 0xFF);
+            for (k = 6; k < size; k++)
+            {
+                packet[k] = (uint8)(index * 31 + k);
+            }
+            TM_SDLP_myForwardPacket(packet, size, sock, &addr);
+            index++;
+        }
+        else if (cmd == 'F')
+        {
+            TM_SDLP_mySendFrame(sock, &addr);
+        }
+    }
+    fflush(stdout);
+    return 0;
+}

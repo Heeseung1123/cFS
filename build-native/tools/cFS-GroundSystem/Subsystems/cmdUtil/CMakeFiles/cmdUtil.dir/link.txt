@@ -1,0 +1,1 @@
+/usr/bin/cc -g -Wl,--dependency-file=CMakeFiles/cmdUtil.dir/link.d CMakeFiles/cmdUtil.dir/cmdUtil.c.o CMakeFiles/cmdUtil.dir/SendUdp.c.o -o cmdUtil

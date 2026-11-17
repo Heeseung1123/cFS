@@ -1,0 +1,19 @@
+/* RELAY_APP event IDs */
+#ifndef RELAY_APP_EVENTS_H
+#define RELAY_APP_EVENTS_H
+
+#define RELAY_APP_RESERVED_EID          0
+#define RELAY_APP_STARTUP_INF_EID       1
+#define RELAY_APP_COMMAND_ERR_EID       2
+#define RELAY_APP_COMMANDNOP_INF_EID    3
+#define RELAY_APP_COMMANDRST_INF_EID    4
+#define RELAY_APP_INVALID_MSGID_ERR_EID 5
+#define RELAY_APP_LEN_ERR_EID           6
+#define RELAY_APP_PIPE_ERR_EID          7
+#define RELAY_APP_FORWARD_INF_EID       8
+#define RELAY_APP_FORWARD_ERR_EID       9
+#define RELAY_APP_STOP_INF_EID          10
+#define RELAY_APP_RELAY_INF_EID         11
+#define RELAY_APP_SOCKET_ERR_EID        12
+
+#endif /* RELAY_APP_EVENTS_H */

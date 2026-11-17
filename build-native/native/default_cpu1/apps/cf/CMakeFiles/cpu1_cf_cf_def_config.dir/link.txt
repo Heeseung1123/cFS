@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcpu1_cf_cf_def_config.a CMakeFiles/cpu1_cf_cf_def_config.dir/fsw/tables/cf_def_config.c.o
+/usr/bin/ranlib libcpu1_cf_cf_def_config.a
