@@ -438,6 +438,7 @@ sequenceDiagram
     B->>CI: TC 0x1880 CC7 ADD_DEST(B ip, port)
     A->>CI: TC 0x1880 CC6 OUTPUT_ENABLE(A ip)
     CI->>TO: B is an extra destination, A the main one
+    Note over TO: from now on every TM frame goes to A and to B (TO_LAB_SendToAllDests)
 
     Note over A,B: Phase 1 - relay uplink (MID 0x18C3)
     A->>CI: TC 0x18C3 CC1 START(/cf/relay/x.bin, size, crc, DestTag=2)
@@ -452,10 +453,11 @@ sequenceDiagram
 
     A->>CI: TC 0x18C3 CC3 END
     CI->>RL: SB 0x18C3
-    alt chunks missing
+    alt uplink loss: chunks missing on board, A sends them again
         RL->>TO: status 0x08C2 RECEIVING + Gaps[]
-        TO->>A: TM frame
-        A->>CI: DATA for the gaps, then END again
+        TO->>A: TM frame (A uses 0x08C2)
+        TO->>B: same TM frame (B drops 0x08C2)
+        A->>CI: DATA for each gap, then END again
         CI->>RL: SB 0x18C3
     end
     RL->>TO: status 0x08C2 VERIFYING
@@ -466,27 +468,32 @@ sequenceDiagram
     end
     RL->>RL: FILE_UL_Finish: CRC ok, rename .part to x.bin, queue (x.bin, tag 2)
     RL->>TO: status 0x08C2 COMPLETE
-    TO->>A: TM frame
+    TO->>A: TM frame (A is done)
 
     Note over A,B: Phase 2 - relay downlink (segments on 0x08C3)
     RL->>DL: FILE_UL_RelayNext (same tick, if FILE_DL_IsBusy() is false)<br/>FILE_DL_StartFile(x.bin, tag 2, 0x08C3)
     DL->>TO: segment 0x08C3 START (name, size, tag 2)
-    TO->>B: TM frame
+    TO->>A: TM frame (A drops 0x08C3)
+    TO->>B: same TM frame (B keeps 0x08C3 with tag 2)
 
     loop every 100 ms tick (FILE_DL_Wakeup)
+        DL->>DL: read 1024 B of /cf/relay/x.bin
         DL->>TO: segment 0x08C3 DATA (offset, 1024 B, tag 2)
-        TO->>B: TM frame (B keeps 0x08C3 with tag 2, A gets the same frame and ignores it)
+        TO->>A: TM frame (dropped)
+        TO->>B: same TM frame (stored at its offset)
     end
     DL->>TO: segment 0x08C3 END (CRC of the whole file)
-    TO->>B: TM frame
+    TO->>A: TM frame (dropped)
+    TO->>B: same TM frame
     Note over DL: file stays open for RESEND
 
     Note over A,B: Phase 3 - repair and close (downlink MID 0x18C0)
-    opt ranges missing at B
+    opt downlink loss: ranges missing at B, the satellite sends them again
         B->>CI: TC 0x18C0 CC2 RESEND(offset, length)
         CI->>DL: SB 0x18C0
+        DL->>DL: FILE_DL_SendData reads the range again from /cf/relay/x.bin, no uplink needed
         DL->>TO: segment 0x08C3 DATA (sent before anything else)
-        TO->>B: TM frame
+        TO->>B: TM frame (A gets it too and drops it)
     end
     B->>CI: TC 0x18C0 CC3 DONE(crc)
     CI->>DL: SB 0x18C0
@@ -494,6 +501,15 @@ sequenceDiagram
     B->>CI: TC 0x1880 CC8 REMOVE_DEST(B ip, port)
     Note over RL,DL: next tick: FILE_UL_RelayNext may start the next queued relay
 ```
+
+Each station receives every TM frame and keeps only its own packets: A uses `0x08C2`, and B uses `0x08C3` with tag 2. Lost data is sent again by whoever still has it:
+
+| Loss on | Found by | Asked for with | Sent again by | Diagram |
+|---|---|---|---|---|
+| Uplink, A → satellite | Satellite (chunk bitmap) | `Gaps[]` in status `0x08C2` | **A** | Phase 1 `alt` |
+| Downlink, satellite → B | B (empty offsets) | B's `0x18C0` RESEND | **Satellite**, from `/cf/relay/x.bin` | Phase 3 `opt` |
+
+A never uploads again because of a RESEND. The downlink only starts after the whole file is on board and its CRC is checked.
 
 ### 4.7 What can run at the same time
 
@@ -728,6 +744,7 @@ TO wake        ◆                             ◆                             �
 |---|---|
 | `fsw/platform_inc/file_dl_msgids.h` | Message IDs |
 | `fsw/src/file_dl_my.c/.h` | `FILE_DL_AppMain` (main loop, dispatch by MID), downlink engine, downlink commands, shared helpers (`FILE_DL_Crc32`, big-endian get/put, `FILE_DL_StartFile`, `FILE_DL_IsBusy`) |
+| `diagrams/*.mmd` | The downlink, upload and relay sequence diagrams of section 4 |
 | `fsw/src/file_ul_my.c/.h` | Upload engine with two instances (upload, relay): commands, chunk bitmap, `.part`, CRC read-back, rename, relay queue |
 | `*.bak` | Earlier versions |
 
@@ -862,3 +879,89 @@ python3 file_dl_test/relay_ground_a.py nasa2.jpg --ul-loss 0.05
 - Nothing is authenticated: SDLS is off, so any station can send any command, and every station can read every file (section 3.4).
 - Only one main destination: a new `OUTPUT_ENABLE` moves it, and the station that had it loses TM unless it is also an extra destination.
 - At most 4 extra destinations.
+
+## 10. GroundSystem reference
+
+This section lists what `tools/cFS-GroundSystem` needs in order to command FILE_DL and the new TO_LAB commands.
+
+### 10.1 Commands
+
+- All file_dl fields are big-endian. In GroundSystem use the `b` types (`--uint32b`, `--uint16b`), or set the page to `BE`.
+- Strings are fixed length, written as `--string="64:/cf/x.bin"`.
+- The total size must match exactly, or the command is rejected (section 2.1).
+
+| MID | CC | Name | Parameters in order (GroundSystem type) | Total | Role |
+|---|---|---|---|---|---|
+| `0x18C0` | 0 | `FILE_DL_NOOP_CC` | – | 8 | Event check |
+| `0x18C0` | 1 | `FILE_DL_START_CC` | `Filename` (`--string` 64) | 72 | Downlink a file on board |
+| `0x18C0` | 2 | `FILE_DL_RESEND_CC` | `Offset` (`--uint32b`), `Length` (`--uint32b`) | 16 | Send a byte range of the open file again |
+| `0x18C0` | 3 | `FILE_DL_DONE_CC` | `Crc32` (`--uint32b`) | 12 | Ground has the whole file: compare the CRC and close it |
+| `0x18C2` / `0x18C3` | 0 | `FILE_UL_NOOP_CC` | – | 8 | Event check |
+| `0x18C2` | 1 | `FILE_UL_START_CC` | `Filename` (`--string` 64, under `/cf/inbox/`), `FileSize` (`--uint32b`), `Crc32` (`--uint32b`) | 80 | Start an upload |
+| `0x18C3` | 1 | `FILE_UL_START_CC` (relay) | as upload with `/cf/relay/`, then `DestTag` (`--uint8`), 3 × `Spare` (`--uint8`, 0) | 84 | Start a relay to station `DestTag` |
+| `0x18C2` / `0x18C3` | 2 | `FILE_UL_DATA_CC` | `Offset` (`--uint32b`), `DataLength` (`--uint16b`), `Spare` (`--uint16b`, 0), `Data` (DataLength bytes) | 16 + n | One chunk (section 2.3 rules) |
+| `0x18C2` / `0x18C3` | 3 | `FILE_UL_END_CC` | – | 8 | All chunks sent: get the gaps, or start the CRC check |
+| `0x18C2` / `0x18C3` | 4 | `FILE_UL_STATUS_CC` | – | 8 | Send the status again |
+| `0x18C2` / `0x18C3` | 5 | `FILE_UL_CANCEL_CC` | – | 8 | Drop the transfer and its `.part` |
+| `0x1880` | 6 | `TO_OUTPUT_ENABLE_CC` | `dest_IP` (`--string` 16) | 24 | Main TM destination, port 1235 (exists already) |
+| `0x1880` | 7 | `TO_ADD_DEST_CC` | `DestIp` (`--string` 16), `Port` (`--uint16b`) | 26 | Add an extra TM destination |
+| `0x1880` | 8 | `TO_REMOVE_DEST_CC` | `DestIp` (`--string` 16), `Port` (`--uint16b`) | 26 | Remove an extra TM destination |
+
+**Which commands fit the GUI**
+
+Most commands are typed once with fixed values, so they fit the GUI. These do:
+- NOOP, START, END, STATUS, CANCEL
+- OUTPUT_ENABLE, ADD_DEST, REMOVE_DEST
+- A single RESEND or DONE, if the values are known
+
+These do not fit:
+- `DATA`: GroundSystem has no byte-array type, and a file needs hundreds of chunks.
+- The repair loop: RESEND rounds and the CRC for DONE.
+
+Both need code that reads the file and the telemetry, as in `file_dl_test/file_xfer_test.py` (`upload`, `finish_downlink`).
+
+### 10.2 Telemetry
+
+| MID | Name | Layout |
+|---|---|---|
+| `0x08C0` | Downlink segment | Section 3.1 (DestTag 0) |
+| `0x08C1` | Upload status, 360 B | Section 3.2 |
+| `0x08C2` | Relay status, 360 B | Section 3.2 |
+| `0x08C3` | Relay segment | Section 3.1 (DestTag from relay START) |
+
+Every field after byte 16 is big-endian.
+
+Event messages (section 3.3 and the TO_LAB events of section 9.1) do **not** come down now. `CFE_EVS_LONG_EVENT_MSG_MID` is commented out in `apps/to_lab/fsw/tables/to_lab_sub.c`, so they are seen only on the cFS console. To see them in GroundSystem, put that line back.
+
+### 10.3 What has to change in GroundSystem
+
+1. **Commands must go in a TC frame.**
+   - `MiniCmdUtil.send_packet` sends a bare Space Packet to UDP 1234. CI_LAB only accepts a TC frame and drops anything else (`apps/ci_lab/fsw/src/tc_sdlp_my.c`, event `CI: TC frame dropped`).
+   - Put these 5 bytes in front of the packet, as `send_cmd` in `file_dl_test/file_dl_ground_test.py` does:
+
+     | Byte | Value |
+     |---|---|
+     | 0 | `0x20`: version 0, bypass flag 1, SCID bits 9–8 = 0 |
+     | 1 | `0x03`: SCID bits 7–0 |
+     | 2–3 | VCID 0 (top 6 bits), then frame length − 1 (low 10 bits) |
+     | 4 | Frame sequence number (not checked) |
+
+   - Each frame holds one packet. There is no SDLS header and no FECF. A frame is at most 1024 B (`CI_LAB_MAX_INGEST`).
+2. **Telemetry arrives as TM frames.**
+   - `RoutingService.py` reads UDP 1235 and takes the first two bytes of each datagram as the packet ID. Each datagram is now a 1786 B TM frame.
+   - Cut the frames into packets first: section 9.2 steps 1–5, as `to_test/tm_deframer.py` does. Then forward each packet.
+3. **Add the command definitions.**
+   - `command-pages.txt`: add one line per MID, for example:
+     ```
+     File Downlink, FILE_DL_CMD,    0x18C0, BE, UdpCommands.py, 127.0.0.1, 1234
+     File Upload,   FILE_UL_CMD,    0x18C2, BE, UdpCommands.py, 127.0.0.1, 1234
+     File Relay,    FILE_RELAY_CMD, 0x18C3, BE, UdpCommands.py, 127.0.0.1, 1234
+     ```
+   - `CommandFiles/<name>` is a pickle of `[command names, command codes]`.
+   - `ParameterFiles/<command name>` is a pickle of six lists: C types, names, array sizes, descriptions, GroundSystem types, string lengths. For example, `TO_OUTPUT_ENABLE_CC` is:
+     ```
+     [['char'], ['dest_IP'], ['16'], [''], ['--string'], ['16']]
+     ```
+   - Parameter files are found by command name. Upload START and relay START have the same name but different parameters, so give the relay one its own name, e.g. `FILE_RELAY_START_CC`.
+   - Add `TO_ADD_DEST_CC` and `TO_REMOVE_DEST_CC` to the `TO_LAB_CMD` page.
+4. **A station that is not the main destination** must first send `TO_ADD_DEST_CC` with its own IP and port, and listen on that port.
