@@ -1,0 +1,75 @@
+sequenceDiagram
+    autonumber
+    participant A as Ground A (uplink)
+    participant CI as CI_LAB
+    participant RL as FILE_DL relay engine<br/>(file_ul_my.c)
+    participant DL as FILE_DL downlink engine<br/>(file_dl_my.c)
+    participant TO as TO_LAB
+    participant B as Ground B (DestTag 2)
+
+    Note over A,B: Phase 0 - both stations get TM (file_dl README 9.1)
+    B->>CI: TC 0x1880 CC7 ADD_DEST(B ip, port)
+    A->>CI: TC 0x1880 CC6 OUTPUT_ENABLE(A ip)
+    CI->>TO: B is an extra destination, A the main one
+    Note over TO: from now on every TM frame goes to A and to B (TO_LAB_SendToAllDests)
+
+    Note over A,B: Phase 1 - relay uplink (MID 0x18C3)
+    A->>CI: TC 0x18C3 CC1 START(/cf/relay/x.bin, size, crc, DestTag=2)
+    CI->>RL: SB 0x18C3
+    RL->>RL: FILE_UL_Start: check name/size, create x.bin.part, clear bitmap, RECEIVING
+
+    loop every 20 ms, one chunk
+        A->>CI: TC 0x18C3 CC2 DATA(offset, 960 B)
+        CI->>RL: SB 0x18C3 (about 5 per 100 ms CI poll)
+        RL->>RL: FILE_UL_WriteChunk: lseek+write, set bit
+    end
+
+    A->>CI: TC 0x18C3 CC3 END
+    CI->>RL: SB 0x18C3
+    alt uplink loss: chunks missing on board, A sends them again
+        RL->>TO: status 0x08C2 RECEIVING + Gaps[]
+        TO->>A: TM frame (A uses 0x08C2)
+        TO->>B: same TM frame (B drops 0x08C2)
+        A->>CI: DATA for each gap, then END again
+        CI->>RL: SB 0x18C3
+    end
+    RL->>TO: status 0x08C2 VERIFYING
+    TO->>A: TM frame
+
+    loop every 100 ms tick (FILE_UL_Tick)
+        RL->>RL: FILE_UL_Verify: read back 16 chunks, update CRC
+    end
+    RL->>RL: FILE_UL_Finish: CRC ok, rename .part to x.bin, queue (x.bin, tag 2)
+    RL->>TO: status 0x08C2 COMPLETE
+    TO->>A: TM frame (A is done)
+
+    Note over A,B: Phase 2 - relay downlink (segments on 0x08C3)
+    RL->>DL: FILE_UL_RelayNext (same tick, if FILE_DL_IsBusy() is false)<br/>FILE_DL_StartFile(x.bin, tag 2, 0x08C3)
+    DL->>TO: segment 0x08C3 START (name, size, tag 2)
+    TO->>A: TM frame (A drops 0x08C3)
+    TO->>B: same TM frame (B keeps 0x08C3 with tag 2)
+
+    loop every 100 ms tick (FILE_DL_Wakeup)
+        DL->>DL: read 1024 B of /cf/relay/x.bin
+        DL->>TO: segment 0x08C3 DATA (offset, 1024 B, tag 2)
+        TO->>A: TM frame (dropped)
+        TO->>B: same TM frame (stored at its offset)
+    end
+    DL->>TO: segment 0x08C3 END (CRC of the whole file)
+    TO->>A: TM frame (dropped)
+    TO->>B: same TM frame
+    Note over DL: file stays open for RESEND
+
+    Note over A,B: Phase 3 - repair and close (downlink MID 0x18C0)
+    opt downlink loss: ranges missing at B, the satellite sends them again
+        B->>CI: TC 0x18C0 CC2 RESEND(offset, length)
+        CI->>DL: SB 0x18C0
+        DL->>DL: FILE_DL_SendData reads the range again from /cf/relay/x.bin, no uplink needed
+        DL->>TO: segment 0x08C3 DATA (sent before anything else)
+        TO->>B: TM frame (A gets it too and drops it)
+    end
+    B->>CI: TC 0x18C0 CC3 DONE(crc)
+    CI->>DL: SB 0x18C0
+    DL->>DL: FILE_DL_Done: compare CRC, close file (Open=false)
+    B->>CI: TC 0x1880 CC8 REMOVE_DEST(B ip, port)
+    Note over RL,DL: next tick: FILE_UL_RelayNext may start the next queued relay

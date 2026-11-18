@@ -1,4 +1,4 @@
-/* MSN_APP: mission app for sensor read, device and thruster control, and log/analysis */
+/* MSN_APP: satellite control app for parameters, startup apps, diagnostics, app status and temperature */
 #ifndef MSN_APP_H
 #define MSN_APP_H
 
@@ -12,36 +12,39 @@
 
 #define MSN_APP_CMD_REJECTED_ERR_CODE -1
 
-/* Files stand in for real hardware: the sensor file is read, the state file is rewritten */
-#define MSN_APP_SENSOR_FILE "/cf/msn_sensor.csv"
-#define MSN_APP_STATE_FILE  "/cf/msn_state.txt"
-#define MSN_APP_LOG_FILE    "/cf/msn_log.txt"
+/* The temperature file stands in for a sensor: edit it by hand to change the reading */
+#define MSN_APP_TEMP_FILE    "/cf/msn_temp.txt"
+#define MSN_APP_PARAM_FILE   "/cf/msn_param.txt"
+#define MSN_APP_STARTUP_FILE "/cf/cfe_es_startup.scr"
+#define MSN_APP_STARTUP_TEMP "/cf/cfe_es_startup.tmp"
 
-/* Thruster model: |dV| limit (cm/s), altitude change per m/s and fuel per m/s at ~400 km */
-#define MSN_APP_MAX_DELTAV   1000
-#define MSN_APP_KM_PER_MPS   1.76f
-#define MSN_APP_FUEL_PER_MPS 0.05f
+#define MSN_APP_STARTUP_MAX_SIZE 4096
+
+/* Where an app is in the startup script (AppStatus Startup field) */
+#define MSN_APP_STARTUP_NOT_FOUND 0
+#define MSN_APP_STARTUP_ENABLED   1 /* before the first '!' line, started by ES */
+#define MSN_APP_STARTUP_DISABLED  2 /* after the first '!' line, ignored by ES */
 
 typedef struct
 {
     uint8 CmdCounter;
     uint8 ErrCounter;
 
-    /* Scenario A: device, thruster and orbit state (kept in MSN_APP_STATE_FILE) */
-    bool  ThrusterArmed;
-    uint8 DeviceState[MSN_APP_DEVICE_COUNT];
-    float Altitude;
-    float Fuel;
-    int32 SensorOffset;
+    int32  Param[MSN_APP_PARAM_COUNT]; /* kept in MSN_APP_PARAM_FILE */
+    float  Temperature;
+    uint8  TempStatus;
+    uint32 TempSampleCount;
+    uint32 HkCount;
+    uint32 DiagRunCount;
 
-    /* Scenario C: statistics reported by GET_ANALYSIS */
-    MSN_APP_AnalysisTlm_Payload_t Stats;
-    float                         SensorSum[MSN_APP_SENSOR_COUNT];
+    /* Startup script read by MSN_APP_FindStartupEntry() */
+    char  StartupBuf[MSN_APP_STARTUP_MAX_SIZE];
+    int32 StartupLength;
 
-    MSN_APP_HkTlm_t       HkTlm;
-    MSN_APP_SensorTlm_t   SensorTlm;
-    MSN_APP_AnalysisTlm_t AnalysisTlm;
-    MSN_APP_LogTlm_t      LogTlm;
+    MSN_APP_HkTlm_t        HkTlm;
+    MSN_APP_TempTlm_t      TempTlm;
+    MSN_APP_DiagTlm_t      DiagTlm;
+    MSN_APP_AppStatusTlm_t AppStatusTlm;
 
     uint32          RunStatus;
     CFE_SB_PipeId_t CommandPipe;
@@ -54,15 +57,15 @@ void  MSN_APP_ProcessGroundCommand(CFE_SB_Buffer_t *SBBufPtr);
 int32 MSN_APP_ReportHousekeeping(const CFE_MSG_CommandHeader_t *Msg);
 bool  MSN_APP_VerifyCmdLength(CFE_MSG_Message_t *MsgPtr, size_t ExpectedLength);
 
-int32 MSN_APP_ReadSensor(const MSN_APP_ReadSensorCmd_t *Msg);
-int32 MSN_APP_SetDevice(const MSN_APP_SetDeviceCmd_t *Msg);
-int32 MSN_APP_FireThruster(const MSN_APP_FireThrusterCmd_t *Msg);
-int32 MSN_APP_GetAnalysis(const MSN_APP_GetAnalysisCmd_t *Msg);
-int32 MSN_APP_GetLog(const MSN_APP_GetLogCmd_t *Msg);
-int32 MSN_APP_ResetAnalysis(const MSN_APP_ResetAnalysisCmd_t *Msg);
+int32 MSN_APP_SetParam(const MSN_APP_SetParamCmd_t *Msg);
+int32 MSN_APP_SetStartup(const MSN_APP_SetStartupCmd_t *Msg);
+int32 MSN_APP_RunDiag(const MSN_APP_RunDiagCmd_t *Msg);
+int32 MSN_APP_GetAppStatus(const MSN_APP_GetAppStatusCmd_t *Msg);
+int32 MSN_APP_SendTemperature(void);
 
-void MSN_APP_LoadState(void);
-void MSN_APP_SaveState(void);
-void MSN_APP_WriteLog(const char *Text);
+int32 MSN_APP_ReadTemperature(void);
+bool  MSN_APP_ReadParamFile(int32 *Param);
+void  MSN_APP_SaveParams(void);
+int32 MSN_APP_FindStartupEntry(const char *AppName, char **Entry, char **Marker);
 
 #endif /* MSN_APP_H */
