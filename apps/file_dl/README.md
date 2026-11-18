@@ -93,7 +93,7 @@ Both MIDs use the same function codes. Only START differs: relay START has a `De
 
 ## 3. Telemetry packets
 
-Each telemetry packet starts with a 16-byte header: 6 bytes CCSDS primary header, 6 bytes time, 4 bytes spare. The payload starts at **byte 16**.
+Each telemetry packet starts with the 16-byte cFS telemetry header (section 3.4). The payload starts at **byte 16**.
 
 ### 3.1 Segment — `0x08C0` (downlink) and `0x08C3` (relay)
 
@@ -106,8 +106,6 @@ Each telemetry packet starts with a 16-byte header: 6 bytes CCSDS primary header
 | 24–27 | `FileSize` | File size. Every segment has it. |
 | 28–31 | `Crc32` | END: CRC-32 of the whole file. Otherwise: CRC so far. |
 | 32– | `Data` | START: the file name. DATA: up to 1024 file bytes. END: empty. |
-
-A full DATA segment is 16 + 16 + 1024 = 1056 bytes, which fits one TM data field of 1766 bytes.
 
 ### 3.2 Status — `0x08C1` (upload) and `0x08C2` (relay), 360 bytes
 
@@ -147,7 +145,7 @@ A full DATA segment is 16 + 16 + 1024 = 1056 bytes, which fits one TM data field
 | 6 | `FILE_DL: NOOP` | NOOP |
 | 7 / 8 | `confirmed by ground` / `crc32 mismatch` | DONE |
 | 9 | `FILE_UL/FILE_RELAY: receiving ...`, `NOOP` | START, NOOP |
-| 10 | `... rejected`, `bad command`, `queue full` | Wrong upload or relay command |
+| 10 | `... rejected`, `bad command`, `still being received`, `queue full` | Wrong upload or relay command |
 | 11 | `cannot create / write error / read error / cannot rename` | File error |
 | 12 | `<name> received and verified` | COMPLETE |
 | 13 | `crc32 mismatch` | FAILED |
@@ -245,9 +243,7 @@ loop:
       0x18C1 → FILE_DL_Wakeup
 ```
 
-- The tick follows the clock, not a receive timeout. So a stream of upload DATA, one command every 20 ms, does **not** stop the downlink.
-- Commands are handled at once, between ticks. Work that takes time runs a little per tick: sending, and reading the file back for the CRC.
-- Section 5 explains how this loop works together with the CI_LAB and TO_LAB loops.
+Section 5 explains the tick and how this loop works together with the CI_LAB and TO_LAB loops.
 
 ### 4.3 Path of a command and of a segment
 
@@ -258,10 +254,10 @@ Ground ──UDP TC frame──▶ CI_LAB: OS_SocketRecvFrom → TC_SDLP_myExtra
                                                                             FILE_DL_PIPE → FILE_DL
 FILE_DL: FILE_DL_NewSegment / FILE_UL_SendStatus → CFE_SB_TransmitBuffer / TransmitMsg │ SB (MID 0x08Cx)
                                                                                      ▼
-TO_LAB (every 100 ms): ReceiveBuffer(POLL) → TM_SDLP_myAddPacketToFrame → TM_SDLP_myFillAndSendFrame
+TO_LAB (every 100 ms): ReceiveBuffer(POLL) → TM_SDLP_myAddPacketToFrame → TM_SDLP_myFillAndSendFrame → TO_LAB_SendToAllDests
                                                                                      │ UDP TM frame (1786 B)
                                                                                      ▼
-Ground: deframe (First Header Pointer) → packets by MID
+Ground A, B: deframe (First Header Pointer) → packets by MID
 ```
 
 ### 4.4 Downlink (`0x18C0`)
@@ -423,10 +419,8 @@ The relay START puts the relay instance in RECEIVING, so every following `0x18C3
 | 7 | – | `FILE_UL_Finish` on COMPLETE: puts (name, tag) into the relay queue (4 entries) | status COMPLETE |
 | 8 | – | In the same tick, `FILE_UL_RelayNext`: if `FILE_DL_IsBusy()` is false (no downlink file open),<br>`FILE_DL_StartFile(name, tag 2, 0x08C3)` | START segment on **`0x08C3`**, DestTag=2 |
 | 9 | – | Downlink steps 2–3, with every segment on `0x08C3` carrying DestTag=2 | DATA ×N, END on `0x08C3` |
-| 10 | Station 2 keeps only `0x08C3` segments with tag 2 and finds its gaps. Any station with uplink sends them on **`0x18C0`**: CC 2 RESEND, then CC 3 DONE. | Downlink steps 4–5 | DATA again |
+| 10 | Station B keeps only `0x08C3` segments with tag 2 and finds its gaps. B itself sends **`0x18C0`** CC 2 RESEND, then CC 3 DONE. | Downlink steps 4–5 | DATA again |
 | 11 | – | `FILE_DL_Close` makes Open false, so on the next tick `FILE_UL_RelayNext` can start the next queued relay | – |
-
-If a downlink is still open (no DONE yet), the relay waits in the queue and starts on the first tick after it closes.
 
 **Sequence diagram of the relay**
 
@@ -439,6 +433,11 @@ sequenceDiagram
     participant DL as FILE_DL downlink engine<br/>(file_dl_my.c)
     participant TO as TO_LAB
     participant B as Ground B (DestTag 2)
+
+    Note over A,B: Phase 0 - both stations get TM (section 9.1)
+    B->>CI: TC 0x1880 CC7 ADD_DEST(B ip, port)
+    A->>CI: TC 0x1880 CC6 OUTPUT_ENABLE(A ip)
+    CI->>TO: B is an extra destination, A the main one
 
     Note over A,B: Phase 1 - relay uplink (MID 0x18C3)
     A->>CI: TC 0x18C3 CC1 START(/cf/relay/x.bin, size, crc, DestTag=2)
@@ -476,24 +475,23 @@ sequenceDiagram
 
     loop every 100 ms tick (FILE_DL_Wakeup)
         DL->>TO: segment 0x08C3 DATA (offset, 1024 B, tag 2)
-        TO->>B: TM frame (B keeps 0x08C3 with tag 2)
+        TO->>B: TM frame (B keeps 0x08C3 with tag 2; A gets the same frame and ignores it)
     end
     DL->>TO: segment 0x08C3 END (CRC of the whole file)
     TO->>B: TM frame
     Note over DL: file stays open for RESEND
 
     Note over A,B: Phase 3 - repair and close (downlink MID 0x18C0)
-    B-->>A: missing ranges (ground network)
     opt ranges missing at B
-        A->>CI: TC 0x18C0 CC2 RESEND(offset, length)
+        B->>CI: TC 0x18C0 CC2 RESEND(offset, length)
         CI->>DL: SB 0x18C0
         DL->>TO: segment 0x08C3 DATA (sent before anything else)
         TO->>B: TM frame
     end
-    B-->>A: file complete, CRC
-    A->>CI: TC 0x18C0 CC3 DONE(crc)
+    B->>CI: TC 0x18C0 CC3 DONE(crc)
     CI->>DL: SB 0x18C0
     DL->>DL: FILE_DL_Done: compare CRC, close file (Open=false)
+    B->>CI: TC 0x1880 CC8 REMOVE_DEST(B ip, port)
     Note over RL,DL: next tick: FILE_UL_RelayNext may start the next queued relay
 ```
 
@@ -511,16 +509,7 @@ sequenceDiagram
 
 ### 5.1 What a tick is, and what waiting in ReceiveBuffer means
 
-**A tick is the name for "the fixed work done once every 100 ms".** It is not an OS feature, just one variable and one comparison:
-
-```c
-if (now - lastTick >= 100 ms)   /* 100 ms since the fixed work was last done? */
-{
-    FILE_DL_Wakeup();           /* send one segment */
-    FILE_UL_Tick();             /* a bit of CRC checking, start a relay */
-    lastTick = now;             /* remember that it was just done */
-}
-```
+**A tick is the name for "the fixed work done once every 100 ms"** (the `if` in section 4.2). It is not an OS feature, just one variable and one comparison.
 
 FILE_DL has two kinds of work:
 
@@ -605,38 +594,10 @@ Ground ─UDP─▶ [CI_LAB loop] ─SB─▶ FILE_DL_PIPE ─▶ [FILE_DL loop]
 - What one loop hands to the next waits in an SB pipe.
 - The OS scheduler decides which task runs when. On native Linux, task priorities are ignored unless the app runs as root.
 
-### 5.3 One pass of the FILE_DL loop
+### 5.3 Why commands never push the tick back
 
-```c
-while (CFE_ES_RunLoop(&runStatus))
-{
-    (1) now = CFE_PSP_GetTime();
-        waitMsec = 100 - (now - lastTick);          /* time left until the next tick */
-
-    (2) if (waitMsec <= 0)                          /* 100 ms have passed: tick */
-        {
-            FILE_DL_Wakeup();   /* downlink: one segment */
-            FILE_UL_Tick();     /* upload + relay: CRC check steps, start a queued relay */
-            lastTick = now;
-            waitMsec = 100;
-        }
-
-    (3) CFE_SB_ReceiveBuffer(&pBuf, pipe, waitMsec); /* wakes at once on a command, else after waitMsec */
-
-    (4) dispatch by MID: 0x18C0 downlink, 0x18C2 upload, 0x18C3 relay, 0x18C1 one extra tick
-}
-```
-
-The loop does two kinds of work:
-
-| Kind | When it runs | Examples |
-|---|---|---|
-| **Tick work** (2) | Once per 100 ms, by the clock | Send a segment; read a stored file back for its CRC; start a relay |
-| **Command work** (4) | As soon as a command arrives | Open a file, write a chunk, queue a RESEND, send a status |
-
-**Why commands never push the tick back**
-- After each command, the loop returns to (1) and reads the clock again. If 100 ms have passed, the tick runs before the next command.
-- The wait in (3) is always the time *left*, not a fresh 100 ms.
+- After each command, the loop reads the clock again. If 100 ms have passed, the tick runs before the next command.
+- The wait in `ReceiveBuffer` is always the time *left*, not a fresh 100 ms.
 
 ```
 time (ms)   0      20     40     60     80     100    120
@@ -645,8 +606,7 @@ wait        100    80     60     40     20     –      80
 tick        ●                                  ●               (every 100 ms exactly)
 ```
 
-- An earlier version ran the tick only when `ReceiveBuffer` timed out, that is, after 100 ms with *no* command at all. A stream of upload DATA then never let the wait time out, and the downlink stopped.
-- Now a tick can be late only by the time one command takes to handle, which is a few milliseconds.
+- A tick can be late only by the time one command takes to handle, which is a few milliseconds.
 
 ### 5.4 What runs in a tick
 
@@ -735,16 +695,7 @@ TO wake        ◆                             ◆                             �
 - Downlink segments leave once per tick, by the clock.
 - Measured (`--mode both`, 256 KiB, 5% loss each way): 65 downlink segments came down during an 8.0 s upload. The ideal number is 80.
 
-### 5.8 Summary and settings
-
-| Question | Answer |
-|---|---|
-| What is a tick? | A fixed batch of work the FILE_DL loop runs every 100 ms by the clock: one downlink segment, CRC check steps, starting a relay. |
-| What sets the downlink rate? | The tick: 1024 B per 100 ms. |
-| What sets the upload rate? | The ground's command spacing and CI's poll period. The tick does not. |
-| What sets the upload check time? | The tick: 16 chunks per 100 ms. |
-| Is sch_lab involved? | No. FILE_DL keeps its own clock. `0x18C1` WAKEUP still works, but nothing sends it. |
-| Are FILE_DL and TO_LAB in step? | Same period (100 ms), independent phase. The pipe absorbs the difference. |
+### 5.8 Settings
 
 | Setting | Where | Raising it |
 |---|---|---|
@@ -769,8 +720,6 @@ TO wake        ◆                             ◆                             �
 | Relay queue | 4 files |
 | Status gap list | 32 ranges per packet |
 
-- On native Linux, an SB pipe holds 10 messages at most, so the ground must leave 20 ms between commands.
-- Nothing is authenticated: SDLS is off, so anyone with uplink access can write files.
 - On RTEMS, it has not been checked whether `/cf` (`/nonvol`) allows writing and renaming.
 
 ## 7. Files
@@ -849,7 +798,7 @@ TO_LAB builds each TM frame once. It sends the frame to the **main destination**
 - Put each command in one TC frame to CI_LAB, UDP **1234**:
   - The 5-byte frame header is `0x20 0x03` (bypass flag, SCID 3), then VCID 0 and the 10-bit frame length − 1 in two bytes, then a sequence byte.
   - Then comes the 8-byte cFS command header (section 2.1), then the payload.
-- Leave about **20 ms** between commands. On native Linux the SB pipes hold 10 messages.
+- Leave about **20 ms** between commands (section 5.6).
 - COP-1 is not used, so two stations may send with their own sequence bytes.
 
 **Receiving TM (both stations)**
@@ -863,22 +812,12 @@ TO_LAB builds each TM frame once. It sends the frame to the **main destination**
 
 `to_test/tm_deframer.py` does steps 1–5.
 
-### 9.3 Relay, step by step on the satellite side
+### 9.3 Relay order for the two stations
 
-| # | Station | Sends | What cFS does | What the station sees |
-|---|---|---|---|---|
-| 1 | B | `ADD_DEST` (own IP, e.g. port 1245) | TO_LAB keeps B as an extra destination | event 22 |
-| 2 | A | `OUTPUT_ENABLE` (own IP) | TO_LAB sends all TM to A:1235, and a copy to B | TM starts on both |
-| 3 | A | Relay START (`0x18C3` CC 1, with `DestTag`) | Checks name and size. Creates `/cf/relay/<name>.part` | `0x08C2` RECEIVING (on request) |
-| 4 | A | DATA (CC 2), 20 ms apart | Writes each 960 B chunk at its offset and marks it in the bitmap | — |
-| 5 | A | END (CC 3) | If chunks are missing, sends a status with up to 32 gap ranges. Otherwise reads the file back to check the CRC (16 chunks per 100 ms tick). | `0x08C2` RECEIVING + gaps, or VERIFYING |
-| 6 | A | DATA for the gaps, then END again | as in 4 and 5 | — |
-| 7 | — | — | CRC matches: renames `.part` to `<name>`, sends COMPLETE and queues the file for downlink | `0x08C2` COMPLETE. **A is done.** |
-| 8 | — | — | In the same tick, or once the open downlink is closed: `FILE_DL_StartFile(<name>, DestTag, 0x08C3)` | event 14, `0x08C3` START |
-| 9 | — | — | One 1024 B DATA segment per tick, then END with the whole-file CRC. The file stays open. | `0x08C3` DATA / END |
-| 10 | B | `RESEND` (`0x18C0` CC 2) for each gap, up to 64 | Queues the ranges and sends them before anything else | `0x08C3` DATA |
-| 11 | B | `DONE` (`0x18C0` CC 3, CRC) | Compares the CRC, closes the file. The next queued relay may start. | event 7 or 8 |
-| 12 | B | `REMOVE_DEST` | TO_LAB stops sending to B | event 22 |
+1. B sends `ADD_DEST` (own IP and port, e.g. 1245). TO_LAB sends event 22.
+2. A sends `OUTPUT_ENABLE` (own IP). TM now reaches A on 1235 and B on its port.
+3. Relay steps 1–11 of section 4.6: A does the uplink (steps 1–6), and B does the repair and DONE (step 10).
+4. B sends `REMOVE_DEST`. TO_LAB sends event 22.
 
 Rules for each station:
 
@@ -890,37 +829,7 @@ Rules for each station:
   - Keep only `0x08C3` segments with your `DestTag`.
   - After END, and a few quiet seconds, send `RESEND` for the missing ranges.
   - When the file is whole and its CRC equals the END CRC, send `DONE`.
-  - `RESEND` and `DONE` go to the downlink MID `0x18C0`, also for a relayed file.
   - Until B sends `DONE`, the file stays open, and any other downlink or relay waits.
-
-```mermaid
-sequenceDiagram
-    autonumber
-    participant A as Ground A
-    participant CI as CI_LAB
-    participant FD as FILE_DL
-    participant TO as TO_LAB
-    participant B as Ground B (tag 2)
-    B->>CI: TO_LAB CC7 ADD_DEST(B ip, 1245)
-    CI->>TO: add extra destination
-    A->>CI: TO_LAB CC6 OUTPUT_ENABLE(A ip)
-    CI->>TO: main destination A:1235
-    A->>CI: 0x18C3 START(name, size, crc, tag 2), DATA..., END
-    CI->>FD: write chunks, then CRC check per tick
-    FD->>TO: 0x08C2 status (gaps / VERIFYING / COMPLETE)
-    TO->>A: TM frame
-    TO->>B: same TM frame
-    FD->>TO: 0x08C3 START, DATA..., END (tag 2)
-    TO->>A: TM frame (A ignores 0x08C3)
-    TO->>B: same TM frame (B keeps tag 2)
-    B->>CI: 0x18C0 RESEND(offset, length)
-    CI->>FD: resend queued ranges first
-    FD->>TO: 0x08C3 DATA
-    TO->>B: TM frame
-    B->>CI: 0x18C0 DONE(crc)
-    CI->>FD: compare CRC, close file
-    B->>CI: TO_LAB CC8 REMOVE_DEST(B ip, 1245)
-```
 
 ### 9.4 Running the two clients
 
@@ -950,7 +859,6 @@ python3 file_dl_test/relay_ground_a.py nasa2.jpg --ul-loss 0.05
 
 ### 9.5 Limits
 
-- Nothing is authenticated: SDLS is off, so any station can send any command.
-- Every station gets every frame, so the tag only sorts files. It does not keep them private.
+- Nothing is authenticated: SDLS is off, so any station can send any command, and every station can read every file (section 3.4).
 - Only one main destination: a new `OUTPUT_ENABLE` moves it, and the station that had it loses TM unless it is also an extra destination.
 - At most 4 extra destinations.
