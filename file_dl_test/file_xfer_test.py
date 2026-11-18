@@ -8,6 +8,10 @@
   --mode both    upload one file while another one is downlinked; the downlink must not stop
   --mode reject  DATA without START, bad names, too large, wrong CRC, CANCEL
 --ul-loss drops DATA commands and --dl-loss drops TM frames on purpose.
+--dl-file /cf/photo.jpg (with --mode dl) sends a file you put on board yourself and saves
+the received copy under file_dl_test/received/ (or --out).
+--ul-file ~/photo.jpg (with --mode ul or relay) uploads your own ground file to
+/cf/inbox/photo.jpg (or /cf/relay/) and leaves it there after the test.
 """
 import argparse
 import os
@@ -35,6 +39,7 @@ STATES = ["IDLE", "RECEIVING", "VERIFYING", "COMPLETE", "FAILED"]
 CHUNK, NAME_LEN, MAX_RESENDS, TLM_HDR_LEN = 960, 64, 64, 16
 CMD_GAP = 0.02  # native SB pipes hold 10 messages; one command per 20 ms keeps FILE_DL ahead
 STATION_B = 2   # DestTag of the relay ground station
+OS_MAX_FILE_NAME = 20  # osal default_config.cmake: longer names cannot be opened on board
 
 
 class DownlinkRx:
@@ -171,12 +176,15 @@ def upload(link, cmd_mid, status_mid, name, data, tag=None, crc=None, rng=None):
     return st, rounds, skipped
 
 
-def finish_downlink(link, timeout, quiet):
+def finish_downlink(link, timeout, quiet, log_text=None):
     """After the first pass: RESEND the gaps until the file is whole, then DONE with its CRC32.
     RESEND and DONE always go to the downlink MID, also for a relayed file."""
     dl, t_end = link.dl, time.time() + timeout
     while time.time() < t_end:
         link.poll(0.5)
+        if dl.size is None and log_text is not None and "FILE_DL: cannot open" in log_text():
+            print("  FILE_DL could not open the file (see core-cpu1.log)")
+            return None
         if dl.size is None or time.time() - dl.last_data < quiet:
             continue
         gaps = dlt.missing_ranges(dl.chunks, dl.size)
@@ -205,6 +213,9 @@ def main():
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--timeout", type=float, default=600.0)
     parser.add_argument("--quiet-time", type=float, default=3.0, help="seconds without segments before RESEND")
+    parser.add_argument("--dl-file", help="board file for --mode dl, e.g. /cf/photo.jpg (kept, not deleted)")
+    parser.add_argument("--ul-file", help="ground file for --mode ul/relay; kept on board as /cf/inbox/<name>")
+    parser.add_argument("--out", help="where to save the received --dl-file (default received/<name>)")
     args = parser.parse_args()
 
     exe_dir = os.path.join(CFS_ROOT, args.build_dir, "exe", "cpu1")
@@ -217,12 +228,39 @@ def main():
     ul_data, dl_data = data_rng.randbytes(args.size), data_rng.randbytes(args.size)
     ul_name, relay_name, dl_name = "/cf/inbox/ul_test.bin", "/cf/relay/relay_test.bin", "/cf/dl_test.bin"
     board = lambda name: os.path.join(exe_dir, name.lstrip("/"))  # noqa: E731
-    scratch = [board(ul_name), board(relay_name), board(dl_name)]
+    if args.dl_file:
+        # Your own file: read it as the reference, never create or delete it.
+        for bad, why in ((args.mode != "dl", "--dl-file works only with --mode dl"),
+                         (len(args.dl_file.encode()) >= NAME_LEN, f"path must be under {NAME_LEN} bytes"),
+                         (len(os.path.basename(args.dl_file).encode()) >= OS_MAX_FILE_NAME,
+                          f"file name must be under {OS_MAX_FILE_NAME} bytes (OSAL OS_MAX_FILE_NAME)"),
+                         (not os.path.isfile(board(args.dl_file)), f"no such file: {board(args.dl_file)}")):
+            if bad:
+                print(f"FAIL: {why}")
+                return 1
+        dl_name = args.dl_file
+        dl_data = open(board(dl_name), "rb").read()
+        args.size = len(dl_data)
+    if args.ul_file:
+        # Your own ground file; <name>.part must also fit OS_MAX_FILE_NAME on board.
+        base = os.path.basename(args.ul_file)
+        for bad, why in ((args.mode not in ("ul", "relay"), "--ul-file works only with --mode ul or relay"),
+                         (not os.path.isfile(args.ul_file), f"no such file: {args.ul_file}"),
+                         (len((base + ".part").encode()) >= OS_MAX_FILE_NAME,
+                          f"file name must be at most {OS_MAX_FILE_NAME - 6} bytes (<name>.part on board)"),
+                         (os.path.getsize(args.ul_file) > 4 * 1024 * 1024, "file must be at most 4 MiB")):
+            if bad:
+                print(f"FAIL: {why}")
+                return 1
+        ul_data = open(args.ul_file, "rb").read()
+        ul_name, relay_name, args.size = "/cf/inbox/" + base, "/cf/relay/" + base, len(ul_data)
+    scratch = [board(ul_name), board(relay_name)] + ([] if args.dl_file else [board(dl_name)])
+    keep = {board(ul_name), board(relay_name)} if args.ul_file else set()  # results you want to look at
     for path in scratch:
         for p in (path, path + ".part"):
             if os.path.exists(p):
-                os.remove(p)
-    if args.mode in ("dl", "both"):
+                os.remove(p)  # an older copy must not make the test pass
+    if args.mode in ("dl", "both") and not args.dl_file:
         with open(board(dl_name), "wb") as f:
             f.write(dl_data)
 
@@ -263,11 +301,17 @@ def main():
 
         if args.mode == "dl":
             link.cmd(DL_CMD, DL_START, dl_name.encode().ljust(NAME_LEN, b"\0"))
-            got = finish_downlink(link, args.timeout, args.quiet_time)
+            got = finish_downlink(link, args.timeout, args.quiet_time, log_text)
             t_dl = time.time() - t0
             check(got == dl_data, f"file equals the board file ({t_dl:.1f} s, {args.size / t_dl / 1024:.1f} KiB/s)")
             check(link.dl.end_crc == zlib.crc32(dl_data), "END CRC32 matches")
             check("confirmed by ground" in log_text(), "FILE_DL got DONE and closed the file")
+            if args.dl_file and got is not None:
+                out = args.out or os.path.join(SCRIPT_DIR, "received", os.path.basename(dl_name))
+                os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
+                with open(out, "wb") as f:
+                    f.write(got)
+                print(f"  received file saved to {out}")
 
         if args.mode in ("ul", "both"):
             if args.mode == "both":
@@ -309,7 +353,7 @@ def main():
                                   f"({time.time() - t_dl0:.1f} s after the uplink, {time.time() - t0:.1f} s total)")
             check(link.dl.name == relay_name, f"START segment names the relay file ({link.dl.name})")
             check(link.dl.end_crc == zlib.crc32(ul_data), "END CRC32 matches")
-            check("FILE_RELAY: sending /cf/relay/relay_test.bin to tag 2" in log_text(), "relay downlink started")
+            check(f"FILE_RELAY: sending {relay_name} to tag {STATION_B}" in log_text(), "relay downlink started")
             check("confirmed by ground" in log_text(), "FILE_DL got DONE and closed the file")
 
         if args.mode == "reject":
@@ -353,8 +397,11 @@ def main():
             core.kill()
         for path in scratch:
             for p in (path, path + ".part"):
-                if os.path.exists(p):
+                if os.path.exists(p) and p not in keep:
                     os.remove(p)
+        for p in keep:
+            if os.path.exists(p):
+                print(f"  uploaded file kept at {p}")
 
     text = log_text()
     check("Msg Limit Err" not in text, "no command dropped by the SB message limit")

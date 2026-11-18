@@ -154,6 +154,64 @@ A full DATA segment is 16 + 16 + 1024 = 1056 bytes, which fits one TM data field
 | 14 | `FILE_RELAY: sending <name> to tag N` | Relay downlink starts |
 | 15 | `<name> cancelled` | CANCEL |
 
+### 3.4 Space Packet header and segment header
+
+These are two different headers, and they are stacked. The **Space Packet (SPP) header** is the CCSDS standard header at the start of every packet. The **segment header** is defined by file_dl. It sits inside the user data of that packet.
+
+```
+┌──────────── TM Transfer Frame, 1786 B (TO_LAB, TM-SDLP) ─────────────────────────────┐
+│ Frame hdr 6 B │ SDLS area 14 B (zero) │ data field 1766 B: Space Packets, idle fill    │
+└───────────────┴───────────────────────┼────────────────────────────────────────────────┘
+                                        ▼
+┌──────────────────────────── one Space Packet (0x08C3 relay segment) ───────────────────┐
+│ ① Primary 6 B │ ② Secondary 6 B │ ③ Spare 4 B │ ④ Segment header 16 B │ Data ≤ 1024 B │
+│ CCSDS SPP     │ cFS: time       │ cFS: align  │ file_dl               │ file bytes    │
+├───────────────┴─────────────────┴─────────────┼───────────────────────┴───────────────┤
+│ cFS TLM header = 16 B (bytes 0–15)             │ user data for the SPP (bytes 16– )    │
+└────────────────────────────────────────────────┴───────────────────────────────────────┘
+```
+
+| Part | Size | Defined by | Contents | Source |
+|---|---|---|---|---|
+| ① SPP primary header | 6 B | **CCSDS 133.0-B** | Version, type (TLM/CMD), secondary header flag, APID, sequence flags and count, packet length | `cfe/modules/msg/fsw/inc/ccsds_hdr.h` |
+| ② Secondary header | 6 B | cFS | Time | `cfe/modules/msg/option_inc/default_cfe_msg_hdr_pri.h` |
+| ③ Spare | 4 B | cFS | Padding for 64-bit alignment | same file |
+| ④ Segment header | 16 B | **file_dl** | Type, DestTag, DataLength, Offset, FileSize, Crc32 (section 3.1) | `fsw/src/file_dl_my.h` (`FILE_DL_SegHdr_t`) |
+
+Each header answers a different question:
+
+- **The SPP header says what the packet is and where it ends.** The APID (the cFS MID, here `0x08C3`) names the application. The packet length marks where the packet ends. TO_LAB uses it to put packets into frames, and the ground deframer uses it to cut them out again. The SPP header has nothing about files.
+- **The segment header says where in the file the piece belongs.** It holds the piece type, the file offset, the file size, the CRC and the station tag. Neither SPP nor TO_LAB reads it. Only file_dl and the ground client do.
+
+There are two levels of splitting:
+
+| Level | Done by | Unit | How a piece is placed |
+|---|---|---|---|
+| File → segments | file_dl | ≤ 1024 B of file data | `Offset` in the segment header |
+| Packets → frames | TO_LAB (TM-SDLP) | 1786 B frame | First Header Pointer in the frame header, plus the SPP packet length |
+
+A full segment packet is 1056 B. It is smaller than the 1766 B data field, so it is never split at the SPP level. It can still run over the end of one frame into the next frame. The First Header Pointer (FHP) joins the two parts.
+
+#### Is `DestTag` a CCSDS field?
+
+No. It was chosen for this app.
+
+- It uses byte 17, the second byte of the file_dl segment header. That byte used to be `Spare`.
+- No standard header in this path has a destination station:
+  - SPP: APID names an application process.
+  - TM frame: SCID and VCID name the spacecraft and the virtual channel.
+- The closest CCSDS concept is the Destination Entity ID in the CFDP PDU header (CCSDS 727.0-B). file_dl does not use CFDP.
+
+`DestTag` is carried in three places:
+
+| Where | Packet | Position |
+|---|---|---|
+| Up | Relay START command (`0x18C3` CC 1) | Byte 80, after Filename[64], FileSize[4] and Crc32[4] |
+| Down | Each relay segment (`0x08C3`) | Byte 17 (segment header byte 1) |
+| Down | Relay status (`0x08C2`) | Byte 18 |
+
+The satellite does **not** route by `DestTag`. TO_LAB sends every frame to every destination (section 9). Each ground station keeps the segments with its own tag. Any station can still read the others' files, because SDLS encryption is off.
+
 ---
 
 ## 4. How it works, end to end
@@ -741,3 +799,158 @@ python3 file_dl_test/file_xfer_test.py --mode relay --size 1048576 --ul-loss 0.0
 | `reject` | DATA without START, wrong directories, a file over 4 MiB, the wrong START size, a wrong CRC (FAILED, no relay), and CANCEL |
 
 `--ul-loss` drops DATA commands on purpose, and `--dl-loss` drops TM frames. `file_dl_ground_test.py` is the original downlink-only test.
+
+Your own files:
+
+| Option | Mode | Effect |
+|---|---|---|
+| `--dl-file /cf/<name>` | `dl` | Downlinks a file you put in `build-native/exe/cpu1/cf/`. The file is kept, and the copy received is saved in `file_dl_test/received/`. |
+| `--ul-file <path>` | `ul`, `relay` | Uploads a ground file to `/cf/inbox/<name>` (or `/cf/relay/<name>`) and keeps it there. |
+
+OSAL limits a file name to 19 characters (`OS_MAX_FILE_NAME` 20). An uploaded file is written as `<name>.part` first, so its name can be at most 14 characters.
+
+Two separate ground stations (section 9): `relay_ground_b.py` and `relay_ground_a.py`.
+
+## 9. Ground clients: TO_LAB destinations and the relay
+
+This section is for anyone who writes a ground client. A relay involves two ground stations, and **everything goes through the satellite**. The stations never talk to each other.
+
+- **Ground A**, the uplink station, sends the file with the relay commands.
+- **Ground B**, the downlink station, gets it from the satellite and asks the satellite for the missing parts.
+
+```
+A ──TC: relay START / DATA / END (0x18C3)──▶  satellite  ◀──TC: RESEND / DONE (0x18C0)── B
+A ◀──────────── the same TM frames ─────────  satellite  ───────── the same TM frames ──▶ B
+   A uses 0x08C2 (relay status)                         B uses 0x08C3 with its DestTag
+```
+
+### 9.1 TO_LAB: one main destination and extra destinations
+
+TO_LAB builds each TM frame once. It sends the frame to the **main destination** and then sends the same frame to every **extra destination**. This acts like one RF downlink that every station in view receives. TO_LAB does not look inside the frames.
+
+| CC | Command (MID `0x1880`) | Payload | Total size | Effect |
+|---|---|---|---|---|
+| 6 | `OUTPUT_ENABLE` | `dest_IP[16]` (text, NUL padded) | 24 B | Starts TM output, or moves it to a new main destination. The port is fixed to **1235**. |
+| 7 | `ADD_DEST` | `DestIp[16]` + `Port[2]` (big-endian) | 26 B | Adds an extra destination, up to 4. Adding one that is already there changes nothing. |
+| 8 | `REMOVE_DEST` | same as CC 7 | 26 B | Removes an extra destination. |
+
+- No TM goes out at all until some station has sent `OUTPUT_ENABLE`. An extra destination only gets frames after that.
+- If the send to the main destination fails, TO_LAB stops all output. A failed send to an extra destination is ignored.
+- Events: 3 `TO telemetry output enabled for IP ...`, 22 `TO: TM also goes to ip:port` / `TO: TM no longer goes to ip:port`, 23 wrong size or no free slot.
+- Code:
+  - `apps/to_lab/fsw/src/to_lab_dest_my.c/.h`
+  - one call in `tm_sdlp_my.c` (`TO_LAB_SendToAllDests` instead of `OS_SocketSendTo`)
+  - two `case` lines in `to_lab_app.c`
+
+### 9.2 What a client must do
+
+**Sending a command (both stations)**
+
+- Put each command in one TC frame to CI_LAB, UDP **1234**:
+  - The 5-byte frame header is `0x20 0x03` (bypass flag, SCID 3), then VCID 0 and the 10-bit frame length − 1 in two bytes, then a sequence byte.
+  - Then comes the 8-byte cFS command header (section 2.1), then the payload.
+- Leave about **20 ms** between commands. On native Linux the SB pipes hold 10 messages.
+- COP-1 is not used, so two stations may send with their own sequence bytes.
+
+**Receiving TM (both stations)**
+
+1. Receive 1786-byte UDP frames on your port.
+2. The Master Channel Frame Count is frame byte 2. If it jumps, drop any packet you were joining.
+3. The First Header Pointer (FHP) is the low 11 bits of bytes 4–5. `0x7FF` means no packet starts in this frame.
+4. The data field starts at byte 20 (6 B frame header + 14 B zeroed SDLS area). Cut it into packets with the SPP length: total length = bytes 4–5 + 7.
+5. APID `0x7FF` is idle fill. Drop it.
+6. The MID is the first two bytes of the packet. The payload starts at byte 16.
+
+`to_test/tm_deframer.py` does steps 1–5.
+
+### 9.3 Relay, step by step on the satellite side
+
+| # | Station | Sends | What cFS does | What the station sees |
+|---|---|---|---|---|
+| 1 | B | `ADD_DEST` (own IP, e.g. port 1245) | TO_LAB keeps B as an extra destination | event 22 |
+| 2 | A | `OUTPUT_ENABLE` (own IP) | TO_LAB sends all TM to A:1235, and a copy to B | TM starts on both |
+| 3 | A | Relay START (`0x18C3` CC 1, with `DestTag`) | Checks name and size. Creates `/cf/relay/<name>.part` | `0x08C2` RECEIVING (on request) |
+| 4 | A | DATA (CC 2), 20 ms apart | Writes each 960 B chunk at its offset and marks it in the bitmap | — |
+| 5 | A | END (CC 3) | If chunks are missing, sends a status with up to 32 gap ranges. Otherwise reads the file back to check the CRC (16 chunks per 100 ms tick). | `0x08C2` RECEIVING + gaps, or VERIFYING |
+| 6 | A | DATA for the gaps, then END again | as in 4 and 5 | — |
+| 7 | — | — | CRC matches: renames `.part` to `<name>`, sends COMPLETE and queues the file for downlink | `0x08C2` COMPLETE. **A is done.** |
+| 8 | — | — | In the same tick, or once the open downlink is closed: `FILE_DL_StartFile(<name>, DestTag, 0x08C3)` | event 14, `0x08C3` START |
+| 9 | — | — | One 1024 B DATA segment per tick, then END with the whole-file CRC. The file stays open. | `0x08C3` DATA / END |
+| 10 | B | `RESEND` (`0x18C0` CC 2) for each gap, up to 64 | Queues the ranges and sends them before anything else | `0x08C3` DATA |
+| 11 | B | `DONE` (`0x18C0` CC 3, CRC) | Compares the CRC, closes the file. The next queued relay may start. | event 7 or 8 |
+| 12 | B | `REMOVE_DEST` | TO_LAB stops sending to B | event 22 |
+
+Rules for each station:
+
+- **Station A**
+  - Ask with `STATUS` (CC 4) when a status does not come.
+  - While the status is VERIFYING, wait for the next status.
+  - Stop after COMPLETE. FAILED means the CRC did not match: the `.part` file is kept, and no downlink happens.
+- **Station B**
+  - Keep only `0x08C3` segments with your `DestTag`.
+  - After END, and a few quiet seconds, send `RESEND` for the missing ranges.
+  - When the file is whole and its CRC equals the END CRC, send `DONE`.
+  - `RESEND` and `DONE` go to the downlink MID `0x18C0`, also for a relayed file.
+  - Until B sends `DONE`, the file stays open, and any other downlink or relay waits.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant A as Ground A
+    participant CI as CI_LAB
+    participant FD as FILE_DL
+    participant TO as TO_LAB
+    participant B as Ground B (tag 2)
+    B->>CI: TO_LAB CC7 ADD_DEST(B ip, 1245)
+    CI->>TO: add extra destination
+    A->>CI: TO_LAB CC6 OUTPUT_ENABLE(A ip)
+    CI->>TO: main destination A:1235
+    A->>CI: 0x18C3 START(name, size, crc, tag 2), DATA..., END
+    CI->>FD: write chunks, then CRC check per tick
+    FD->>TO: 0x08C2 status (gaps / VERIFYING / COMPLETE)
+    TO->>A: TM frame
+    TO->>B: same TM frame
+    FD->>TO: 0x08C3 START, DATA..., END (tag 2)
+    TO->>A: TM frame (A ignores 0x08C3)
+    TO->>B: same TM frame (B keeps tag 2)
+    B->>CI: 0x18C0 RESEND(offset, length)
+    CI->>FD: resend queued ranges first
+    FD->>TO: 0x08C3 DATA
+    TO->>B: TM frame
+    B->>CI: 0x18C0 DONE(crc)
+    CI->>FD: compare CRC, close file
+    B->>CI: TO_LAB CC8 REMOVE_DEST(B ip, 1245)
+```
+
+### 9.4 Running the two clients
+
+| Receiver | UDP port | Sender |
+|---|---|---|
+| cFS (CI_LAB) | 1234 | A and B (commands) |
+| A | 1235 | TO_LAB (main destination) |
+| B | 1245 (`--tm-port`) | TO_LAB (extra destination) |
+
+Run each in its own terminal, starting B before A:
+
+```bash
+cd build-native/exe/cpu1 && ./core-cpu1 -R PO
+```
+
+```bash
+python3 file_dl_test/relay_ground_b.py --dl-loss 0.05
+```
+
+```bash
+python3 file_dl_test/relay_ground_a.py nasa2.jpg --ul-loss 0.05
+```
+
+- For other hosts, give both clients `--host <cFS IP> --my-ip <own IP>`.
+- B saves the file in `file_dl_test/received/`.
+- On WSL2 with NAT, other hosts cannot reach the cFS ports. Mirrored networking may help, but it has not been tried.
+
+### 9.5 Limits
+
+- Nothing is authenticated: SDLS is off, so any station can send any command.
+- Every station gets every frame, so the tag only sorts files. It does not keep them private.
+- Only one main destination: a new `OUTPUT_ENABLE` moves it, and the station that had it loses TM unless it is also an extra destination.
+- At most 4 extra destinations.
