@@ -2,26 +2,24 @@ OS_Posix_GetSchedulerParams():189:Policy 1: available, min-max: 1-99
 OS_Posix_GetSchedulerParams():189:Policy 2: available, min-max: 1-99
 OS_Posix_TaskAPI_Impl_Init():375:Selected policy 2 for RT tasks, root task = 99
 OS_Posix_TaskAPI_Impl_Init():392:Could not setschedparam in main thread: Operation not permitted (1)
-CFE_PSP: EEPROM Range (2) created: Start Address = 7F628AA08000, Size = 00080000 Status = 0
-CFE_PSP: Starting the cFE with a POWER ON reset.
-CFE_PSP: Clearing out CFE CDS Shared memory segment.
-CFE_PSP: Clearing out CFE Reset Shared memory segment.
-CFE_PSP: Clearing out CFE User Reserved Shared memory segment.
-1980-001-04:56:24.43979 CFE_ES_SetupResetVariables: POWER ON RESET due to Power Cycle (Power Cycle).
-1980-001-04:56:24.43982 CFE_ES_Main: CFE_ES_Main in EARLY_INIT state
+CFE_PSP: EEPROM Range (2) created: Start Address = 7FD42BB01000, Size = 00080000 Status = 0
+CFE_PSP: Normal exit from previous cFE instance
+CFE_PSP: Starting the cFE with a PROCESSOR reset.
+1980-001-05:09:58.25569 CFE_ES_Main: CFE_ES_Main in EARLY_INIT state
+1980-001-05:09:58.25577 CFE_ES_InitializeFileSystems: Volatile Disk has 99 Percent free space.
 CFE_PSP: CFE_PSP_AttachExceptions Called
-1980-001-04:56:24.44021 CFE_ES_Main: CFE_ES_Main entering CORE_STARTUP state
-1980-001-04:56:24.44021 CFE_ES_CreateObjects: Starting Object Creation calls.
-1980-001-04:56:24.44021 CFE_ES_CreateObjects: Calling CFE_Config_Init
-1980-001-04:56:24.44023 CFE_ES_CreateObjects: Calling CFE_ES_CDSEarlyInit
-1980-001-04:56:24.44031 CFE_ES_CreateObjects: Calling CFE_EVS_EarlyInit
-1980-001-04:56:24.44032 CFE_EVS_EarlyInit: Event Log cleared following power-on reset
-1980-001-04:56:24.44032 CFE_ES_CreateObjects: Calling CFE_SB_EarlyInit
-1980-001-04:56:24.44072 CFE_ES_CreateObjects: Calling CFE_TIME_EarlyInit
-1980-012-14:03:20.00000 CFE_ES_CreateObjects: Calling CFE_TBL_EarlyInit
-1980-012-14:03:20.00047 CFE_ES_CreateObjects: Calling CFE_FS_EarlyInit
+1980-001-05:09:58.25648 CFE_ES_Main: CFE_ES_Main entering CORE_STARTUP state
+1980-001-05:09:58.25649 CFE_ES_CreateObjects: Starting Object Creation calls.
+1980-001-05:09:58.25649 CFE_ES_CreateObjects: Calling CFE_Config_Init
+1980-001-05:09:58.25654 CFE_ES_CreateObjects: Calling CFE_ES_CDSEarlyInit
+1980-001-05:09:58.25660 CFE_ES_CreateObjects: Calling CFE_EVS_EarlyInit
+1980-001-05:09:58.25662 CFE_EVS_EarlyInit: Event Log restored, n=0, c=20, f=1, m=1, o=36
+1980-001-05:09:58.25663 CFE_ES_CreateObjects: Calling CFE_SB_EarlyInit
+1980-001-05:09:58.25705 CFE_ES_CreateObjects: Calling CFE_TIME_EarlyInit
+1980-012-14:06:02.99965 CFE_ES_CreateObjects: Calling CFE_TBL_EarlyInit
+1980-012-14:06:02.99998 CFE_ES_CreateObjects: Calling CFE_FS_EarlyInit
 EVS Port1 66/1/CFE_EVS 1: cFE EVS Initialized:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-1980-012-14:03:20.15131 CFE_SB_AppInit: Registered 4 events for filtering
+1980-012-14:06:03.15170 CFE_SB_AppInit: Registered 4 events for filtering
 EVS Port1 66/1/CFE_SB 1: cFE SB Initialized:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
 EVS Port1 66/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_SB
 EVS Port1 66/1/CFE_ES 1: cFE ES Initialized:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
@@ -46,60 +44,34 @@ EVS Port1 66/1/CFE_ES 91: Version Info: Module CONFIG, version git:v7.0.0-rc4-38
 EVS Port1 66/1/CFE_ES 92: Build 202611171912 by yujin@debian, config bbb
 EVS Port1 66/1/CFE_TIME 1: cFE TIME Initialized:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
 EVS Port1 66/1/CFE_TBL 1: cFE TBL Initialized:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-1980-012-14:03:20.50276 CFE_ES_CreateObjects: Finished ES CreateObject table entries.
-1980-012-14:03:20.50277 CFE_ES_Main: CFE_ES_Main entering CORE_READY state
-1980-012-14:03:20.50280 CFE_ES_StartApplications: Opened ES App Startup file: /cf/cfe_es_startup.scr
-1980-012-14:03:20.50305 CFE_ES_ParseFileEntry: Loading shared library: /cf/sample_lib.so
+OS_FileOpen_Impl():114:open(/dev/shm/osal:RAM/cfe_es_startup.scr): No such file or directory
+1980-012-14:06:03.50382 CFE_ES_CreateObjects: Finished ES CreateObject table entries.
+1980-012-14:06:03.50384 CFE_ES_Main: CFE_ES_Main entering CORE_READY state
+1980-012-14:06:03.50389 CFE_ES_StartApplications: Cannot Open Volatile Startup file: /ram/cfe_es_startup.scr, Trying Nonvolatile.
+1980-012-14:06:03.50391 CFE_ES_StartApplications: Opened ES App Startup file: /cf/cfe_es_startup.scr
+1980-012-14:06:03.50401 CFE_ES_ParseFileEntry: Loading shared library: /cf/sample_lib.so
 SAMPLE Lib Initialized. Sample Lib DEVELOPMENT BUILD v1.3.0-rc4+dev3, Last Official Release: v1.1.0
-1980-012-14:03:20.50340 CFE_ES_ParseFileEntry: Loading file: /cf/sample_app.so, APP: SAMPLE_APP
-1980-012-14:03:20.50362 CFE_ES_ParseFileEntry: Loading file: /cf/ci_lab.so, APP: CI_LAB_APP
-1980-012-14:03:20.50379 CFE_ES_ParseFileEntry: Loading file: /cf/to_lab.so, APP: TO_LAB_APP
-1980-012-14:03:20.50396 CFE_ES_ParseFileEntry: Loading file: /cf/sch_lab.so, APP: SCH_LAB_APP
-1980-012-14:03:20.50413 CFE_ES_ParseFileEntry: Loading file: /cf/blinky.so, APP: BLINKY_APP
-1980-012-14:03:20.50430 CFE_ES_ParseFileEntry: Loading file: /cf/file_dl.so, APP: FILE_DL
-1980-012-14:03:20.50447 CFE_ES_ParseFileEntry: Loading file: /cf/msn_app.so, APP: MSN_APP
-1980-012-14:03:20.50463 CFE_ES_ParseFileEntry: Loading file: /cf/relay_app.so, APP: RELAY_APP
-1980-012-14:03:20.55393 CFE_EVS_Register: Filter limit truncated to 8
-1980-012-14:03:20.55401 CFE_EVS_Register: Filter limit truncated to 8
+1980-012-14:06:03.50425 CFE_ES_ParseFileEntry: Loading file: /cf/sample_app.so, APP: SAMPLE_APP
+1980-012-14:06:03.50449 CFE_ES_ParseFileEntry: Loading file: /cf/ci_lab.so, APP: CI_LAB_APP
+1980-012-14:06:03.50469 CFE_ES_ParseFileEntry: Loading file: /cf/to_lab.so, APP: TO_LAB_APP
+1980-012-14:06:03.50485 CFE_ES_ParseFileEntry: Loading file: /cf/sch_lab.so, APP: SCH_LAB_APP
+1980-012-14:06:03.50501 CFE_ES_ParseFileEntry: Loading file: /cf/blinky.so, APP: BLINKY_APP
+1980-012-14:06:03.50517 CFE_ES_ParseFileEntry: Loading file: /cf/file_dl.so, APP: FILE_DL
+1980-012-14:06:03.50534 CFE_ES_ParseFileEntry: Loading file: /cf/msn_app.so, APP: MSN_APP
+1980-012-14:06:03.50550 CFE_ES_ParseFileEntry: Loading file: /cf/relay_app.so, APP: RELAY_APP
 EVS Port1 66/1/SAMPLE_APP 1: SAMPLE App Initialized. Sample App DEVELOPMENT BUILD v1.3.0-rc4+dev4, Last Official Release: v1.1.0
-1980-012-14:03:20.55414 CI_LAB listening on UDP port: 1234
+1980-012-14:06:03.55474 CFE_EVS_Register: Filter limit truncated to 8
+1980-012-14:06:03.55484 CI_LAB listening on UDP port: 1234
 EVS Port1 66/1/CI_LAB_APP 3: CI Lab Initialized. CI Lab App DEVELOPMENT BUILD v2.5.0-rc4+dev4, Last Official Release: v2.3.0
+1980-012-14:06:03.55491 CFE_EVS_Register: Filter limit truncated to 8
 EVS Port1 66/1/TO_LAB_APP 1: TO Lab Initialized. TO Lab DEVELOPMENT BUILD v2.5.0-rc4+dev4, Last Official Release: v2.3.0, Awaiting enable command.
 SCH Lab Initialized. SCH Lab DEVELOPMENT BUILD v2.5.0-rc4+dev6, Last Official Release: v2.3.0
-1980-012-14:03:20.55436 CFE_EVS_Register: Filter limit truncated to 8
+1980-012-14:06:03.55519 CFE_EVS_Register: Filter limit truncated to 8
 EVS Port1 66/1/BLINKY_APP 1: BLINKY App Initialized. Ping DEVELOPMENT BUILD v1.0.0-rc1+dev4, Last Official Release: v1.0.0
 EVS Port1 66/1/FILE_DL 1: FILE_DL Initialized
-EVS Port1 66/1/RELAY_APP 1: RELAY App Initialized, 2 stations
 EVS Port1 66/1/MSN_APP 1: MSN App Initialized. MSN App v1.0.0 Altitude 400.00 km, Fuel 5.000 kg
-1980-012-14:03:20.60514 CFE_ES_Main: CFE_ES_Main entering APPS_INIT state
-1980-012-14:03:20.60516 CFE_ES_Main: CFE_ES_Main entering OPERATIONAL state
+EVS Port1 66/1/RELAY_APP 1: RELAY App Initialized, 2 stations
+1980-012-14:06:03.60595 CFE_ES_Main: CFE_ES_Main entering APPS_INIT state
+1980-012-14:06:03.60597 CFE_ES_Main: CFE_ES_Main entering OPERATIONAL state
 EVS Port1 66/1/CFE_TIME 21: Stop FLYWHEEL
-EVS Port1 66/1/CFE_ES 92: Build 202611171912 by yujin@debian, config bbb
-EVS Port1 66/1/CFE_ES 3: No-op command:
- cFS Versions: cfe v7.0.0-rc4+dev39, osal v6.0.0-rc4+dev15, psp v1.6.0-rc1+dev4
-EVS Port1 66/1/CFE_SB 28: No-op Cmd Rcvd:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
 EVS Port1 66/1/TO_LAB_APP 3: TO telemetry output enabled for IP 127.0.0.1
-EVS Port1 66/1/CFE_EVS 0: No-op Cmd Rcvd:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-EVS Port1 66/1/CFE_EVS 0: No-op Cmd Rcvd:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-EVS Port1 66/1/CFE_EVS 0: No-op Cmd Rcvd:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-EVS Port1 66/1/CFE_EVS 0: No-op Cmd Rcvd:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-EVS Port1 66/1/CFE_TBL 10: No-op Cmd Rcvd:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-EVS Port1 66/1/CFE_TBL 10: No-op Cmd Rcvd:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-EVS Port1 66/1/CFE_SB 28: No-op Cmd Rcvd:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-EVS Port1 66/1/CFE_SB 28: No-op Cmd Rcvd:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-EVS Port1 66/1/CFE_SB 28: No-op Cmd Rcvd:  cFE DEVELOPMENT BUILD v7.0.0-rc4+dev39 (Codename: Draco), Last Official Release: cfe v6.7.0
-EVS Port1 66/1/CFE_ES 92: Build 202611171912 by yujin@debian, config bbb
-EVS Port1 66/1/CFE_ES 3: No-op command:
- cFS Versions: cfe v7.0.0-rc4+dev39, osal v6.0.0-rc4+dev15, psp v1.6.0-rc1+dev4
-EVS Port1 66/1/CFE_ES 92: Build 202611171912 by yujin@debian, config bbb
-EVS Port1 66/1/CFE_ES 3: No-op command:
- cFS Versions: cfe v7.0.0-rc4+dev39, osal v6.0.0-rc4+dev15, psp v1.6.0-rc1+dev4
-EVS Port1 66/1/CFE_ES 92: Build 202611171912 by yujin@debian, config bbb
-EVS Port1 66/1/CFE_ES 3: No-op command:
- cFS Versions: cfe v7.0.0-rc4+dev39, osal v6.0.0-rc4+dev15, psp v1.6.0-rc1+dev4
-EVS Port1 66/1/CFE_ES 92: Build 202611171912 by yujin@debian, config bbb
-EVS Port1 66/1/CFE_ES 3: No-op command:
- cFS Versions: cfe v7.0.0-rc4+dev39, osal v6.0.0-rc4+dev15, psp v1.6.0-rc1+dev4
-EVS Port1 66/1/CFE_ES 92: Build 202611171912 by yujin@debian, config bbb
-EVS Port1 66/1/CFE_ES 3: No-op command:
- cFS Versions: cfe v7.0.0-rc4+dev39, osal v6.0.0-rc4+dev15, psp v1.6.0-rc1+dev4
