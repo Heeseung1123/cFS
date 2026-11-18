@@ -1,4 +1,4 @@
-# Install script for directory: /home/heeseung/rtems-cfs-demo/cFS/psp
+# Install script for directory: /home/yujin/Documents/lab-2026-1/cFS-sdls/psp
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,19 +44,19 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/psp/pc-linux-impl/cmake_install.cmake")
-  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/psp/pc-linux-shared/cmake_install.cmake")
-  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/psp/soft_timebase-pc-linux-impl/cmake_install.cmake")
-  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/psp/timebase_posix_clock-pc-linux-impl/cmake_install.cmake")
-  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/psp/eeprom_mmap_file-pc-linux-impl/cmake_install.cmake")
-  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/psp/ram_notimpl-pc-linux-impl/cmake_install.cmake")
-  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/psp/port_notimpl-pc-linux-impl/cmake_install.cmake")
+  include("/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/psp/pc-linux-impl/cmake_install.cmake")
+  include("/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/psp/pc-linux-shared/cmake_install.cmake")
+  include("/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/psp/soft_timebase-pc-linux-impl/cmake_install.cmake")
+  include("/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/psp/timebase_posix_clock-pc-linux-impl/cmake_install.cmake")
+  include("/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/psp/eeprom_mmap_file-pc-linux-impl/cmake_install.cmake")
+  include("/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/psp/ram_notimpl-pc-linux-impl/cmake_install.cmake")
+  include("/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/psp/port_notimpl-pc-linux-impl/cmake_install.cmake")
 
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/psp/install_local_manifest.txt"
+  file(WRITE "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/psp/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

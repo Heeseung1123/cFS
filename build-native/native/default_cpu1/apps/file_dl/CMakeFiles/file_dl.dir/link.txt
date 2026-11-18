@@ -1,1 +1,1 @@
-/usr/bin/cc -fPIC -g -shared -Wl,--dependency-file=CMakeFiles/file_dl.dir/link.d  -o file_dl.so CMakeFiles/file_dl.dir/fsw/src/file_dl_my.c.o
+/usr/bin/cc -fPIC -I/home/yujin/native_stub -g -Wl,--dependency-file=CMakeFiles/file_dl.dir/link.d -shared  -o file_dl.so CMakeFiles/file_dl.dir/fsw/src/file_dl_my.c.o

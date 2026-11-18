@@ -5,9 +5,9 @@
 
 
 
-/* /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/cfe_platform_cfg.h does not exist */
-/* /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/default_platform_cfg.h does not exist */
-#include "/home/heeseung/rtems-cfs-demo/cFS/bbb_defs/cpu1_platform_cfg.h"
+/* /home/yujin/Documents/lab-2026-1/cFS-sdls/bbb_defs/cfe_platform_cfg.h does not exist */
+/* /home/yujin/Documents/lab-2026-1/cFS-sdls/bbb_defs/default_platform_cfg.h does not exist */
+#include "/home/yujin/Documents/lab-2026-1/cFS-sdls/bbb_defs/cpu1_platform_cfg.h"
 
 
 #endif /* GENERATED_INCLUDE_CFE_PLATFORM_CFG_H */

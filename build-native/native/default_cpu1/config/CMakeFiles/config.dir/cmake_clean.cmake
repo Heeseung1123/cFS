@@ -7,8 +7,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/config.dir/fsw/src/cfe_config_lookup.c.o.d"
   "CMakeFiles/config.dir/fsw/src/cfe_config_set.c.o"
   "CMakeFiles/config.dir/fsw/src/cfe_config_set.c.o.d"
-  "CMakeFiles/config.dir/home/heeseung/rtems-cfs-demo/cFS/build-native/src/cfe_config_map.c.o"
-  "CMakeFiles/config.dir/home/heeseung/rtems-cfs-demo/cFS/build-native/src/cfe_config_map.c.o.d"
+  "CMakeFiles/config.dir/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/src/cfe_config_map.c.o"
+  "CMakeFiles/config.dir/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/src/cfe_config_map.c.o.d"
   "libconfig.a"
   "libconfig.pdb"
 )

@@ -3,42 +3,42 @@
 #---------------------------------------------------------------------------
 
 # Start with the common definitions, some of which are extended or overridden here.
-@INCLUDE               = /home/heeseung/rtems-cfs-demo/cFS/build-native/docs/cfe-common.doxyfile
+@INCLUDE               = /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/docs/cfe-common.doxyfile
 PROJECT_NAME           = "SampleMission"
 PROJECT_BRIEF          = "Core Flight System project built using \"bbb\" configuration"
-OUTPUT_DIRECTORY       = /home/heeseung/rtems-cfs-demo/cFS/build-native/docs/detaildesign
-WARN_LOGFILE           = /home/heeseung/rtems-cfs-demo/cFS/build-native/docs/detaildesign-warnings.log
+OUTPUT_DIRECTORY       = /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/docs/detaildesign
+WARN_LOGFILE           = /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/docs/detaildesign-warnings.log
 
-INPUT                 += /home/heeseung/rtems-cfs-demo/cFS/bbb_defs
-STRIP_FROM_PATH       += /home/heeseung/rtems-cfs-demo/cFS/bbb_defs
+INPUT                 += /home/yujin/Documents/lab-2026-1/cFS-sdls/bbb_defs
+STRIP_FROM_PATH       += /home/yujin/Documents/lab-2026-1/cFS-sdls/bbb_defs
 
 #---------------------------------------------------------------------------
 # The user content doxyfile contains paths to the mission-specific applications
 #---------------------------------------------------------------------------
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_private
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/ci_lab
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/to_lab
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/sch_lab
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/sample_app
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/libs/sample_lib
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/blinky
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/file_dl
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/msn_app
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/apps/relay_app
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/cfe_assert
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/es
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/evs
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/fs
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/sb
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/time
-@INCLUDE = /home/heeseung/rtems-cfs-demo/cFS/build-native/docs/osal-detaildesign.doxyfile
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/psp
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/msg
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/sbr
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/resourceid
-INPUT += /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/config
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_private
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/apps/ci_lab
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/apps/to_lab
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/apps/sch_lab
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/apps/sample_app
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/libs/sample_lib
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/apps/blinky
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/apps/file_dl
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/apps/msn_app
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/apps/relay_app
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/cfe_assert
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/es
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/evs
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/fs
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/sb
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/tbl
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/time
+@INCLUDE = /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/docs/osal-detaildesign.doxyfile
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/psp
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/msg
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/sbr
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/resourceid
+INPUT += /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/config
 
-@INCLUDE = /home/heeseung/rtems-cfs-demo/cFS/build-native/docs/tgtsystem-content-native_default_cpu1.doxyfile
+@INCLUDE = /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/docs/tgtsystem-content-native_default_cpu1.doxyfile
 

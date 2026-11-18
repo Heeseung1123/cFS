@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/psp/pc-linux_module_list.c" "psp/CMakeFiles/psp-pc-linux.dir/pc-linux_module_list.c.o" "gcc" "psp/CMakeFiles/psp-pc-linux.dir/pc-linux_module_list.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/psp/pc-linux_module_list.c" "psp/CMakeFiles/psp-pc-linux.dir/pc-linux_module_list.c.o" "gcc" "psp/CMakeFiles/psp-pc-linux.dir/pc-linux_module_list.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

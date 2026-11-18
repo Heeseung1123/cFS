@@ -2,8 +2,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/to_lab.dir/link.d"
   "CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.o"
   "CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_my.c.o.d"
-  "CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o"
-  "CMakeFiles/to_lab.dir/fsw/src/tm_sdlp_of.c.o.d"
   "CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o"
   "CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o.d"
   "to_lab.pdb"

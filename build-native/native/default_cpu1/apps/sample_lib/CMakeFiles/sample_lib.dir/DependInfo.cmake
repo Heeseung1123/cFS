@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/libs/sample_lib/fsw/src/sample_lib.c" "apps/sample_lib/CMakeFiles/sample_lib.dir/fsw/src/sample_lib.c.o" "gcc" "apps/sample_lib/CMakeFiles/sample_lib.dir/fsw/src/sample_lib.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/libs/sample_lib/fsw/src/sample_lib.c" "apps/sample_lib/CMakeFiles/sample_lib.dir/fsw/src/sample_lib.c.o" "gcc" "apps/sample_lib/CMakeFiles/sample_lib.dir/fsw/src/sample_lib.c.o.d"
   "" "apps/sample_lib/sample_lib.so" "gcc" "apps/sample_lib/CMakeFiles/sample_lib.dir/link.d"
   )
 

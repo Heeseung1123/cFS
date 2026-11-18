@@ -8,6 +8,7 @@
 /exe/cpu1/cf/sample_app.so
 /exe/cpu1/cf/sample_app_tbl.tbl
 /exe/cpu1/cf/sample_lib.so
+/exe/cpu1/cf/blinky.so
 /exe/cpu1/cf/file_dl.so
 /exe/cpu1/cf/msn_app.so
 /exe/cpu1/cf/relay_app.so

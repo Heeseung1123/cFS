@@ -1,10 +1,10 @@
 osal/CMakeFiles/osal_bsp.dir/src/bsp/shared/src/bsp_default_app_run.c.o: \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/bsp/shared/src/bsp_default_app_run.c \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/bsp/shared/src/bsp_default_app_run.c \
  /usr/include/stdc-predef.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-common.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/inc/osconfig.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdint.h /usr/include/stdint.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-common.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/inc/osconfig.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/common_types.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -20,10 +20,10 @@ osal/CMakeFiles/osal_bsp.dir/src/bsp/shared/src/bsp_default_app_run.c.o: \
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stddef.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdbool.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/bsp/shared/inc/bsp-impl.h \
- /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/15/include/stdarg.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stddef.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdbool.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/bsp/shared/inc/bsp-impl.h \
+ /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/14/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
@@ -33,6 +33,6 @@ osal/CMakeFiles/osal_bsp.dir/src/bsp/shared/src/bsp_default_app_run.c.o: \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
  /usr/include/x86_64-linux-gnu/bits/floatn.h \
  /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-bsp.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-error.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-idmap.h
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-bsp.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-error.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-idmap.h

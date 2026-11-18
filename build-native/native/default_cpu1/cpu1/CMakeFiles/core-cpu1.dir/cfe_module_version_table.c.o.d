@@ -1,9 +1,9 @@
 cpu1/CMakeFiles/core-cpu1.dir/cfe_module_version_table.c.o: \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/cpu1/cfe_module_version_table.c \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/cpu1/cfe_module_version_table.c \
  /usr/include/stdc-predef.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/cmake/target/inc/target_config.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdint.h /usr/include/stdint.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/cmake/target/inc/target_config.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/common_types.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -19,5 +19,5 @@ cpu1/CMakeFiles/core-cpu1.dir/cfe_module_version_table.c.o: \
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stddef.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdbool.h
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stddef.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdbool.h

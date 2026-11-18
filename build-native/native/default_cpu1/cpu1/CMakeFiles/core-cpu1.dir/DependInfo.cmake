@@ -8,13 +8,13 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/cpu1/cfe_build_env_table.c" "cpu1/CMakeFiles/core-cpu1.dir/cfe_build_env_table.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/cfe_build_env_table.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/cpu1/cfe_module_version_table.c" "cpu1/CMakeFiles/core-cpu1.dir/cfe_module_version_table.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/cfe_module_version_table.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/cpu1/cfe_psp_module_list.c" "cpu1/CMakeFiles/core-cpu1.dir/cfe_psp_module_list.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/cfe_psp_module_list.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/cpu1/cfe_static_module_list.c" "cpu1/CMakeFiles/core-cpu1.dir/cfe_static_module_list.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/cfe_static_module_list.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/cpu1/cfe_static_symbol_list.c" "cpu1/CMakeFiles/core-cpu1.dir/cfe_static_symbol_list.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/cfe_static_symbol_list.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/build-native/src/cfe_mission_strings.c" "cpu1/CMakeFiles/core-cpu1.dir/home/heeseung/rtems-cfs-demo/cFS/build-native/src/cfe_mission_strings.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/home/heeseung/rtems-cfs-demo/cFS/build-native/src/cfe_mission_strings.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/cmake/target/src/target_config.c" "cpu1/CMakeFiles/core-cpu1.dir/src/target_config.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/src/target_config.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/cpu1/cfe_build_env_table.c" "cpu1/CMakeFiles/core-cpu1.dir/cfe_build_env_table.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/cfe_build_env_table.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/cpu1/cfe_module_version_table.c" "cpu1/CMakeFiles/core-cpu1.dir/cfe_module_version_table.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/cfe_module_version_table.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/cpu1/cfe_psp_module_list.c" "cpu1/CMakeFiles/core-cpu1.dir/cfe_psp_module_list.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/cfe_psp_module_list.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/cpu1/cfe_static_module_list.c" "cpu1/CMakeFiles/core-cpu1.dir/cfe_static_module_list.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/cfe_static_module_list.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/cpu1/cfe_static_symbol_list.c" "cpu1/CMakeFiles/core-cpu1.dir/cfe_static_symbol_list.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/cfe_static_symbol_list.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/src/cfe_mission_strings.c" "cpu1/CMakeFiles/core-cpu1.dir/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/src/cfe_mission_strings.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/src/cfe_mission_strings.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/cmake/target/src/target_config.c" "cpu1/CMakeFiles/core-cpu1.dir/src/target_config.c.o" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/src/target_config.c.o.d"
   "" "cpu1/core-cpu1" "gcc" "cpu1/CMakeFiles/core-cpu1.dir/link.d"
   )
 

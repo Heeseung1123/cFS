@@ -1,4 +1,4 @@
-# Install script for directory: /home/heeseung/rtems-cfs-demo/cFS/cfe
+# Install script for directory: /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,15 +44,15 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/docs/osalguide/cmake_install.cmake")
-  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/tools/cmake_install.cmake")
+  include("/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/docs/osalguide/cmake_install.cmake")
+  include("/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/tools/cmake_install.cmake")
 
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/heeseung/rtems-cfs-demo/cFS/build-native/install_local_manifest.txt"
+  file(WRITE "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
 if(CMAKE_INSTALL_COMPONENT)
@@ -68,6 +68,6 @@ else()
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/heeseung/rtems-cfs-demo/cFS/build-native/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

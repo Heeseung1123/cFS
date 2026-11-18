@@ -8,10 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/time/fsw/src/cfe_time_api.c" "time/CMakeFiles/time.dir/fsw/src/cfe_time_api.c.o" "gcc" "time/CMakeFiles/time.dir/fsw/src/cfe_time_api.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/time/fsw/src/cfe_time_task.c" "time/CMakeFiles/time.dir/fsw/src/cfe_time_task.c.o" "gcc" "time/CMakeFiles/time.dir/fsw/src/cfe_time_task.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/time/fsw/src/cfe_time_tone.c" "time/CMakeFiles/time.dir/fsw/src/cfe_time_tone.c.o" "gcc" "time/CMakeFiles/time.dir/fsw/src/cfe_time_tone.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/time/fsw/src/cfe_time_utils.c" "time/CMakeFiles/time.dir/fsw/src/cfe_time_utils.c.o" "gcc" "time/CMakeFiles/time.dir/fsw/src/cfe_time_utils.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/time/fsw/src/cfe_time_api.c" "time/CMakeFiles/time.dir/fsw/src/cfe_time_api.c.o" "gcc" "time/CMakeFiles/time.dir/fsw/src/cfe_time_api.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/time/fsw/src/cfe_time_task.c" "time/CMakeFiles/time.dir/fsw/src/cfe_time_task.c.o" "gcc" "time/CMakeFiles/time.dir/fsw/src/cfe_time_task.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/time/fsw/src/cfe_time_tone.c" "time/CMakeFiles/time.dir/fsw/src/cfe_time_tone.c.o" "gcc" "time/CMakeFiles/time.dir/fsw/src/cfe_time_tone.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/time/fsw/src/cfe_time_utils.c" "time/CMakeFiles/time.dir/fsw/src/cfe_time_utils.c.o" "gcc" "time/CMakeFiles/time.dir/fsw/src/cfe_time_utils.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

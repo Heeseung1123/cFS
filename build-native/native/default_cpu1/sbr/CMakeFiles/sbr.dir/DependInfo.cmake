@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/sbr/fsw/src/cfe_sbr_map_direct.c" "sbr/CMakeFiles/sbr.dir/fsw/src/cfe_sbr_map_direct.c.o" "gcc" "sbr/CMakeFiles/sbr.dir/fsw/src/cfe_sbr_map_direct.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/sbr/fsw/src/cfe_sbr_route_unsorted.c" "sbr/CMakeFiles/sbr.dir/fsw/src/cfe_sbr_route_unsorted.c.o" "gcc" "sbr/CMakeFiles/sbr.dir/fsw/src/cfe_sbr_route_unsorted.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/sbr/fsw/src/cfe_sbr_map_direct.c" "sbr/CMakeFiles/sbr.dir/fsw/src/cfe_sbr_map_direct.c.o" "gcc" "sbr/CMakeFiles/sbr.dir/fsw/src/cfe_sbr_map_direct.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/sbr/fsw/src/cfe_sbr_route_unsorted.c" "sbr/CMakeFiles/sbr.dir/fsw/src/cfe_sbr_route_unsorted.c.o" "gcc" "sbr/CMakeFiles/sbr.dir/fsw/src/cfe_sbr_route_unsorted.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

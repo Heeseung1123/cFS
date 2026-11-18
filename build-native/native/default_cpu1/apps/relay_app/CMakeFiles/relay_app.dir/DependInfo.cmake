@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/apps/relay_app/fsw/src/relay_app.c" "apps/relay_app/CMakeFiles/relay_app.dir/fsw/src/relay_app.c.o" "gcc" "apps/relay_app/CMakeFiles/relay_app.dir/fsw/src/relay_app.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/apps/relay_app/fsw/src/relay_app.c" "apps/relay_app/CMakeFiles/relay_app.dir/fsw/src/relay_app.c.o" "gcc" "apps/relay_app/CMakeFiles/relay_app.dir/fsw/src/relay_app.c.o.d"
   "" "apps/relay_app/relay_app.so" "gcc" "apps/relay_app/CMakeFiles/relay_app.dir/link.d"
   )
 

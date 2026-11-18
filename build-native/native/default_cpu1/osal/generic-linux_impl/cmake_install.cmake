@@ -1,4 +1,4 @@
-# Install script for directory: /home/heeseung/rtems-cfs-demo/cFS/osal/src/bsp/generic-linux
+# Install script for directory: /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/bsp/generic-linux
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,6 +45,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/osal/generic-linux_impl/install_local_manifest.txt"
+  file(WRITE "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/osal/generic-linux_impl/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

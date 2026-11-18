@@ -1,1 +1,1 @@
-/usr/bin/cc -fPIC -g -shared -Wl,--dependency-file=CMakeFiles/relay_app.dir/link.d  -o relay_app.so CMakeFiles/relay_app.dir/fsw/src/relay_app.c.o
+/usr/bin/cc -fPIC -I/home/yujin/native_stub -g -Wl,--dependency-file=CMakeFiles/relay_app.dir/link.d -shared  -o relay_app.so CMakeFiles/relay_app.dir/fsw/src/relay_app.c.o

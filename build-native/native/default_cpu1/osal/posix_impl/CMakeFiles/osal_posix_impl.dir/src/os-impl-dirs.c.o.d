@@ -1,5 +1,5 @@
 osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-dirs.c.o: \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/posix/src/os-impl-dirs.c \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/posix/src/os-impl-dirs.c \
  /usr/include/stdc-predef.h /usr/include/fcntl.h /usr/include/features.h \
  /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -23,7 +23,7 @@ osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-dirs.c.o: \
  /usr/include/x86_64-linux-gnu/bits/types/clock_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/timer_t.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stddef.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stddef.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
  /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
@@ -60,10 +60,10 @@ osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-dirs.c.o: \
  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
  /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/posix/inc/os-posix.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/posix/inc/os-posix.h \
  /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdarg.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
@@ -73,7 +73,6 @@ osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-dirs.c.o: \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
  /usr/include/x86_64-linux-gnu/bits/floatn.h \
  /usr/include/x86_64-linux-gnu/bits/floatn-common.h /usr/include/stdlib.h \
- /usr/include/x86_64-linux-gnu/bits/types/once_flag.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/string.h \
  /usr/include/unistd.h /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
@@ -81,8 +80,8 @@ osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-dirs.c.o: \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/limits.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/syslimits.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/limits.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/syslimits.h \
  /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h \
@@ -95,7 +94,7 @@ osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-dirs.c.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/errno.h /usr/include/x86_64-linux-gnu/bits/errno.h \
- /usr/include/linux/errno.h /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/linux/errno.h /usr/lib/linux/uapi/x86/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
  /usr/include/pthread.h /usr/include/sched.h \
  /usr/include/x86_64-linux-gnu/bits/sched.h \
@@ -106,20 +105,20 @@ osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-dirs.c.o: \
  /usr/include/mqueue.h /usr/include/x86_64-linux-gnu/bits/mqueue.h \
  /usr/include/semaphore.h /usr/include/x86_64-linux-gnu/bits/semaphore.h \
  /usr/include/x86_64-linux-gnu/sys/signal.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/shared/inc/os-shared-globaldefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/inc/osconfig.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdint.h /usr/include/stdint.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/shared/inc/os-shared-globaldefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/inc/osconfig.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/common_types.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdbool.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-constants.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-error.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-macros.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-printf.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/posix/inc/os-impl-dirs.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/shared/inc/os-shared-dir.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-dir.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/shared/inc/os-shared-globaldefs.h
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdbool.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-constants.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/common_types.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-error.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-macros.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-printf.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/posix/inc/os-impl-dirs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/shared/inc/os-shared-dir.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-dir.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/shared/inc/os-shared-globaldefs.h

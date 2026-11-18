@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/resourceid/fsw/src/cfe_resourceid_api.c" "resourceid/CMakeFiles/resourceid.dir/fsw/src/cfe_resourceid_api.c.o" "gcc" "resourceid/CMakeFiles/resourceid.dir/fsw/src/cfe_resourceid_api.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/resourceid/fsw/src/cfe_resourceid_api.c" "resourceid/CMakeFiles/resourceid.dir/fsw/src/cfe_resourceid_api.c.o" "gcc" "resourceid/CMakeFiles/resourceid.dir/fsw/src/cfe_resourceid_api.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

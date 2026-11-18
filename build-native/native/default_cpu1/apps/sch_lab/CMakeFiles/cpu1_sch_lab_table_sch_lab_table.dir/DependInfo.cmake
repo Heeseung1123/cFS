@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/apps/sch_lab/fsw/tables/sch_lab_table.c" "apps/sch_lab/CMakeFiles/cpu1_sch_lab_table_sch_lab_table.dir/fsw/tables/sch_lab_table.c.o" "gcc" "apps/sch_lab/CMakeFiles/cpu1_sch_lab_table_sch_lab_table.dir/fsw/tables/sch_lab_table.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/apps/sch_lab/fsw/tables/sch_lab_table.c" "apps/sch_lab/CMakeFiles/cpu1_sch_lab_table_sch_lab_table.dir/fsw/tables/sch_lab_table.c.o" "gcc" "apps/sch_lab/CMakeFiles/cpu1_sch_lab_table_sch_lab_table.dir/fsw/tables/sch_lab_table.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

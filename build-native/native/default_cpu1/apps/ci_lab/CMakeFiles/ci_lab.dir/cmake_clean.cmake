@@ -2,8 +2,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/ci_lab.dir/link.d"
   "CMakeFiles/ci_lab.dir/fsw/src/ci_lab_app.c.o"
   "CMakeFiles/ci_lab.dir/fsw/src/ci_lab_app.c.o.d"
-  "CMakeFiles/ci_lab.dir/fsw/src/pqc_sdls_my.c.o"
-  "CMakeFiles/ci_lab.dir/fsw/src/pqc_sdls_my.c.o.d"
   "CMakeFiles/ci_lab.dir/fsw/src/tc_sdlp_my.c.o"
   "CMakeFiles/ci_lab.dir/fsw/src/tc_sdlp_my.c.o.d"
   "ci_lab.pdb"

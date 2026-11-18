@@ -8,10 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl/fsw/src/cfe_tbl_api.c" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_api.c.o" "gcc" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_api.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl/fsw/src/cfe_tbl_internal.c" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_internal.c.o" "gcc" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_internal.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl/fsw/src/cfe_tbl_task.c" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task.c.o" "gcc" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl/fsw/src/cfe_tbl_task_cmds.c" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task_cmds.c.o" "gcc" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task_cmds.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/tbl/fsw/src/cfe_tbl_api.c" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_api.c.o" "gcc" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_api.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/tbl/fsw/src/cfe_tbl_internal.c" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_internal.c.o" "gcc" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_internal.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/tbl/fsw/src/cfe_tbl_task.c" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task.c.o" "gcc" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/tbl/fsw/src/cfe_tbl_task_cmds.c" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task_cmds.c.o" "gcc" "tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task_cmds.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

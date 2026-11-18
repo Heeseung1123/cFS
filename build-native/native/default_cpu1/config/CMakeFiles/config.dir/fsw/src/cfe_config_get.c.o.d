@@ -1,11 +1,11 @@
 config/CMakeFiles/config.dir/fsw/src/cfe_config_get.c.o: \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/config/fsw/src/cfe_config_get.c \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/config/fsw/src/cfe_config_get.c \
  /usr/include/stdc-predef.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/config/fsw/src/cfe_config_priv.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_private/fsw/inc/cfe_config_core_internal.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_config_api_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdint.h /usr/include/stdint.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/config/fsw/src/cfe_config_priv.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_private/fsw/inc/cfe_config_core_internal.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_config_api_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/common_types.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -21,21 +21,21 @@ config/CMakeFiles/config.dir/fsw/src/cfe_config_get.c.o: \
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stddef.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdbool.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_resourceid_api_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_resourceid_typedef.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/resourceid/option_inc/cfe_resourceid_simple.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/config/fsw/src/cfe_config_table.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_config_ids.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_resourceid.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/resourceid/fsw/inc/cfe_core_resourceid_basevalues.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/resourceid/fsw/inc/cfe_resourceid_basevalue.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-idmap.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/inc/osconfig.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_config.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_config_api_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/cmake/target/inc/target_config.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/config/fsw/src/cfe_config_map.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stddef.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdbool.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_resourceid_api_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/inc/cfe_resourceid_typedef.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/resourceid/option_inc/cfe_resourceid_simple.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/config/fsw/src/cfe_config_table.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/inc/cfe_config_ids.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_resourceid.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/resourceid/fsw/inc/cfe_core_resourceid_basevalues.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/resourceid/fsw/inc/cfe_resourceid_basevalue.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-idmap.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/inc/osconfig.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/common_types.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_config.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_config_api_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/cmake/target/inc/target_config.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/config/fsw/src/cfe_config_map.h \
  /usr/include/string.h

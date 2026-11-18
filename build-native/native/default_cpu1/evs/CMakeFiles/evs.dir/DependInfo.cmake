@@ -8,10 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/evs/fsw/src/cfe_evs.c" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs.c.o" "gcc" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/evs/fsw/src/cfe_evs_log.c" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_log.c.o" "gcc" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_log.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/evs/fsw/src/cfe_evs_task.c" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_task.c.o" "gcc" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_task.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/cfe/modules/evs/fsw/src/cfe_evs_utils.c" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_utils.c.o" "gcc" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_utils.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/evs/fsw/src/cfe_evs.c" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs.c.o" "gcc" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/evs/fsw/src/cfe_evs_log.c" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_log.c.o" "gcc" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_log.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/evs/fsw/src/cfe_evs_task.c" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_task.c.o" "gcc" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_task.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/evs/fsw/src/cfe_evs_utils.c" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_utils.c.o" "gcc" "evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_utils.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

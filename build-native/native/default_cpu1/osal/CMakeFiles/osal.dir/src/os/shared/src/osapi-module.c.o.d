@@ -1,5 +1,5 @@
 osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-module.c.o: \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/shared/src/osapi-module.c \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/shared/src/osapi-module.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -9,8 +9,8 @@ osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-module.c.o: \
  /usr/include/x86_64-linux-gnu/bits/long-double.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stddef.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdarg.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stddef.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/types.h \
  /usr/include/x86_64-linux-gnu/bits/typesizes.h \
  /usr/include/x86_64-linux-gnu/bits/time64.h \
@@ -37,7 +37,6 @@ osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-module.c.o: \
  /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h \
- /usr/include/x86_64-linux-gnu/bits/types/once_flag.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/string.h \
  /usr/include/time.h /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
@@ -45,21 +44,21 @@ osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-module.c.o: \
  /usr/include/x86_64-linux-gnu/bits/endian.h \
  /usr/include/x86_64-linux-gnu/bits/endianness.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/shared/inc/os-shared-module.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-module.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/inc/osconfig.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdint.h /usr/include/stdint.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/shared/inc/os-shared-module.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-module.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/inc/osconfig.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/common_types.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdbool.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/shared/inc/os-shared-globaldefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-constants.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-error.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-macros.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-printf.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/shared/inc/os-shared-idmap.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-idmap.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-filesys.h
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdbool.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/shared/inc/os-shared-globaldefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/common_types.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-constants.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-error.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-macros.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-printf.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/shared/inc/os-shared-idmap.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-idmap.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-filesys.h

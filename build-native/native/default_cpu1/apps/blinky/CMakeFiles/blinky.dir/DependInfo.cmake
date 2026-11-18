@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/apps/blinky/fsw/src/blinky.c" "apps/blinky/CMakeFiles/blinky.dir/fsw/src/blinky.c.o" "gcc" "apps/blinky/CMakeFiles/blinky.dir/fsw/src/blinky.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/apps/blinky/fsw/src/blinky.c" "apps/blinky/CMakeFiles/blinky.dir/fsw/src/blinky.c.o" "gcc" "apps/blinky/CMakeFiles/blinky.dir/fsw/src/blinky.c.o.d"
   "" "apps/blinky/blinky.so" "gcc" "apps/blinky/CMakeFiles/blinky.dir/link.d"
   )
 

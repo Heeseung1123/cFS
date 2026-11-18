@@ -2,8 +2,8 @@
 # Project related configuration options, shared for all cFE doxygen outputs
 #---------------------------------------------------------------------------
 @INCLUDE_PATH          =  \
-  /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc \
-  /home/heeseung/rtems-cfs-demo/cFS/build-native/docs
+  /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc \
+  /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/docs
 OUTPUT_DIRECTORY       = .
 ABBREVIATE_BRIEF       = "The $name class " \
                          "The $name widget " \

@@ -1,10 +1,10 @@
 tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task_cmds.c.o: \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl/fsw/src/cfe_tbl_task_cmds.c \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/tbl/fsw/src/cfe_tbl_task_cmds.c \
  /usr/include/stdc-predef.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl/fsw/src/cfe_tbl_module_all.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdint.h /usr/include/stdint.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/tbl/fsw/src/cfe_tbl_module_all.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/common_types.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -20,10 +20,10 @@ tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task_cmds.c.o: \
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stddef.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdbool.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi.h \
- /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/15/include/stdarg.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stddef.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdbool.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi.h \
+ /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/14/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
@@ -46,86 +46,85 @@ tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task_cmds.c.o: \
  /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h \
- /usr/include/x86_64-linux-gnu/bits/types/once_flag.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-version.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/inc/osconfig.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-binsem.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-clock.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-common.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-constants.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-countsem.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-dir.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-error.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-file.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-filesys.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-heap.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-macros.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/common_types.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-version.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/inc/osconfig.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-binsem.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-clock.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-common.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-constants.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-countsem.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-dir.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-error.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-file.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-filesys.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-heap.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-macros.h \
  /usr/include/string.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-printf.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-idmap.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-module.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-mutex.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-network.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-queue.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-select.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-shell.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-sockets.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-task.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-timebase.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-timer.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-bsp.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_mission_cfg.h \
- /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/bbb_mission_cfg.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_error.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_es.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_es_api_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_es_extern_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_resourceid_typedef.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/resourceid/option_inc/cfe_resourceid_simple.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_resourceid_api_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_evs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_evs_api_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_evs_extern_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_time_api_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_time_extern_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_fs.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/inc/cfe_platform_cfg.h \
- /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/cpu1_platform_cfg.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_fs_api_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_fs_extern_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_sb.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_sb_api_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_sb_extern_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_msg_api_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_msg_hdr.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/msg/option_inc/default_cfe_msg_hdr_pri.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/msg/fsw/inc/ccsds_hdr.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_msg_sechdr.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/msg/option_inc/default_cfe_msg_sechdr.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_msg_api_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_time.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_tbl.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_tbl_api_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_tbl_extern_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_msg.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_resourceid.h \
- /home/heeseung/rtems-cfs-demo/cFS/psp/fsw/inc/cfe_psp.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/inc/cfe_msgids.h \
- /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/cpu1_msgids.h \
- /home/heeseung/rtems-cfs-demo/cFS/build-native/inc/cfe_perfids.h \
- /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/bbb_perfids.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_private/fsw/inc/cfe_tbl_core_internal.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_es_extern_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl/fsw/inc/cfe_tbl_events.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl/fsw/inc/cfe_tbl_msg.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_tbl_extern_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_time_extern_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl/fsw/src/cfe_tbl_internal.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl/fsw/src/cfe_tbl_task.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/tbl/fsw/src/cfe_tbl_task_cmds.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_error.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_sb_extern_typedefs.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_private/fsw/inc/cfe_es_core_internal.h \
- /home/heeseung/rtems-cfs-demo/cFS/cfe/modules/core_api/fsw/inc/cfe_version.h
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-printf.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-idmap.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-module.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-mutex.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-network.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-queue.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-select.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-shell.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-sockets.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-task.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-timebase.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-timer.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-bsp.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/inc/cfe_mission_cfg.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/bbb_defs/bbb_mission_cfg.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_error.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_es.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_es_api_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_es_extern_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/inc/cfe_resourceid_typedef.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/resourceid/option_inc/cfe_resourceid_simple.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_resourceid_api_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_evs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_evs_api_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_evs_extern_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_time_api_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_time_extern_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_fs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/inc/cfe_platform_cfg.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/bbb_defs/cpu1_platform_cfg.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_fs_api_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_fs_extern_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_sb.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_sb_api_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_sb_extern_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_msg_api_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/inc/cfe_msg_hdr.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/msg/option_inc/default_cfe_msg_hdr_pri.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/msg/fsw/inc/ccsds_hdr.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/inc/cfe_msg_sechdr.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/msg/option_inc/default_cfe_msg_sechdr.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_msg_api_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_time.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_tbl.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_tbl_api_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_tbl_extern_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_msg.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_resourceid.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/psp/fsw/inc/cfe_psp.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/inc/cfe_msgids.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/bbb_defs/cpu1_msgids.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/inc/cfe_perfids.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/bbb_defs/bbb_perfids.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_private/fsw/inc/cfe_tbl_core_internal.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_es_extern_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/tbl/fsw/inc/cfe_tbl_events.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/tbl/fsw/inc/cfe_tbl_msg.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_tbl_extern_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_time_extern_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/tbl/fsw/src/cfe_tbl_internal.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/tbl/fsw/src/cfe_tbl_task.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/tbl/fsw/src/cfe_tbl_task_cmds.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_error.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_sb_extern_typedefs.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_private/fsw/inc/cfe_es_core_internal.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/cfe/modules/core_api/fsw/inc/cfe_version.h

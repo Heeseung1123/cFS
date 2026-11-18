@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/apps/sch_lab/fsw/src/sch_lab_app.c" "apps/sch_lab/CMakeFiles/sch_lab.dir/fsw/src/sch_lab_app.c.o" "gcc" "apps/sch_lab/CMakeFiles/sch_lab.dir/fsw/src/sch_lab_app.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/apps/sch_lab/fsw/src/sch_lab_app.c" "apps/sch_lab/CMakeFiles/sch_lab.dir/fsw/src/sch_lab_app.c.o" "gcc" "apps/sch_lab/CMakeFiles/sch_lab.dir/fsw/src/sch_lab_app.c.o.d"
   "" "apps/sch_lab/sch_lab.so" "gcc" "apps/sch_lab/CMakeFiles/sch_lab.dir/link.d"
   )
 

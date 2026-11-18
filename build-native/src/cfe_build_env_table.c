@@ -3,9 +3,9 @@
 const CFE_ConfigKeyValue_t CFE_BUILD_ENV_TABLE[] = {
 
 
-{ "BUILDDATE", "202611171223" },
-{ "BUILDUSER", "heeseung" },
-{ "BUILDHOST", "DESKTOP-CHPJ4N7" },
+{ "BUILDDATE", "202611171912" },
+{ "BUILDUSER", "yujin" },
+{ "BUILDHOST", "debian" },
 
 { NULL, NULL } /* End of list */
 };

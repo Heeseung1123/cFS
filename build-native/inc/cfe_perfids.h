@@ -5,8 +5,8 @@
 
 
 
-/* /home/heeseung/rtems-cfs-demo/cFS/bbb_defs/cfe_perfids.h does not exist */
-#include "/home/heeseung/rtems-cfs-demo/cFS/bbb_defs/bbb_perfids.h"
+/* /home/yujin/Documents/lab-2026-1/cFS-sdls/bbb_defs/cfe_perfids.h does not exist */
+#include "/home/yujin/Documents/lab-2026-1/cFS-sdls/bbb_defs/bbb_perfids.h"
 
 
 #endif /* GENERATED_INCLUDE_CFE_PERFIDS_H */

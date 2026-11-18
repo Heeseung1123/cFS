@@ -1,4 +1,4 @@
-# Install script for directory: /home/heeseung/rtems-cfs-demo/cFS/apps/file_dl
+# Install script for directory: /home/yujin/Documents/lab-2026-1/cFS-sdls/apps/file_dl
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -49,7 +49,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/cpu1/cf/file_dl.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/cpu1/cf" TYPE MODULE FILES "/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/file_dl/file_dl.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/cpu1/cf" TYPE MODULE FILES "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/apps/file_dl/file_dl.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/cpu1/cf/file_dl.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/cpu1/cf/file_dl.so")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -59,12 +59,12 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/file_dl/CMakeFiles/file_dl.dir/install-cxx-module-bmi-debug.cmake" OPTIONAL)
+  include("/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/apps/file_dl/CMakeFiles/file_dl.dir/install-cxx-module-bmi-debug.cmake" OPTIONAL)
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/file_dl/install_local_manifest.txt"
+  file(WRITE "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/apps/file_dl/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

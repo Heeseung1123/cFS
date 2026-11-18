@@ -1,1 +1,1 @@
-/usr/bin/cc -fPIC -g -shared -Wl,--dependency-file=CMakeFiles/msn_app.dir/link.d  -o msn_app.so CMakeFiles/msn_app.dir/fsw/src/msn_app.c.o
+/usr/bin/cc -fPIC -I/home/yujin/native_stub -g -Wl,--dependency-file=CMakeFiles/msn_app.dir/link.d -shared  -o msn_app.so CMakeFiles/msn_app.dir/fsw/src/msn_app.c.o

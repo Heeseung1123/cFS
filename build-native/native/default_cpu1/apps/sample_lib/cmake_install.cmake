@@ -1,4 +1,4 @@
-# Install script for directory: /home/heeseung/rtems-cfs-demo/cFS/libs/sample_lib
+# Install script for directory: /home/yujin/Documents/lab-2026-1/cFS-sdls/libs/sample_lib
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -49,7 +49,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/cpu1/cf/sample_lib.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/cpu1/cf" TYPE MODULE FILES "/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/sample_lib/sample_lib.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/cpu1/cf" TYPE MODULE FILES "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/apps/sample_lib/sample_lib.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/cpu1/cf/sample_lib.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/cpu1/cf/sample_lib.so")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -59,12 +59,12 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/sample_lib/CMakeFiles/sample_lib.dir/install-cxx-module-bmi-debug.cmake" OPTIONAL)
+  include("/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/apps/sample_lib/CMakeFiles/sample_lib.dir/install-cxx-module-bmi-debug.cmake" OPTIONAL)
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/heeseung/rtems-cfs-demo/cFS/build-native/native/default_cpu1/apps/sample_lib/install_local_manifest.txt"
+  file(WRITE "/home/yujin/Documents/lab-2026-1/cFS-sdls/build-native/native/default_cpu1/apps/sample_lib/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/heeseung/rtems-cfs-demo/cFS/osal/src/bsp/generic-linux/src/bsp_console.c" "osal/generic-linux_impl/CMakeFiles/osal_generic-linux_impl.dir/src/bsp_console.c.o" "gcc" "osal/generic-linux_impl/CMakeFiles/osal_generic-linux_impl.dir/src/bsp_console.c.o.d"
-  "/home/heeseung/rtems-cfs-demo/cFS/osal/src/bsp/generic-linux/src/bsp_start.c" "osal/generic-linux_impl/CMakeFiles/osal_generic-linux_impl.dir/src/bsp_start.c.o" "gcc" "osal/generic-linux_impl/CMakeFiles/osal_generic-linux_impl.dir/src/bsp_start.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/bsp/generic-linux/src/bsp_console.c" "osal/generic-linux_impl/CMakeFiles/osal_generic-linux_impl.dir/src/bsp_console.c.o" "gcc" "osal/generic-linux_impl/CMakeFiles/osal_generic-linux_impl.dir/src/bsp_console.c.o.d"
+  "/home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/bsp/generic-linux/src/bsp_start.c" "osal/generic-linux_impl/CMakeFiles/osal_generic-linux_impl.dir/src/bsp_start.c.o" "gcc" "osal/generic-linux_impl/CMakeFiles/osal_generic-linux_impl.dir/src/bsp_start.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

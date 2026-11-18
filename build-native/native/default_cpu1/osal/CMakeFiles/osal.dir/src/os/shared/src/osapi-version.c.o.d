@@ -1,9 +1,9 @@
 osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-version.c.o: \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/shared/src/osapi-version.c \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/shared/src/osapi-version.c \
  /usr/include/stdc-predef.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/osapi-version.h \
- /home/heeseung/rtems-cfs-demo/cFS/osal/src/os/inc/common_types.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdint.h /usr/include/stdint.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/osapi-version.h \
+ /home/yujin/Documents/lab-2026-1/cFS-sdls/osal/src/os/inc/common_types.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -19,5 +19,5 @@ osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-version.c.o: \
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stddef.h \
- /usr/lib/gcc/x86_64-linux-gnu/15/include/stdbool.h
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stddef.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdbool.h

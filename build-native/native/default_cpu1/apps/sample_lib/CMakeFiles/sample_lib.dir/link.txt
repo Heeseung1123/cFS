@@ -1,1 +1,1 @@
-/usr/bin/cc -fPIC -g -shared -Wl,--dependency-file=CMakeFiles/sample_lib.dir/link.d  -o sample_lib.so CMakeFiles/sample_lib.dir/fsw/src/sample_lib.c.o
+/usr/bin/cc -fPIC -I/home/yujin/native_stub -g -Wl,--dependency-file=CMakeFiles/sample_lib.dir/link.d -shared  -o sample_lib.so CMakeFiles/sample_lib.dir/fsw/src/sample_lib.c.o
