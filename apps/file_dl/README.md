@@ -475,7 +475,7 @@ sequenceDiagram
 
     loop every 100 ms tick (FILE_DL_Wakeup)
         DL->>TO: segment 0x08C3 DATA (offset, 1024 B, tag 2)
-        TO->>B: TM frame (B keeps 0x08C3 with tag 2; A gets the same frame and ignores it)
+        TO->>B: TM frame (B keeps 0x08C3 with tag 2, A gets the same frame and ignores it)
     end
     DL->>TO: segment 0x08C3 END (CRC of the whole file)
     TO->>B: TM frame
