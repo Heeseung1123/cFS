@@ -223,10 +223,13 @@ static void FILE_DL_Start(const FILE_DL_StartCmd_t *pCmd)
     FILE_DL_StartFile(filename, 0, FILE_DL_SEG_TLM_MID);
 }
 
-/* Busy from DL_START until DONE (or the next DL_START); a relay waits for it. */
+// /* Busy from DL_START until DONE (or the next DL_START); a relay waits for it. */
+/* Busy only during the first pass (START to END). A relay then closes a file
+ * that waits for DONE, as a downlink START does (FILE_DL_Prepare). */
 bool FILE_DL_IsBusy(void)
 {
-    return FILE_DL_Data.Open;
+    // return FILE_DL_Data.Open;
+    return FILE_DL_Data.Active;
 }
 
 /* Queues a byte range of the open file; FILE_DL_Wakeup sends it before new data. */

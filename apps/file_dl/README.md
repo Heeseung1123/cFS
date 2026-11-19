@@ -417,7 +417,7 @@ The relay START puts the relay instance in RECEIVING, so every following `0x18C3
 | 1 | `0x18C3` CC 1 START(`/cf/relay/x.bin`, size, crc, **DestTag=2**) | `FILE_UL_Dispatch(relay instance)` → `FILE_UL_Start` (as for upload, plus DestTag) | event |
 | 2–6 | `0x18C3` DATA ×N, END, and gap rounds | Same as upload steps 2–6, but status on `0x08C2` and files in `/cf/relay/` | status `0x08C2` |
 | 7 | – | `FILE_UL_Finish` on COMPLETE: puts (name, tag) into the relay queue (4 entries) | status COMPLETE |
-| 8 | – | In the same tick, `FILE_UL_RelayNext`: if `FILE_DL_IsBusy()` is false (no downlink file open),<br>`FILE_DL_StartFile(name, tag 2, 0x08C3)` | START segment on **`0x08C3`**, DestTag=2 |
+| 8 | – | In the same tick, `FILE_UL_RelayNext`: if `FILE_DL_IsBusy()` is false (no first pass running; a file waiting for DONE is closed),<br>`FILE_DL_StartFile(name, tag 2, 0x08C3)` | START segment on **`0x08C3`**, DestTag=2 |
 | 9 | – | Downlink steps 2–3, with every segment on `0x08C3` carrying DestTag=2 | DATA ×N, END on `0x08C3` |
 | 10 | Station B keeps only `0x08C3` segments with tag 2 and finds its gaps. B itself sends **`0x18C0`** CC 2 RESEND, then CC 3 DONE. | Downlink steps 4–5 | DATA again |
 | 11 | – | `FILE_DL_Close` makes Open false, so on the next tick `FILE_UL_RelayNext` can start the next queued relay | – |
@@ -517,7 +517,7 @@ A never uploads again because of a RESEND. The downlink only starts after the wh
 |---|---|
 | Upload and relay uplink | Yes. Each has its own instance and bitmap. |
 | Uplink (upload or relay) while a downlink is running | Yes. The downlink keeps its 10 segments/s. |
-| Two downlinks (downlink START and a relay downlink) | No, one at a time. A relay waits in the queue. A downlink START during a first pass is refused. |
+| Two downlinks (downlink START and a relay downlink) | No, one at a time. During a first pass, a relay waits in the queue and a downlink START is refused. After END, either one closes the file that waits for DONE. |
 
 ---
 
@@ -846,7 +846,7 @@ Rules for each station:
   - Keep only `0x08C3` segments with your `DestTag`.
   - After END, and a few quiet seconds, send `RESEND` for the missing ranges.
   - When the file is whole and its CRC equals the END CRC, send `DONE`.
-  - Until B sends `DONE`, the file stays open, and any other downlink or relay waits.
+  - Until B sends `DONE`, the file stays open for RESEND. The next relay file or downlink START closes it, so send RESEND soon after END.
 
 ### 9.4 Running the two clients
 

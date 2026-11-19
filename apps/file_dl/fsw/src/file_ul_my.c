@@ -314,8 +314,8 @@ static void FILE_UL_Verify(FILE_UL_Ctx_t *c)
     }
 }
 
-/* The next verified relay file goes down on FILE_RELAY_SEG_TLM_MID,
- * once the downlink engine is free. */
+/* The next verified relay file goes down on FILE_RELAY_SEG_TLM_MID once no
+ * first pass is running; a file still waiting for DONE is closed. */
 static void FILE_UL_RelayNext(void)
 {
     uint32 i;

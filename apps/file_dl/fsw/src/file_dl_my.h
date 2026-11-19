@@ -90,6 +90,7 @@ uint32 FILE_DL_Crc32(uint32 crc, const uint8 *p, uint32 len);
 // bool   FILE_DL_StartFile(const char *filename, uint8 destTag); /* false if busy or no file */
 /* Sends a file with segments on segMid; false if busy or no file. */
 bool FILE_DL_StartFile(const char *filename, uint8 destTag, uint16 segMid);
-bool FILE_DL_IsBusy(void); /* a file is open for sending */
+// bool FILE_DL_IsBusy(void); /* a file is open for sending */
+bool FILE_DL_IsBusy(void); /* a file is in its first pass (START to END) */
 
 #endif /* _file_dl_my_h_ */
