@@ -4,7 +4,7 @@
 function does by sending the command, decoding the telemetry and printing the events, and lets you
 change the files MSN_APP reads, so you can see the satellite react.
 
-For the commands and packets themselves see `apps/msn_app/README.md`.
+For the commands and packets themselves see `apps/mission_app/README.md`.
 
 ## Run
 

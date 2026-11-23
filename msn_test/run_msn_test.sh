@@ -57,7 +57,7 @@ fail() {
 
 # 1. Check the build, refuse to disturb a running instance and start from the default state.
 [ -x "$EXE_DIR/core-cpu1" ] || fail "$EXE_DIR/core-cpu1 not found. Build the native target first."
-[ -f "$EXE_DIR/cf/msn_app.so" ] || fail "msn_app.so not found in $EXE_DIR/cf"
+[ -f "$EXE_DIR/cf/mission_app.so" ] || fail "mission_app.so not found in $EXE_DIR/cf"
 pgrep -x core-cpu1 >/dev/null && fail "core-cpu1 is already running. Stop it first."
 cp "$EXE_DIR/cf/cfe_es_startup.scr" "$STARTUP_BACKUP"
 rm -f "$EXE_DIR/cf/msn_param.txt"

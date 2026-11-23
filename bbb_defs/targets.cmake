@@ -107,7 +107,7 @@ SET(cpu1_PROCESSORID 1)
 # SET(cpu1_APPLIST ci_lab to_lab sch_lab sample_app sample_lib blinky cf)
 # relay_app removed: file_dl uploads, downlinks and relays files.
 # SET(cpu1_APPLIST ci_lab to_lab sch_lab sample_app sample_lib blinky file_dl msn_app relay_app)
-SET(cpu1_APPLIST ci_lab to_lab sch_lab sample_app sample_lib blinky file_dl msn_app)
+SET(cpu1_APPLIST ci_lab to_lab sch_lab sample_app sample_lib blinky file_dl mission_app)
 SET(cpu1_FILELIST cfe_es_startup.scr msn_temp.txt)
 
 # CPU2 example.  This is not built by default anymore but

@@ -387,8 +387,8 @@ def main():
         print("core-cpu1 is already running. Stop it first.")
         return 1
     sat = Satellite(args.build_dir)
-    if not os.path.exists(sat.path("msn_app.so")):
-        print(f"{sat.path('msn_app.so')} not found. Build and install the native target first.")
+    if not os.path.exists(sat.path("mission_app.so")):
+        print(f"{sat.path('mission_app.so')} not found. Build and install the native target first.")
         return 1
 
     # Keep copies of the files the demo changes, to put them back on exit
