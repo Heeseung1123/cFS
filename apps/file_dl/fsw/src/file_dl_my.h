@@ -10,7 +10,7 @@
 // #define FILE_DL_PIPE_DEPTH          16
 /* Also the SB message limit of the command MID; uploads add DATA commands to the pipe. */
 #define FILE_DL_PIPE_DEPTH          32
-#define FILE_DL_SEGMENT_SIZE        1024 /* 16 + 16 + 1024 fits one TM data field (1766) */
+#define FILE_DL_SEGMENT_SIZE        1024 /* 16 + 16 + 1024 fits one TM data field (1780) */
 /* One segment every 100 ms (about 10 KiB/s) instead of a burst per 1 Hz wakeup, so at
  * most one segment waits in TO_LAB's pipe per 100 ms TO cycle, even next to HK. */
 // #define FILE_DL_SEGMENTS_PER_WAKEUP 8

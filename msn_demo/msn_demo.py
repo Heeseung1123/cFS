@@ -20,7 +20,7 @@ SET_PARAM, SET_STARTUP, RUN_DIAG, GET_APP_STATUS, READ_TEMP = 2, 3, 4, 5, 6
 TO_OUTPUT_ENABLE_CC = 6
 
 PROXY_PORT, CI_PORT, TLM_PORT = 1236, 1234, 1235
-DATA_OFFSET = 20  # TM frame: primary header 6 + reserved SDLS security header 14
+DATA_OFFSET = 6  # TM frame: primary header 6, no SDLS security header
 IDLE_MID = 0x07FF
 TLM_HDR_LEN = 16  # CCSDS 6 + time 6 + spare 4
 

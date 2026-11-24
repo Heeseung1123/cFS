@@ -27,7 +27,7 @@ MAX_SEGMENT = TC_MAX_FRAME - TC_PRIHDR_LEN - SPP_HDR_LEN
 
 # TM frame from TO_LAB
 TM_FRAME_SIZE = 1786
-TM_DATA_OFFSET = 20  # Primary Header 6 + Security Header 14
+TM_DATA_OFFSET = 6  # Primary Header 6, no Security Header
 EP_TLM_MID = 0x0980
 TLM_HDR_LEN = 16  # CFE_MSG_TelemetryHeader_t
 

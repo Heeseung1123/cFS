@@ -1,7 +1,7 @@
 """Joins Space Packets split over TO_LAB TM frames, using the First Header Pointer."""
 
 FRAME_SIZE = 1786
-DATA_OFFSET = 20  # Primary Header 6 + reserved SDLS Security Header 14
+DATA_OFFSET = 6  # Primary Header 6, no SDLS Security Header
 SPP_HDR_LEN = 6
 SPP_MIN_SIZE = 7
 NO_FHP = 0x7FF  # no packet starts in this frame

@@ -12,7 +12,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from tm_deframer import FRAME_SIZE, NO_FHP, Deframer  # noqa: E402
 
-DATA_FIELD = FRAME_SIZE - 20  # 1766
+DATA_FIELD = FRAME_SIZE - 6  # 1780
 IDLE_MID = 0x07FF
 
 
@@ -81,11 +81,11 @@ def main():
     results.append(check(harness, "packets fit in one frame", [100] * 5 + ["F"], fhps=[0]))
     # Exactly fills the data field: sent at once without idle data.
     results.append(check(harness, "packet fills the data field", [DATA_FIELD, 100, "F"], fhps=[0, 0]))
-    # Slide example: 234 octets of the second packet go to the queue and open the next frame.
-    results.append(check(harness, "packet split, rest opens the next frame", [1000, 1000, "F"], fhps=[0, 234]))
+    # Slide example: 220 octets of the second packet go to the queue and open the next frame.
+    results.append(check(harness, "packet split, rest opens the next frame", [1000, 1000, "F"], fhps=[0, 220]))
     # One packet spans three frames: the middle frame has no packet start.
-    results.append(check(harness, "packet over three frames (FHP 0x7FF)", [2 * DATA_FIELD + 20, "F"],
-                         fhps=[0, NO_FHP, 20]))
+    results.append(check(harness, "packet over three frames (FHP 0x7FF)", [2 * DATA_FIELD + 6, "F"],
+                         fhps=[0, NO_FHP, 6]))
     # More than frame + queue: the whole packet is dropped and nothing is sent for it.
     results.append(check(harness, "packet larger than frame + queue is dropped", [DATA_FIELD + FRAME_SIZE + 1, 100, "F"],
                          fhps=[0], drops=1))

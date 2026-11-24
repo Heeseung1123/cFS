@@ -9,7 +9,7 @@ import time
 from tm_deframer import Deframer
 
 FRAME_SIZE = 1786
-DATA_OFFSET = 20
+DATA_OFFSET = 6
 IDLE_MID = 0x07FF
 SPP_MIN_SIZE = 7
 
@@ -87,8 +87,6 @@ class Checker:
             self.error(f"data field status flags are 0x{status & 0xF8:02X}, expected 0x18")
         # if fhp != 0:
         #     self.error(f"FHP is {fhp}, expected 0")
-        if any(frame[6:DATA_OFFSET]):
-            self.error("reserved SDLS area is not zero")
         if self.last_mc is not None and mc_count != (self.last_mc + 1) & 0xFF:
             self.error(f"MC count jumped from {self.last_mc} to {mc_count}")
         self.last_mc = mc_count

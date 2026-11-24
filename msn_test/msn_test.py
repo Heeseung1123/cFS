@@ -19,7 +19,7 @@ NORMAL, HIGH, LOW, NO_DATA = 0, 1, 2, 3
 NOT_FOUND, ENABLED, DISABLED = 0, 1, 2
 
 FRAME_SIZE = 1786
-DATA_OFFSET = 20  # TM Primary Header 6 + reserved SDLS Security Header 14
+DATA_OFFSET = 6  # TM Primary Header 6, no SDLS Security Header
 IDLE_MID = 0x07FF
 TLM_HDR_LEN = 16  # CCSDS 6 + time 6 + spare 4
 

@@ -158,7 +158,7 @@ These are two different headers, and they are stacked. The **Space Packet (SPP) 
 
 ```
 ┌──────────── TM Transfer Frame, 1786 B (TO_LAB, TM-SDLP) ─────────────────────────────┐
-│ Frame hdr 6 B │ SDLS area 14 B (zero) │ data field 1766 B: Space Packets, idle fill    │
+│ Frame hdr 6 B │ data field 1780 B: Space Packets, idle fill                           │
 └───────────────┴───────────────────────┼────────────────────────────────────────────────┘
                                         ▼
 ┌──────────────────────────── one Space Packet (0x08C3 relay segment) ───────────────────┐
@@ -188,7 +188,7 @@ There are two levels of splitting:
 | File → segments | file_dl | ≤ 1024 B of file data | `Offset` in the segment header |
 | Packets → frames | TO_LAB (TM-SDLP) | 1786 B frame | First Header Pointer in the frame header, plus the SPP packet length |
 
-A full segment packet is 1056 B. It is smaller than the 1766 B data field, so it is never split at the SPP level. It can still run over the end of one frame into the next frame. The First Header Pointer (FHP) joins the two parts.
+A full segment packet is 1056 B. It is smaller than the 1780 B data field, so it is never split at the SPP level. It can still run over the end of one frame into the next frame. The First Header Pointer (FHP) joins the two parts.
 
 #### Is `DestTag` a CCSDS field?
 
@@ -651,7 +651,7 @@ FILE_DL tick ──1 segment──▶ TO_LAB_TLM_PIPE ──(TO empties it every
 
 1. Each tick, `FILE_DL_Send` puts one segment (up to 1056 B) into TO_LAB's telemetry pipe.
 2. Every 100 ms TO_LAB takes packets until the pipe is empty and calls `TM_SDLP_myAddPacketToFrame` for each one.
-   - A frame whose data field (1766 B) is full is sent **at once**.
+   - A frame whose data field (1780 B) is full is sent **at once**.
    - The rest of the packet goes to the overflow queue and starts the next frame. This is packet segmentation, marked by the First Header Pointer.
 3. A partly filled frame is padded with an idle packet and sent every `TO_LAB_FLUSH_CYCLES` (5) cycles, which is every 500 ms.
 
@@ -667,7 +667,7 @@ FILE_DL tick ──1 segment──▶ TO_LAB_TLM_PIPE ──(TO empties it every
 ```
 FILE_DL tick:  ●seg0           ●seg1           ●seg2 ...
 TO_LAB wake:       ◆               ◆               ◆
-                   seg0 into frame  seg1 added → over 1766 B
+                   seg0 into frame  seg1 added → over 1780 B
                    (not full yet)   → frame 1 sent, the rest starts frame 2
 ```
 
@@ -823,7 +823,7 @@ TO_LAB builds each TM frame once. It sends the frame to the **main destination**
 1. Receive 1786-byte UDP frames on your port.
 2. The Master Channel Frame Count is frame byte 2. If it jumps, drop any packet you were joining.
 3. The First Header Pointer (FHP) is the low 11 bits of bytes 4–5. `0x7FF` means no packet starts in this frame.
-4. The data field starts at byte 20 (6 B frame header + 14 B zeroed SDLS area). Cut it into packets with the SPP length: total length = bytes 4–5 + 7.
+4. The data field starts at byte 6, right after the 6 B frame header. Cut it into packets with the SPP length: total length = bytes 4–5 + 7.
 5. APID `0x7FF` is idle fill. Drop it.
 6. The MID is the first two bytes of the packet. The payload starts at byte 16.
 
